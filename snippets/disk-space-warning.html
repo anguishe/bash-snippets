@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Disk Space Warning Script – Bash Snippets</title>
+  <meta name="description" content="A beginner bash script that checks disk usage and warns you before your drive fills up. Copy-paste ready. Schedule with cron on any Linux server or VPS." />
+  <link rel="canonical" href="https://bashsnippets.xyz/snippets/disk-space-warning.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Disk Space Warning Script – Bash Snippets" />
+  <meta property="og:description" content="Bash script that checks disk usage and alerts you when it passes a threshold. Beginner friendly. Perfect for servers and VPS." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://bashsnippets.xyz/snippets/disk-space-warning.html" />
+
+  <!-- Schema: HowTo -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Get a Disk Space Warning with a Bash Script",
+    "description": "A beginner bash script that checks disk usage percentage and prints a warning when it passes a threshold you set.",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Create the script file",
+        "text": "Run: nano diskcheck.sh in your terminal and paste the script."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Set your threshold",
+        "text": "Change THRESHOLD=80 to the disk percentage at which you want to be warned."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Make it executable",
+        "text": "Run chmod +x diskcheck.sh"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Schedule with cron",
+        "text": "Add to crontab -e: 0 * * * * /home/user/diskcheck.sh to check every hour."
+      }
+    ]
+  }
+  </script>
+
+  <!-- Schema: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I check disk space in Linux with bash?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the df command. Running df -h / shows human-readable disk usage for your root partition. To get just the percentage as a number in a script, use: df / | awk 'NR==2{print $5}' | tr -d '%'"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get an alert when disk space is low?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Write a bash script that checks df output against a threshold, then use an if statement to print a warning or send an email with mail or sendmail. Schedule it with cron to run automatically."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I send an email alert from a bash script?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the mail command: echo 'Disk almost full!' | mail -s 'Disk Warning' you@example.com. On most servers, you may need to install mailutils first: sudo apt install mailutils."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does df / command do in Linux?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "df stands for disk free. Running df / shows the disk space usage statistics for your root filesystem, including total size, used space, available space, and usage percentage."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6B01TGE8XS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6B01TGE8XS');
+  </script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --bg3:         #1c2128;
+      --border:      #30363d;
+      --green:       #39d353;
+      --green-dim:   #1a4a2e;
+      --amber:       #e3b341;
+      --amber-dim:   #3d2f0d;
+      --blue:        #58a6ff;
+      --blue-dim:    #0d2a4a;
+      --text:        #e6edf3;
+      --muted:       #8b949e;
+      --heading-font: 'Syne', sans-serif;
+      --mono-font:    'IBM Plex Mono', monospace;
+      --radius:       8px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--mono-font); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo { font-family: var(--heading-font); font-weight: 800; font-size: 18px; color: var(--green); letter-spacing: -0.5px; text-decoration: none; }
+    .nav-logo span { color: var(--muted); }
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    main { max-width: 860px; margin: 0 auto; padding: 60px 24px 80px; }
+
+    .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--text); text-decoration: none; }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-header { margin-bottom: 40px; }
+    .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; }
+    .tag-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+    .tag-blue  { background: var(--blue-dim);  color: var(--blue);  border: 1px solid var(--blue); }
+    .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+
+    h1 { font-family: var(--heading-font); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .page-intro { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 680px; }
+
+    h2 { font-family: var(--heading-font); font-size: 1.3rem; font-weight: 700; margin: 48px 0 16px; color: var(--text); }
+    h2::before { content: '// '; color: var(--green); }
+    h3 { font-family: var(--heading-font); font-size: 1rem; font-weight: 700; margin: 28px 0 10px; color: var(--green); }
+
+    p { color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+    ul, ol { padding-left: 24px; color: var(--muted); line-height: 1.9; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+    strong { color: var(--text); font-weight: 600; }
+
+    .code-block { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 24px 0; }
+    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+    .code-header .filename { color: var(--green); font-weight: 600; }
+    .copy-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: var(--mono-font); font-size: 11px; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .copy-btn:hover { border-color: var(--green); color: var(--green); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    pre { padding: 24px; overflow-x: auto; font-family: var(--mono-font); font-size: 14px; line-height: 1.7; color: var(--text); }
+    .comment { color: var(--muted); }
+    .kw  { color: var(--green); }
+    .var { color: var(--blue); }
+    .str { color: var(--amber); }
+    .num { color: #f78166; }
+
+    code { background: var(--bg3); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; font-family: var(--mono-font); font-size: 13px; color: var(--green); }
+
+    .callout { border-left: 3px solid var(--green); background: var(--bg2); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; margin: 24px 0; }
+    .callout.amber { border-left-color: var(--amber); }
+    .callout.blue  { border-left-color: var(--blue); }
+    .callout-title { font-weight: 600; color: var(--text); font-size: 13px; margin-bottom: 6px; }
+    .callout p { margin-bottom: 0; font-size: 13px; }
+
+    .var-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    .var-table th { text-align: left; padding: 10px 12px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .var-table td { padding: 10px 12px; border-bottom: 1px solid var(--bg3); color: var(--muted); vertical-align: top; }
+    .var-table td:first-child { color: var(--green); font-weight: 600; }
+    .var-table tr:last-child td { border-bottom: none; }
+
+    .ad-slot { border: 1px dashed var(--border); border-radius: var(--radius); padding: 24px; text-align: center; color: var(--muted); font-size: 12px; background: var(--bg2); margin: 40px 0; }
+
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+    .related-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; transition: border-color 0.2s; display: block; text-decoration: none; }
+    .related-card:hover { border-color: var(--green); text-decoration: none; }
+    .related-card-title { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--muted); }
+
+    .affiliate-box { background: var(--bg2); border: 1px solid var(--amber); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 40px 0; flex-wrap: wrap; }
+    .affiliate-box-text { font-size: 13px; color: var(--muted); }
+    .affiliate-box-text strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 14px; }
+    .btn-affiliate { background: var(--amber); color: #0d1117; font-family: var(--mono-font); font-weight: 600; font-size: 13px; padding: 10px 20px; border-radius: var(--radius); border: none; cursor: pointer; white-space: nowrap; display: inline-block; transition: opacity 0.2s; text-decoration: none; }
+    .btn-affiliate:hover { opacity: 0.85; text-decoration: none; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: 12px; color: var(--muted); display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .affiliate-box { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
+  <ul class="nav-links">
+    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/#builder">Builder</a></li>
+    <li><a href="/#resources">Resources</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <div class="breadcrumb">
+    <a href="/">Home</a><span>›</span>
+    <a href="/#snippets">Snippets</a><span>›</span>
+    Disk Space Warning
+  </div>
+
+  <div class="page-header">
+    <div class="tag-row">
+      <span class="tag tag-green">beginner</span>
+      <span class="tag tag-blue">monitor</span>
+      <span class="tag tag-blue">cron-ready</span>
+    </div>
+    <h1>Disk Space Warning Script</h1>
+    <p class="page-intro">
+      A simple bash script that checks your disk usage and warns you when it crosses a threshold you set.
+      Essential for any server or VPS — because a full disk causes crashes, failed writes, and broken deployments,
+      usually at the worst possible time.
+    </p>
+  </div>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">
+    Advertisement
+  </div>
+
+  <h2>The Script</h2>
+  <p>Paste this into a file called <code>diskcheck.sh</code> and you're set. Change <code>THRESHOLD</code> to whatever percentage you want to be warned at.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="filename">diskcheck.sh</span>
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+    </div>
+    <pre><span class="comment">#!/bin/bash</span>
+<span class="comment"># Disk Space Warning</span>
+<span class="comment"># Checks disk usage and warns if over 80%.</span>
+<span class="comment"># Great for daily cron on a server or VPS.</span>
+<span class="comment">#</span>
+<span class="comment"># USAGE: ./diskcheck.sh</span>
+<span class="comment"># REQUIRES: bash, df, awk, tr (all pre-installed on Linux/macOS)</span>
+
+<span class="var">THRESHOLD</span>=<span class="num">80</span>   <span class="comment"># ← warn when disk usage hits this %</span>
+<span class="var">PARTITION</span>=<span class="str">"/"</span>  <span class="comment"># ← which partition to check (/ = root)</span>
+
+<span class="var">USAGE</span>=$(<span class="kw">df</span> <span class="str">"$PARTITION"</span> | <span class="kw">awk</span> <span class="str">'NR==2{print $5}'</span> | <span class="kw">tr</span> -d <span class="str">'%'</span>)
+
+<span class="kw">if</span> [ <span class="str">"$USAGE"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"⚠ WARNING: Disk at ${USAGE}% — time to clean up"</span>
+<span class="kw">else</span>
+  <span class="kw">echo</span> <span class="str">"✓ Disk OK: ${USAGE}% used (threshold: ${THRESHOLD}%)"</span>
+<span class="kw">fi</span></pre>
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">✓ What this does, line by line</div>
+    <p><code>df "$PARTITION"</code> shows disk stats for your chosen partition. <code>awk 'NR==2{print $5}'</code> grabs the 5th column (usage %) from the second row. <code>tr -d '%'</code> strips the percent sign so the number can be compared mathematically. The <code>if</code> block then prints a warning or an all-clear.</p>
+  </div>
+
+  <h2>Step-by-Step Setup</h2>
+
+  <h3>Step 1 — Create the file</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="kw">nano</span> diskcheck.sh</pre>
+  </div>
+  <p>Paste the script, then press <strong>Ctrl+X → Y → Enter</strong> to save.</p>
+
+  <h3>Step 2 — Set your threshold</h3>
+  <p>Change <code>THRESHOLD=80</code> to match your needs:</p>
+  <table class="var-table">
+    <tr><th>Threshold</th><th>When to use it</th></tr>
+    <tr><td>THRESHOLD=70</td><td>Servers with fast-growing logs or databases — catch it early</td></tr>
+    <tr><td>THRESHOLD=80</td><td>General purpose — the sensible default for most setups</td></tr>
+    <tr><td>THRESHOLD=90</td><td>Storage servers where 90% full is normal and expected</td></tr>
+  </table>
+
+  <h3>Step 3 — Make it executable</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="kw">chmod</span> +x diskcheck.sh</pre>
+  </div>
+
+  <h3>Step 4 — Run it manually first</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre>./<span class="kw">diskcheck.sh</span></pre>
+  </div>
+  <p>You'll see either: <code>✓ Disk OK: 43% used (threshold: 80%)</code> or a warning if you're already over.</p>
+
+  <!-- AD SLOT MID -->
+  <div class="ad-slot">
+    Advertisement
+  </div>
+
+  <h2>Schedule It with Cron</h2>
+  <p>This script is useless if you only run it manually. The whole point is to let it run in the background and catch problems before they happen.</p>
+
+  <h3>Open your crontab</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="kw">crontab</span> -e</pre>
+  </div>
+
+  <h3>Pick your schedule</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">crontab</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="comment"># Check every hour</span>
+<span class="num">0 * * * *</span> /home/user/diskcheck.sh
+
+<span class="comment"># Check every day at 8am</span>
+<span class="num">0 8 * * *</span> /home/user/diskcheck.sh
+
+<span class="comment"># Check every 5 minutes (high-traffic servers)</span>
+<span class="num">*/5 * * * *</span> /home/user/diskcheck.sh</pre>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-title">💡 Use the full path in cron</div>
+    <p>Cron doesn't know where your script lives unless you tell it. Always use the full path like <code>/home/user/diskcheck.sh</code>, not just <code>./diskcheck.sh</code>.</p>
+  </div>
+
+  <h2>Variations</h2>
+
+  <h3>Check multiple partitions at once</h3>
+  <p>Servers often have separate partitions for <code>/var</code>, <code>/home</code>, or <code>/data</code>. Check them all:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">diskcheck-multi.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="comment">#!/bin/bash</span>
+<span class="var">THRESHOLD</span>=<span class="num">80</span>
+<span class="var">PARTITIONS</span>=(<span class="str">"/"</span> <span class="str">"/var"</span> <span class="str">"/home"</span>)
+
+<span class="kw">for</span> <span class="var">p</span> <span class="kw">in</span> <span class="str">"${PARTITIONS[@]}"</span>; <span class="kw">do</span>
+  <span class="comment"># Skip if partition doesn't exist</span>
+  <span class="kw">mountpoint</span> -q <span class="str">"$p"</span> || <span class="kw">continue</span>
+
+  <span class="var">USAGE</span>=$(<span class="kw">df</span> <span class="str">"$p"</span> | <span class="kw">awk</span> <span class="str">'NR==2{print $5}'</span> | <span class="kw">tr</span> -d <span class="str">'%'</span>)
+  <span class="kw">if</span> [ <span class="str">"$USAGE"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"⚠ $p is at ${USAGE}% — above ${THRESHOLD}% threshold"</span>
+  <span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"✓ $p is OK: ${USAGE}%"</span>
+  <span class="kw">fi</span>
+<span class="kw">done</span></pre>
+  </div>
+
+  <h3>Send an email alert instead of just printing</h3>
+  <p>More useful than a print statement — sends you an actual email when the disk is almost full:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">diskcheck-email.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="comment">#!/bin/bash</span>
+<span class="var">THRESHOLD</span>=<span class="num">80</span>
+<span class="var">EMAIL</span>=<span class="str">"you@example.com"</span>  <span class="comment"># ← your email address</span>
+<span class="var">USAGE</span>=$(<span class="kw">df</span> / | <span class="kw">awk</span> <span class="str">'NR==2{print $5}'</span> | <span class="kw">tr</span> -d <span class="str">'%'</span>)
+
+<span class="kw">if</span> [ <span class="str">"$USAGE"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"Disk is at ${USAGE}% on $(hostname). Clean it up."</span> \
+    | <span class="kw">mail</span> -s <span class="str">"⚠ Disk Warning: ${USAGE}% on $(hostname)"</span> <span class="str">"$EMAIL"</span>
+<span class="kw">fi</span></pre>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-title">💡 Install mail if it's missing</div>
+    <p>On Ubuntu/Debian: <code>sudo apt install mailutils</code>. On CentOS/RHEL: <code>sudo yum install mailx</code>. Then test it by running: <code>echo "test" | mail -s "test" you@example.com</code></p>
+  </div>
+
+  <h3>Show a full disk report</h3>
+  <p>A more detailed version that shows all mounted drives at once:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">diskcheck-report.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="comment">#!/bin/bash</span>
+<span class="comment"># Print a clean disk usage report for all real partitions</span>
+<span class="kw">echo</span> <span class="str">"=== Disk Space Report: $(date) ==="</span>
+<span class="kw">df</span> -h --output=target,used,avail,pcent \
+  | <span class="kw">grep</span> -v tmpfs \
+  | <span class="kw">grep</span> -v udev
+<span class="kw">echo</span> <span class="str">"=================================="</span></pre>
+  </div>
+
+  <!-- AFFILIATE BOX -->
+  <div class="affiliate-box">
+    <div class="affiliate-box-text">
+      <strong>Monitor your server — not just your disk</strong>
+      DigitalOcean includes built-in CPU, RAM, and disk alerts. Deploy a droplet from $4/month and get $200 free credit for new accounts.
+    </div>
+    <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
+  </div>
+  <a href="https://www.digitalocean.com/?refcode=7a196437764c&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" alt="DigitalOcean Referral Badge" /></a>
+
+  <h2>Common Mistakes</h2>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ Checking the wrong partition</div>
+    <p>On servers with separate mount points, <code>df /</code> only tells you about the root partition. If your logs live on <code>/var</code>, you need <code>df /var</code>. Run <code>df -h</code> with no arguments to see all partitions and their usage at once.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ The script warns but nobody sees it</div>
+    <p>If you're running this via cron with no email configured, the output goes nowhere. Either set up email alerts (see variation above) or redirect output to a log file: add <code>&gt;&gt; /var/log/diskcheck.log 2&gt;&amp;1</code> to your cron line.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ df output differs by OS</div>
+    <p>This script targets Linux. On macOS, the <code>df</code> output format is slightly different. Replace the awk command with: <code>df -P / | awk 'NR==2{print $5}' | tr -d '%'</code> for cross-platform compatibility.</p>
+  </div>
+
+  <!-- AD SLOT BOTTOM -->
+  <div class="ad-slot">
+    Advertisement
+  </div>
+
+  <h2>Understanding the Commands</h2>
+  <p>Here's a breakdown of each command used in this script so you can adapt it confidently:</p>
+
+  <table class="var-table">
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td>df /</td><td>Shows disk space stats for the root partition in 1K blocks</td></tr>
+    <tr><td>df -h /</td><td>Same as above but human-readable (shows GB/MB instead of blocks)</td></tr>
+    <tr><td>awk 'NR==2{print $5}'</td><td>Grabs the 5th column from line 2 — which is the "Use%" column</td></tr>
+    <tr><td>tr -d '%'</td><td>Strips the percent sign so the number can be used in math comparisons</td></tr>
+    <tr><td>[ "$USAGE" -gt "$THRESHOLD" ]</td><td>Integer comparison: is usage greater than threshold?</td></tr>
+  </table>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>How do I check disk space in Linux with bash?</h3>
+  <p>Use the <code>df</code> command. Running <code>df -h /</code> shows human-readable disk usage for your root partition. To extract just the percentage as a number you can use in a script: <code>df / | awk 'NR==2{print $5}' | tr -d '%'</code></p>
+
+  <h3>How do I get an alert when disk space is low?</h3>
+  <p>Write a bash script that reads the <code>df</code> output, compares it to a threshold using an <code>if</code> statement, and sends an email with <code>mail</code> when it trips. Schedule it with <code>cron</code> to run automatically on a repeating interval.</p>
+
+  <h3>How do I send an email alert from a bash script?</h3>
+  <p>Use the <code>mail</code> command: <code>echo "Disk almost full!" | mail -s "Disk Warning" you@example.com</code>. You may need to install it first: <code>sudo apt install mailutils</code> on Ubuntu/Debian.</p>
+
+  <h3>What does the df / command do in Linux?</h3>
+  <p><code>df</code> stands for "disk free." Running <code>df /</code> shows the disk space statistics for your root filesystem — total size, used space, available space, and the usage percentage. Add the <code>-h</code> flag for human-readable output in GB and MB.</p>
+
+  <h2>Related Snippets</h2>
+  <div class="related-grid">
+    <a class="related-card" href="/snippets/automated-file-backup.html">
+      <div class="related-card-title">Automated File Backup</div>
+      <div class="related-card-tag">beginner · automation</div>
+    </a>
+    <a class="related-card" href="/snippets/delete-old-log-files.html">
+      <div class="related-card-title">Delete Old Log Files</div>
+      <div class="related-card-tag">intermediate · automation</div>
+    </a>
+    <a class="related-card" href="/#snippets">
+      <div class="related-card-title">← All Snippets</div>
+      <div class="related-card-tag">Browse the full library</div>
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <a href="/">← Back to Bash Snippets</a>
+  <a href="/about.html">About</a>
+  <a href="/contact.html">Contact</a>
+  <a href="/privacy.html">Privacy Policy</a>
+</footer>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>
