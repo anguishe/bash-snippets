@@ -260,8 +260,10 @@
     <div class="code-header"><span class="filename">cleanlog.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
     <pre><span class="comment">#!/bin/bash</span>
 <span class="comment"># Delete Old Log Files</span>
-<span class="comment"># Finds and deletes .log files older than DAYS days.</span>
-<span class="comment"># SAFE: swap -delete for -print to preview first.</span>
+<span class="comment"># <code>find /var/log -name "*.log" -mtime +30 -delete</code> removes every log file older than 30 days in one command.
+      Always run with <code>-print</code> instead of <code>-delete</code> first — it previews exactly which files will be removed
+      without touching anything. Swap to <code>-delete</code> when you're satisfied with the list.</span>
+<span class="comment"># SAFE: swap <code>-delete</code> for <code>-print</code> to preview first.</span>
 <span class="comment">#</span>
 <span class="comment"># USAGE: ./cleanlog.sh</span>
 <span class="comment"># REQUIRES: bash, find (pre-installed on all Linux/macOS)</span>

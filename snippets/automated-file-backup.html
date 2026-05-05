@@ -382,8 +382,9 @@
     </div>
     <h1>Automated File Backup Script</h1>
     <p class="page-intro">
-      A simple bash script that copies any folder to a backup location and stamps it with the current date and time.
-      No extra software needed — just bash and <code>cp</code>, which are already on every Linux and macOS system.
+      <code>cp -r "$SOURCE" "$DEST/backup_$(date +%Y-%m-%d_%H-%M)"</code> copies any folder to a backup location
+      and stamps it with the current date and time. Schedule it with cron to run every night at 2am
+      and you have automatic versioned backups with zero ongoing effort.
     </p>
   </div>
 

@@ -306,9 +306,8 @@
     </div>
     <h1>Disk Space Warning Script</h1>
     <p class="page-intro">
-      A simple bash script that checks your disk usage and warns you when it crosses a threshold you set.
-      Essential for any server or VPS — because a full disk causes crashes, failed writes, and broken deployments,
-      usually at the worst possible time.
+      Run df / to get your disk usage as a percentage. Compare it to a threshold. When it crosses 80%, print a warning. That's the entire script — no installs, no dependencies, just bash.
+      Schedule it hourly with cron and you'll never find out your disk is full from a crashed deployment.
     </p>
   </div>
 

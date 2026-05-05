@@ -320,9 +320,9 @@
     </div>
     <h1>Kill a Linux Process by Name</h1>
     <p class="page-intro">
-      Most people kill processes the hard way: <code>ps aux</code>, scroll, grep, copy the PID, then <code>kill</code> the PID.
-      Four commands. Every single time. <code>pkill</code> and <code>pgrep</code> replace that entire workflow
-      with one command — and a safe preview step so you never kill the wrong thing.
+      <code>pkill</code> processname kills any Linux process by name in one command. No PID lookup. No <code>ps aux</code> wall of text.
+      Run pgrep -l processname first to preview exactly which processes will be terminated,
+      then <code>pkill</code> processname to kill them all instantly.
     </p>
   </div>
 
