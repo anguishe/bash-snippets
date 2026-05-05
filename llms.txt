@@ -1,0 +1,16 @@
+# BashSnippets.xyz
+> Free copy-paste bash scripts for Linux users, developers, and sysadmins.
+> Every script is tested, explained in plain English, and copy-paste ready.
+
+## Most important pages
+
+- [Disk Space Warning](https://bashsnippets.xyz/snippets/disk-space-warning.html): Bash script that monitors disk usage and alerts when it crosses a threshold. Runs on cron.
+- [Kill a Process](https://bashsnippets.xyz/snippets/kill-a-process.html): Use pkill and pgrep to kill Linux processes by name instead of hunting PIDs with ps aux.
+- [Check If Website Is Up](https://bashsnippets.xyz/snippets/check-if-website-is-up.html): curl returns an HTTP status code. 200 means up. Automate with cron every 5 minutes.
+- [Delete Old Log Files](https://bashsnippets.xyz/snippets/delete-old-log-files.html): find with -mtime deletes files older than N days. Safe, fast, cron-compatible.
+- [Automated File Backup](https://bashsnippets.xyz/snippets/automated-file-backup.html): cp -r with a timestamp. Backs up any directory on a schedule.
+- [Search Files for Text](https://bashsnippets.xyz/snippets/search-files-for-text-grep.html): grep -rn searches every file in a directory recursively with line numbers.
+
+## About this site
+
+BashSnippets.xyz is maintained by Anguishe, a self-taught developer focused on practical Linux automation. All scripts are tested on Ubuntu/Debian. New scripts added weekly.
