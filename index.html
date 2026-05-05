@@ -280,10 +280,11 @@ crossorigin="anonymous"></script>
 
     body {
       font-family: var(--mono-font);
-      background: var(--bg);
+      background: #0d1117;
       color: var(--text);
       line-height: 1.7;
       font-size: 15px;
+      padding-bottom: min(6000px, 420vh);
     }
 
     a { color: var(--blue); text-decoration: none; }
@@ -295,7 +296,7 @@ crossorigin="anonymous"></script>
     nav {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 2;
       background: rgba(13,17,23,0.93);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -330,6 +331,7 @@ crossorigin="anonymous"></script>
        ============================================================ */
     .hero {
       position: relative;
+      z-index: 2;
       overflow: hidden;
       min-height: 92vh;
       max-width: 860px;
@@ -339,12 +341,12 @@ crossorigin="anonymous"></script>
     }
 
     #hero-canvas {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
       pointer-events: none;
     }
 
@@ -471,6 +473,8 @@ crossorigin="anonymous"></script>
        STATS BAR
        ============================================================ */
     .stats-bar {
+      position: relative;
+      z-index: 2;
       display: flex;
       justify-content: center;
       gap: 48px;
@@ -515,7 +519,18 @@ crossorigin="anonymous"></script>
     /* ============================================================
        SECTION LAYOUT
        ============================================================ */
-    section { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+    section {
+      position: relative;
+      z-index: 2;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    body > div:not(.hero):not(.stats-bar) {
+      position: relative;
+      z-index: 2;
+    }
 
     .section-label {
       font-size: 11px;
@@ -834,6 +849,8 @@ crossorigin="anonymous"></script>
        FOOTER
        ============================================================ */
     footer {
+      position: relative;
+      z-index: 2;
       border-top: 1px solid var(--border);
       padding: 40px 24px;
       text-align: center;
@@ -984,7 +1001,7 @@ crossorigin="anonymous"></script>
       <p class="section-desc">Every snippet runs on Ubuntu, Debian, Fedora, and macOS. Tested personally. The comment at the top of each block tells you what it does before you run it.</p>
     </div>
 
-    <div class="snippets-grid fade-in">
+    <div class="snippets-grid fade-in" style="opacity: 0; pointer-events: none; position: absolute; left: -9999px;">
 
       <!-- SNIPPET 1 -->
       <div class="snippet-card">
@@ -1304,7 +1321,7 @@ crossorigin="anonymous"></script>
   <!-- ============================================================
        SCRIPT BUILDER TOOL
        ============================================================ -->
-  <section id="builder">
+  <section id="builder" style="opacity:0; pointer-events:none; position:absolute; left:-9999px;">
     <div class="fade-in">
       <p class="section-label">// interactive tool</p>
       <h2 class="section-title">Script Builder</h2>
@@ -1354,7 +1371,7 @@ crossorigin="anonymous"></script>
   <!-- ============================================================
        RESOURCES / AFFILIATE SECTION
        ============================================================ -->
-  <section id="resources">
+  <section id="resources" style="opacity:0; pointer-events:none; position:absolute; left:-9999px;">
     <div class="fade-in">
       <p class="section-label">// go deeper</p>
       <h2 class="section-title">Want to Go Beyond Copy-Paste?</h2>
@@ -1568,7 +1585,7 @@ crossorigin="anonymous"></script>
        FAQPage JSON-LD schema block in the <head> above.
        Keep both in sync when adding new questions.
        ============================================================ -->
-  <section id="faq">
+  <section id="faq" style="opacity:0; pointer-events:none; position:absolute; left:-9999px;">
     <div class="fade-in">
       <p class="section-label">// common questions</p>
       <h2 class="section-title">Things People Always Ask</h2>
@@ -1791,6 +1808,7 @@ crossorigin="anonymous"></script>
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
   <script>
     (function () {
       const hero = document.querySelector('.hero');
@@ -1806,9 +1824,131 @@ crossorigin="anonymous"></script>
       const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: false });
       renderer.setClearColor(0x0d1117);
 
-      window.BS = { isLowEnd, scene, camera, renderer };
+      const css3DRenderer = new THREE.CSS3DRenderer();
+      css3DRenderer.setSize(window.innerWidth, window.innerHeight);
+      css3DRenderer.domElement.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  pointer-events: auto;
+`;
+      css3DRenderer.domElement.style.pointerEvents = 'auto';
+      document.body.appendChild(css3DRenderer.domElement);
 
-      const PARTICLE_COUNT = isLowEnd ? 700 : 1800;
+      const css3DScene = new THREE.Scene();
+
+      window.BS = {
+        isLowEnd,
+        scene,
+        threeCamera: camera,
+        renderer,
+        camera: {
+          current: { x: 0, y: 0, z: 4 },
+          target: { x: 0, y: 0, z: 4 }
+        },
+        mouse: { x: 0, y: 0 },
+        drag: { active: false, startX: 0, startY: 0, lastX: 0, lastY: 0 },
+        sceneRotation: {
+          current: { x: 0, y: 0 },
+          target: { x: 0, y: 0 }
+        }
+      };
+      window.BS.css3DRenderer = css3DRenderer;
+      window.BS.css3DScene = css3DScene;
+      const BS = window.BS;
+
+      function buildCards() {
+        const cards = document.querySelectorAll('.snippet-card');
+        console.log('Building', cards.length, 'CSS3D cards');
+
+        const positions = [
+          { x: -3.5, y:  1.5, z: -7  },
+          { x:  3.2, y: -1.2, z: -9  },
+          { x:  0.0, y:  2.0, z: -11 },
+          { x: -3.8, y: -0.5, z: -13 },
+          { x:  3.0, y:  1.8, z: -15 },
+          { x:  0.0, y: -1.5, z: -17 },
+          { x: -2.5, y:  0.8, z: -19 },
+          { x:  2.8, y: -2.0, z: -21 },
+          { x:  0.0, y:  1.0, z: -23 }
+        ];
+
+        const css3DCards = [];
+
+        cards.forEach((card, i) => {
+          const clone = card.cloneNode(true);
+          clone.style.cssText = `
+      width: 320px;
+      pointer-events: auto;
+      margin: 0;
+      opacity: 1;
+      transform: none;
+      transition: none;
+    `;
+
+          const obj = new THREE.CSS3DObject(clone);
+          const pos = positions[i] || { x: 0, y: 0, z: -(7 + i * 2) };
+          obj.position.set(pos.x, pos.y, pos.z);
+          obj.scale.set(0.008, 0.008, 0.008);
+          css3DScene.add(obj);
+          css3DCards.push(obj);
+        });
+
+        window.BS.css3DCards = css3DCards;
+        console.log('CSS3D cards created:', css3DCards.length);
+      }
+
+      buildCards();
+
+      function buildTunnelSections() {
+        const builder = document.getElementById('builder');
+        const resources = document.getElementById('resources');
+        const faq = document.getElementById('faq');
+        console.log('Building tunnel sections - builder:', builder, 'resources:', resources, 'faq:', faq);
+        if (!window.BS.css3DCards || !builder || !resources || !faq) return;
+
+        const builderClone = builder.cloneNode(true);
+        builderClone.style.cssText = `
+      width: 700px;
+      pointer-events: auto;
+      margin: 0;
+    `;
+        const builderObj = new THREE.CSS3DObject(builderClone);
+        builderObj.position.set(0, 0, -28);
+        builderObj.scale.set(0.009, 0.009, 0.009);
+        css3DScene.add(builderObj);
+
+        const resourcesClone = resources.cloneNode(true);
+        resourcesClone.style.cssText = `
+      width: 800px;
+      pointer-events: auto;
+      margin: 0;
+    `;
+        const resourcesObj = new THREE.CSS3DObject(resourcesClone);
+        resourcesObj.position.set(0, 0, -34);
+        resourcesObj.scale.set(0.009, 0.009, 0.009);
+        css3DScene.add(resourcesObj);
+
+        const faqClone = faq.cloneNode(true);
+        faqClone.style.cssText = `
+      width: 700px;
+      pointer-events: auto;
+      margin: 0;
+    `;
+        const faqObj = new THREE.CSS3DObject(faqClone);
+        faqObj.position.set(0, 0, -40);
+        faqObj.scale.set(0.009, 0.009, 0.009);
+        css3DScene.add(faqObj);
+
+        window.BS.css3DCards.push(builderObj, resourcesObj, faqObj);
+        console.log('Total CSS3D objects:', window.BS.css3DCards.length);
+      }
+
+      buildTunnelSections();
+
       const GLYPHS = ['#', '$', '>', '~', '/', '[', ']', '_'];
       const COLOR_GREEN = 0x39d353;
       const COLOR_BLUE = 0x58a6ff;
@@ -1832,41 +1972,67 @@ crossorigin="anonymous"></script>
       }
 
       const glyphTextures = GLYPHS.map(makeGlyphTexture);
-      const particleGeo = new THREE.PlaneGeometry(0.04, 0.18);
-      const particleData = new Float32Array(PARTICLE_COUNT * 3);
-      const particles = new Array(PARTICLE_COUNT);
-      const particleGroup = new THREE.Group();
-      particleGroup.name = 'particleGroup';
+      window.BS.textures = glyphTextures;
 
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const tex = glyphTextures[(Math.random() * glyphTextures.length) | 0];
+      function pickColor() {
         const r = Math.random();
-        const color = r < 0.15 ? COLOR_BLUE : r < 0.23 ? COLOR_AMBER : COLOR_GREEN;
-        const mat = new THREE.MeshBasicMaterial({
-          map: tex,
-          color: color,
-          transparent: true,
-          depthWrite: false
-        });
-        const mesh = new THREE.Mesh(particleGeo, mat);
-        mesh.position.set(
-          Math.random() * 16 - 8,
-          Math.random() * 10 - 5,
-          Math.random() * 6 - 4
-        );
-        const speed = 0.002 + Math.random() * 0.006;
-        const opacity = 0.15 + Math.random() * 0.7;
-        const phase = Math.random() * Math.PI * 2;
-        particleData[i * 3] = speed;
-        particleData[i * 3 + 1] = opacity;
-        particleData[i * 3 + 2] = phase;
-        mat.opacity = opacity;
-        particles[i] = mesh;
-        particleGroup.add(mesh);
+        return r < 0.15 ? COLOR_BLUE : r < 0.23 ? COLOR_AMBER : COLOR_GREEN;
       }
 
-      scene.add(particleGroup);
-      window.BS.particleGroup = particleGroup;
+      function makeParticleGroup(count, zMin, zMax, speedRange, opacityRange, scale) {
+        const group = new THREE.Group();
+        const geo = new THREE.PlaneGeometry(0.04 * scale, 0.18 * scale);
+        for (let i = 0; i < count; i++) {
+          const tex = window.BS.textures[(Math.random() * window.BS.textures.length) | 0];
+          const mat = new THREE.MeshBasicMaterial({
+            map: tex,
+            color: pickColor(),
+            transparent: true,
+            depthWrite: false
+          });
+          const particle = new THREE.Mesh(geo, mat);
+          particle.position.set(
+            Math.random() * 16 - 8,
+            Math.random() * 10 - 5,
+            zMin + Math.random() * (zMax - zMin)
+          );
+          particle.userData.speed = speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
+          particle.userData.baseOpacity = opacityRange[0] + Math.random() * (opacityRange[1] - opacityRange[0]);
+          particle.userData.phase = Math.random() * Math.PI * 2;
+          mat.opacity = particle.userData.baseOpacity;
+          group.add(particle);
+        }
+        return group;
+      }
+
+      const nearGroup = makeParticleGroup(
+        isLowEnd ? 300 : 700,
+        2, 0,
+        [0.004, 0.010],
+        [0.5, 0.9],
+        1.0
+      );
+
+      const midGroup = makeParticleGroup(
+        isLowEnd ? 300 : 800,
+        0, -10,
+        [0.002, 0.006],
+        [0.3, 0.7],
+        1.1
+      );
+
+      const deepGroup = makeParticleGroup(
+        isLowEnd ? 100 : 300,
+        -10, -22,
+        [0.001, 0.003],
+        [0.15, 0.4],
+        1.3
+      );
+
+      window.BS.particleGroups = { near: nearGroup, mid: midGroup, deep: deepGroup };
+      scene.add(nearGroup);
+      scene.add(midGroup);
+      scene.add(deepGroup);
 
       const mouse = { x: 0, y: 0 };
       if (!isLowEnd) {
@@ -1877,6 +2043,42 @@ crossorigin="anonymous"></script>
       }
 
       const startTime = performance.now();
+      const cardDepths = [-6, -6, -10, -10, -14, -14, -18, -18, -18];
+      const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+
+      if (!isLowEnd) {
+        document.addEventListener('mousemove', (e) => {
+          BS.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          BS.mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+          BS.sceneRotation.target.y = BS.mouse.x * 0.06;
+          BS.sceneRotation.target.x = BS.mouse.y * 0.04;
+        }, { passive: true });
+
+        document.addEventListener('mousedown', (e) => {
+          BS.drag.active = true;
+          BS.drag.startX = BS.drag.lastX = e.clientX;
+          BS.drag.startY = BS.drag.lastY = e.clientY;
+          document.body.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!BS.drag.active) return;
+          const deltaX = (e.clientX - BS.drag.lastX) * 0.008;
+          const deltaY = (e.clientY - BS.drag.lastY) * 0.005;
+          BS.sceneRotation.target.y += deltaX;
+          BS.sceneRotation.target.x += deltaY;
+          BS.sceneRotation.target.x = clamp(BS.sceneRotation.target.x, -0.4, 0.4);
+          BS.drag.lastX = e.clientX;
+          BS.drag.lastY = e.clientY;
+        }, { passive: true });
+
+        const endDrag = () => {
+          BS.drag.active = false;
+          document.body.style.cursor = '';
+        };
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('mouseleave', endDrag);
+      }
 
       const vortexPoints = [];
       for (let i = 0; i < 8; i++) {
@@ -1905,11 +2107,8 @@ crossorigin="anonymous"></script>
       let scanline = null;
 
       function randomizeParticlePosition(p) {
-        p.position.set(
-          Math.random() * 16 - 8,
-          Math.random() * 10 - 5,
-          Math.random() * 6 - 4
-        );
+        p.position.x = Math.random() * 16 - 8;
+        p.position.y = Math.random() * 10 - 5;
       }
 
       function scheduleNextGlitch() {
@@ -1920,8 +2119,11 @@ crossorigin="anonymous"></script>
         glitchActive = true;
         glitchStart = performance.now();
 
+        const allGroups = [nearGroup, midGroup, deepGroup];
         for (let i = 0; i < 8; i++) {
-          randomizeParticlePosition(particles[(Math.random() * PARTICLE_COUNT) | 0]);
+          const g = allGroups[(Math.random() * allGroups.length) | 0];
+          if (!g.children.length) continue;
+          randomizeParticlePosition(g.children[(Math.random() * g.children.length) | 0]);
         }
 
         const scanGeo = new THREE.PlaneGeometry(20, 0.008);
@@ -1968,6 +2170,7 @@ crossorigin="anonymous"></script>
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h, false);
+        css3DRenderer.setSize(window.innerWidth, window.innerHeight);
       }
 
       let resizeTimer;
@@ -1976,8 +2179,44 @@ crossorigin="anonymous"></script>
         resizeTimer = setTimeout(syncRendererSize, 50);
       }
 
+      let scrollFrameGate = false;
+      function updateCameraTargetFromScroll() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+
+        BS.camera.target.z = 4 - (scrollPercent * 46);
+        BS.camera.target.x = Math.sin(scrollPercent * Math.PI * 1.5) * 1.4;
+        BS.camera.target.y = scrollPercent * -3.5;
+      }
+
+      function onScroll() {
+        if (scrollFrameGate) return;
+        scrollFrameGate = true;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            updateCameraTargetFromScroll();
+            scrollFrameGate = false;
+          });
+        });
+      }
+
       let rafId = null;
       let loopRunning = false;
+      let frameCounter = 0;
+
+      function syncSnippetCardsToCamera() {
+        const cards = document.querySelectorAll('.snippet-card');
+        cards.forEach((card, i) => {
+          const targetZ = cardDepths[i] || -10;
+          const distance = Math.abs(BS.camera.current.z - targetZ);
+          const opacity = clamp(1 - (distance / 10), 0.08, 1);
+          const translateY = clamp((distance - 2) * -8, -40, 0);
+
+          card.style.opacity = opacity;
+          card.style.transform = `translateY(${translateY}px)`;
+          card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        });
+      }
 
       function tick() {
         if (!loopRunning) return;
@@ -1986,30 +2225,95 @@ crossorigin="anonymous"></script>
         const now = performance.now();
         const t = (now - startTime) * 0.001;
 
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-          const p = particles[i];
-          const speed = particleData[i * 3];
-          const baseOpacity = particleData[i * 3 + 1];
-          const phase = particleData[i * 3 + 2];
-          p.position.y -= speed;
+        const nearChildren = nearGroup.children;
+        for (let i = 0; i < nearChildren.length; i++) {
+          const p = nearChildren[i];
+          p.position.y -= p.userData.speed;
           if (p.position.y < -5.5) {
             p.position.y = 5.5;
             p.position.x = Math.random() * 16 - 8;
           }
-          p.material.opacity = baseOpacity + Math.sin(t + phase) * 0.15;
+          p.material.opacity = p.userData.baseOpacity + Math.sin(t + p.userData.phase) * 0.15;
+        }
+
+        const midChildren = midGroup.children;
+        for (let i = 0; i < midChildren.length; i++) {
+          const p = midChildren[i];
+          p.position.y -= p.userData.speed;
+          if (p.position.y < -5.5) {
+            p.position.y = 5.5;
+            p.position.x = Math.random() * 16 - 8;
+          }
+          p.material.opacity = p.userData.baseOpacity + Math.sin(t + p.userData.phase) * 0.15;
+        }
+
+        const deepChildren = deepGroup.children;
+        for (let i = 0; i < deepChildren.length; i++) {
+          const p = deepChildren[i];
+          p.position.y -= p.userData.speed;
+          if (p.position.y < -5.5) {
+            p.position.y = 5.5;
+            p.position.x = Math.random() * 16 - 8;
+          }
+          p.material.opacity = p.userData.baseOpacity + Math.sin(t + p.userData.phase) * 0.15;
         }
 
         if (!isLowEnd) {
           const tx = mouse.x * 0.4;
           const ty = mouse.y * 0.4;
-          particleGroup.position.x += (tx - particleGroup.position.x) * 0.03;
-          particleGroup.position.y += (ty - particleGroup.position.y) * 0.03;
+          nearGroup.position.x += (tx - nearGroup.position.x) * 0.03;
+          nearGroup.position.y += (ty - nearGroup.position.y) * 0.03;
+          midGroup.position.x += (tx - midGroup.position.x) * 0.03;
+          midGroup.position.y += (ty - midGroup.position.y) * 0.03;
+          deepGroup.position.x += (tx - deepGroup.position.x) * 0.03;
+          deepGroup.position.y += (ty - deepGroup.position.y) * 0.03;
         }
 
         vortexTube.rotation.z += 0.0008;
         updateGlitch(now);
 
+        const lerpFactor = 0.065;
+        BS.camera.current.x += (BS.camera.target.x - BS.camera.current.x) * lerpFactor;
+        BS.camera.current.y += (BS.camera.target.y - BS.camera.current.y) * lerpFactor;
+        BS.camera.current.z += (BS.camera.target.z - BS.camera.current.z) * lerpFactor;
+
+        camera.position.set(BS.camera.current.x, BS.camera.current.y, BS.camera.current.z);
+        camera.lookAt(0, 0, BS.camera.current.z - 4);
+
+        const rotLerp = 0.05;
+        BS.sceneRotation.current.x += (BS.sceneRotation.target.x - BS.sceneRotation.current.x) * rotLerp;
+        BS.sceneRotation.current.y += (BS.sceneRotation.target.y - BS.sceneRotation.current.y) * rotLerp;
+        scene.rotation.x = BS.sceneRotation.current.x;
+        scene.rotation.y = BS.sceneRotation.current.y;
+
+        frameCounter += 1;
+        if (frameCounter % 60 === 0) {
+          console.log('Camera Z:', BS.camera.current.z.toFixed(2), 'CSS3D objects:', window.BS.css3DCards ? window.BS.css3DCards.length : 0);
+        }
+        if (frameCounter % 3 === 0) {
+          if (window.BS.css3DCards) {
+            window.BS.css3DCards.forEach(obj => {
+              const dist = Math.abs(camera.position.z - obj.position.z);
+              let opacity, scale;
+              if (dist < 2.5) {
+                opacity = 1.0;
+                scale = 1.0;
+              } else if (dist < 8) {
+                const t = (dist - 2.5) / 5.5;
+                opacity = 1.0 - (t * 0.75);
+                scale = 1.0 - (t * 0.15);
+              } else {
+                opacity = 0.08;
+                scale = 0.82;
+              }
+              obj.element.style.opacity = opacity;
+              obj.element.style.transform = `scale(${scale})`;
+            });
+          }
+        }
+
         renderer.render(scene, camera);
+        css3DRenderer.render(css3DScene, camera);
       }
 
       function startLoop() {
@@ -2027,13 +2331,20 @@ crossorigin="anonymous"></script>
       }
 
       window.addEventListener('resize', onResize);
+      window.addEventListener('scroll', onScroll, { passive: true });
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) stopLoop();
         else startLoop();
       });
-      window.addEventListener('beforeunload', stopLoop);
+      window.addEventListener('beforeunload', () => {
+        stopLoop();
+        if (css3DRenderer.domElement.parentNode) {
+          css3DRenderer.domElement.parentNode.removeChild(css3DRenderer.domElement);
+        }
+      });
 
       syncRendererSize();
+      updateCameraTargetFromScroll();
       scheduleNextGlitch();
       startLoop();
     })();
