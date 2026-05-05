@@ -329,38 +329,10 @@ crossorigin="anonymous"></script>
        HERO SECTION
        ============================================================ */
     .hero {
-      position: relative;
-      overflow: hidden;
-      min-height: 92vh;
       max-width: 860px;
       margin: 0 auto;
       padding: 80px 24px 60px;
       text-align: center;
-    }
-
-    #hero-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .hero > :not(#hero-canvas) {
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-glow {
-      color: var(--green);
-      position: relative;
-      animation: glowPulse 3s ease-in-out infinite;
-    }
-    @keyframes glowPulse {
-      0%, 100% { text-shadow: 0 0 8px rgba(57, 211, 83, 0.4); }
-      50% { text-shadow: 0 0 24px rgba(57, 211, 83, 0.8), 0 0 50px rgba(57, 211, 83, 0.2); }
     }
 
     .hero-badge {
@@ -374,8 +346,6 @@ crossorigin="anonymous"></script>
       margin-bottom: 24px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      animation: fadeUp 0.7s ease-out forwards;
-      opacity: 0;
     }
 
     .hero h1 {
@@ -385,9 +355,6 @@ crossorigin="anonymous"></script>
       line-height: 1.15;
       letter-spacing: -1px;
       margin-bottom: 20px;
-      animation: fadeUp 0.9s ease-out 0.2s forwards;
-      opacity: 0;
-      transform: translateY(14px);
     }
     .hero h1 em { font-style: normal; color: var(--green); }
 
@@ -397,27 +364,9 @@ crossorigin="anonymous"></script>
       max-width: 600px;
       margin: 0 auto 36px;
       line-height: 1.8;
-      animation: fadeUp 0.9s ease-out 0.4s forwards;
-      opacity: 0;
-      transform: translateY(10px);
     }
 
-    .hero-cta {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: fadeUp 0.9s ease-out 0.6s forwards;
-      opacity: 0;
-      transform: translateY(8px);
-    }
-
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
     /* ============================================================
        BUTTONS
@@ -552,19 +501,9 @@ crossorigin="anonymous"></script>
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      opacity: 0;
-      transform: translateY(24px) scale(0.97);
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out,
-                  box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: border-color 0.2s, transform 0.15s;
     }
-    .snippet-card.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-    .snippet-card:hover {
-      box-shadow: -3px 0 0 var(--green), 0 0 20px rgba(57,211,83,0.06);
-      border-color: var(--green);
-    }
+    .snippet-card:hover { border-color: var(--green); transform: translateY(-2px); }
 
     .snippet-header {
       display: flex;
@@ -927,9 +866,8 @@ crossorigin="anonymous"></script>
        HERO
        ============================================================ -->
   <div class="hero">
-    <canvas id="hero-canvas"></canvas>
     <div class="hero-badge">free · no login · no fluff</div>
-    <h1>Stop Googling the<br><em>Same <span class="hero-glow">Bash</span> Commands</em></h1>
+    <h1>Stop Googling the<br><em>Same Bash Commands</em></h1>
     <p>I got tired of re-searching the same bash one-liners every time I sat down at a terminal. So I started collecting them. This is that collection — real scripts, explained like a human wrote them.</p>
     <div class="hero-cta">
       <a class="btn-primary" href="#snippets">Browse Snippets</a>
@@ -1788,274 +1726,6 @@ crossorigin="anonymous"></script>
 
     // Init builder on load
     generateScript();
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>
-    (function () {
-      const hero = document.querySelector('.hero');
-      const canvas = document.getElementById('hero-canvas');
-      if (!hero || !canvas || typeof THREE === 'undefined') return;
-
-      const isLowEnd = navigator.hardwareConcurrency <= 2 || window.innerWidth < 768;
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-      camera.position.z = 4;
-
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: false });
-      renderer.setClearColor(0x0d1117);
-
-      window.BS = { isLowEnd, scene, camera, renderer };
-
-      const PARTICLE_COUNT = isLowEnd ? 700 : 1800;
-      const GLYPHS = ['#', '$', '>', '~', '/', '[', ']', '_'];
-      const COLOR_GREEN = 0x39d353;
-      const COLOR_BLUE = 0x58a6ff;
-      const COLOR_AMBER = 0xe3b341;
-
-      function makeGlyphTexture(ch) {
-        const c = document.createElement('canvas');
-        c.width = 32;
-        c.height = 32;
-        const ctx = c.getContext('2d');
-        ctx.clearRect(0, 0, 32, 32);
-        ctx.font = "bold 24px 'IBM Plex Mono', ui-monospace, monospace";
-        ctx.fillStyle = '#39d353';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(ch, 16, 17);
-        const t = new THREE.CanvasTexture(c);
-        t.minFilter = THREE.LinearFilter;
-        t.magFilter = THREE.LinearFilter;
-        return t;
-      }
-
-      const glyphTextures = GLYPHS.map(makeGlyphTexture);
-      const particleGeo = new THREE.PlaneGeometry(0.04, 0.18);
-      const particleData = new Float32Array(PARTICLE_COUNT * 3);
-      const particles = new Array(PARTICLE_COUNT);
-      const particleGroup = new THREE.Group();
-      particleGroup.name = 'particleGroup';
-
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const tex = glyphTextures[(Math.random() * glyphTextures.length) | 0];
-        const r = Math.random();
-        const color = r < 0.15 ? COLOR_BLUE : r < 0.23 ? COLOR_AMBER : COLOR_GREEN;
-        const mat = new THREE.MeshBasicMaterial({
-          map: tex,
-          color: color,
-          transparent: true,
-          depthWrite: false
-        });
-        const mesh = new THREE.Mesh(particleGeo, mat);
-        mesh.position.set(
-          Math.random() * 16 - 8,
-          Math.random() * 10 - 5,
-          Math.random() * 6 - 4
-        );
-        const speed = 0.002 + Math.random() * 0.006;
-        const opacity = 0.15 + Math.random() * 0.7;
-        const phase = Math.random() * Math.PI * 2;
-        particleData[i * 3] = speed;
-        particleData[i * 3 + 1] = opacity;
-        particleData[i * 3 + 2] = phase;
-        mat.opacity = opacity;
-        particles[i] = mesh;
-        particleGroup.add(mesh);
-      }
-
-      scene.add(particleGroup);
-      window.BS.particleGroup = particleGroup;
-
-      const mouse = { x: 0, y: 0 };
-      if (!isLowEnd) {
-        window.addEventListener('mousemove', (e) => {
-          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-          mouse.y = -((e.clientY / window.innerHeight) * 2 - 1);
-        }, { passive: true });
-      }
-
-      const startTime = performance.now();
-
-      const vortexPoints = [];
-      for (let i = 0; i < 8; i++) {
-        const p = i / 7;
-        const angle = p * Math.PI * 2 * 2.5;
-        const radius = 3.5 + (0.2 - 3.5) * p;
-        const z = 2 + (-6 - 2) * p;
-        vortexPoints.push(new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, z));
-      }
-
-      const vortexCurve = new THREE.CatmullRomCurve3(vortexPoints);
-      const vortexGeo = new THREE.TubeGeometry(vortexCurve, 80, 0.06, 8, false);
-      const vortexMat = new THREE.MeshBasicMaterial({
-        wireframe: true,
-        color: 0x1a4a2e,
-        opacity: 0.12,
-        transparent: true
-      });
-      const vortexTube = new THREE.Mesh(vortexGeo, vortexMat);
-      scene.add(vortexTube);
-      window.BS.vortexTube = vortexTube;
-
-      let glitchTimer = null;
-      let glitchActive = false;
-      let glitchStart = 0;
-      let scanline = null;
-
-      function randomizeParticlePosition(p) {
-        p.position.set(
-          Math.random() * 16 - 8,
-          Math.random() * 10 - 5,
-          Math.random() * 6 - 4
-        );
-      }
-
-      function scheduleNextGlitch() {
-        glitchTimer = setTimeout(startGlitch, 4000 + Math.random() * 3000);
-      }
-
-      function startGlitch() {
-        glitchActive = true;
-        glitchStart = performance.now();
-
-        for (let i = 0; i < 8; i++) {
-          randomizeParticlePosition(particles[(Math.random() * PARTICLE_COUNT) | 0]);
-        }
-
-        const scanGeo = new THREE.PlaneGeometry(20, 0.008);
-        const scanMat = new THREE.MeshBasicMaterial({
-          color: 0x39d353,
-          opacity: 0.06,
-          transparent: true,
-          depthWrite: false
-        });
-        scanline = new THREE.Mesh(scanGeo, scanMat);
-        scanline.position.set(0, 3, 0.5);
-        scene.add(scanline);
-      }
-
-      function updateGlitch(now) {
-        if (!glitchActive) return;
-
-        const elapsed = now - glitchStart;
-        if (elapsed <= 180) {
-          const pulse = elapsed / 180;
-          vortexMat.opacity = 0.12 + (1 - Math.abs(pulse * 2 - 1)) * 0.33;
-        } else {
-          vortexMat.opacity = 0.12;
-        }
-
-        if (scanline) {
-          if (elapsed <= 400) {
-            scanline.position.y = 3 + (-6 * (elapsed / 400));
-          } else {
-            scene.remove(scanline);
-            scanline.geometry.dispose();
-            scanline.material.dispose();
-            scanline = null;
-            glitchActive = false;
-            scheduleNextGlitch();
-          }
-        }
-      }
-
-      function syncRendererSize() {
-        const w = hero.clientWidth;
-        const h = hero.clientHeight;
-        if (w < 1 || h < 1) return;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h, false);
-      }
-
-      let resizeTimer;
-      function onResize() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(syncRendererSize, 50);
-      }
-
-      let rafId = null;
-      let loopRunning = false;
-
-      function tick() {
-        if (!loopRunning) return;
-        rafId = requestAnimationFrame(tick);
-
-        const now = performance.now();
-        const t = (now - startTime) * 0.001;
-
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-          const p = particles[i];
-          const speed = particleData[i * 3];
-          const baseOpacity = particleData[i * 3 + 1];
-          const phase = particleData[i * 3 + 2];
-          p.position.y -= speed;
-          if (p.position.y < -5.5) {
-            p.position.y = 5.5;
-            p.position.x = Math.random() * 16 - 8;
-          }
-          p.material.opacity = baseOpacity + Math.sin(t + phase) * 0.15;
-        }
-
-        if (!isLowEnd) {
-          const tx = mouse.x * 0.4;
-          const ty = mouse.y * 0.4;
-          particleGroup.position.x += (tx - particleGroup.position.x) * 0.03;
-          particleGroup.position.y += (ty - particleGroup.position.y) * 0.03;
-        }
-
-        vortexTube.rotation.z += 0.0008;
-        updateGlitch(now);
-
-        renderer.render(scene, camera);
-      }
-
-      function startLoop() {
-        if (loopRunning || document.hidden) return;
-        loopRunning = true;
-        tick();
-      }
-
-      function stopLoop() {
-        loopRunning = false;
-        if (rafId !== null) {
-          cancelAnimationFrame(rafId);
-          rafId = null;
-        }
-      }
-
-      window.addEventListener('resize', onResize);
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) stopLoop();
-        else startLoop();
-      });
-      window.addEventListener('beforeunload', stopLoop);
-
-      syncRendererSize();
-      scheduleNextGlitch();
-      startLoop();
-    })();
-  </script>
-
-  <script>
-    (function () {
-      var cards = document.querySelectorAll('.snippet-card');
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          var el = entry.target;
-          var index = Array.prototype.indexOf.call(cards, el);
-          el.style.transitionDelay = (index * 80) + 'ms';
-          el.classList.add('visible');
-          io.unobserve(el);
-        });
-      }, { threshold: 0.12 });
-      cards.forEach(function (card) {
-        io.observe(card);
-      });
-    })();
   </script>
 
 </body>
