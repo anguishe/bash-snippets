@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    PAGE TITLE & META
+    ============================================================ -->
+  <title>Free Bash Tools – BashSnippets.xyz</title>
+  <meta name="description" content="Free interactive tools for Linux users, developers, and sysadmins. No signup. No limits." />
+  <meta name="author" content="BashSnippets" />
+
+  <!-- ============================================================
+    CANONICAL URL
+    ============================================================ -->
+  <link rel="canonical" href="https://bashsnippets.xyz/tools/" />
+
+  <!-- ============================================================
+    OPEN GRAPH
+    ============================================================ -->
+  <meta property="og:title" content="Free Bash Tools – BashSnippets.xyz" />
+  <meta property="og:description" content="Free interactive tools for Linux users, developers, and sysadmins. No signup. No limits." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bashsnippets.xyz/tools/" />
+  <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Free Bash Tools — BashSnippets.xyz" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://bashsnippets.xyz/og-image.png" />
+
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","name":"Free Bash Tools",
+"url":"https://bashsnippets.xyz/tools/",
+"description":"Free interactive tools for Linux users, developers, and sysadmins. No signup. No limits."}
+  </script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"BashSnippets","item":"https://bashsnippets.xyz/"},
+{"@type":"ListItem","position":2,"name":"Tools","item":"https://bashsnippets.xyz/tools/"}
+]}
+  </script>
+
+  <!-- ============================================================
+    GOOGLE ANALYTICS (GA4)
+    ============================================================ -->
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6B01TGE8XS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6B01TGE8XS');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127"
+crossorigin="anonymous"></script>
+
+  <!-- ============================================================
+    FAVICON
+    ============================================================ -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- ============================================================
+    FONTS — Loaded from Google Fonts CDN.
+    Syne = headings, IBM Plex Mono = body/code
+    ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --bg3:         #1c2128;
+      --border:      #30363d;
+      --green:       #39d353;
+      --green-dim:   #1a4a2e;
+      --amber:       #e3b341;
+      --blue:        #58a6ff;
+      --blue-dim:    #0d2a4a;
+      --muted:       #8b949e;
+      --text:        #e6edf3;
+      --radius:      8px;
+      --mono-font:    'IBM Plex Mono', monospace;
+      --heading-font: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--mono-font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      background: rgba(13,17,23,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    nav.nav--hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      nav { transition: none; }
+    }
+
+    .nav-logo {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    .nav-mobile-menu {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 18px;
+      padding: 4px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: var(--mono-font);
+      line-height: 1;
+    }
+    .nav-mobile-menu:hover { color: var(--text); border-color: var(--muted); }
+
+    .nav-mobile-drawer {
+      display: none;
+      flex-direction: column;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      gap: 4px;
+      position: sticky;
+      top: 53px;
+      z-index: 7;
+    }
+    .nav-mobile-drawer.open { display: flex; }
+    .nav-mobile-drawer a {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+    }
+    .nav-mobile-drawer a:last-child { border-bottom: none; }
+    .nav-mobile-drawer a:hover { color: var(--text); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-menu { display: block; }
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .breadcrumb {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--text); text-decoration: none; }
+    .breadcrumb-sep { color: var(--border); }
+
+    .tools-hub-title {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .tools-hub-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .tool-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      max-width: 400px;
+    }
+
+    .tool-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .tool-card-title {
+      font-family: var(--heading-font);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .tool-card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+
+    .tool-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tool-card-tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      font-family: var(--mono-font);
+      font-size: 11px;
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .tool-card-btn {
+      display: inline-block;
+      background: var(--green);
+      color: #0d1117;
+      font-family: var(--mono-font);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      text-decoration: none;
+    }
+    .tool-card-btn:hover { text-decoration: none; filter: brightness(1.05); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav id="site-nav">
+    <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
+
+    <ul class="nav-links">
+      <li><a href="/#snippets">Snippets</a></li>
+      <li><a href="/#builder">Builder</a></li>
+      <li><a href="/#resources">Resources</a></li>
+      <li><a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+
+    <button class="nav-mobile-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
+  </nav>
+
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/#snippets">Snippets</a>
+    <a href="/#builder">Builder</a>
+    <a href="/#resources">Resources</a>
+    <a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('site-nav');
+      if (!nav) return;
+      var threshold = 12;
+      function updateNavScrollState() {
+        if (window.scrollY > threshold) nav.classList.add('nav--hidden');
+        else nav.classList.remove('nav--hidden');
+      }
+      window.addEventListener('scroll', updateNavScrollState, { passive: true });
+      updateNavScrollState();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var btn = document.querySelector('.nav-mobile-menu');
+      var drawer = document.getElementById('nav-drawer');
+      if (!btn || !drawer) return;
+      btn.addEventListener('click', function () {
+        var open = drawer.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      drawer.addEventListener('click', function (e) {
+        if (e.target && e.target.tagName === 'A') {
+          drawer.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
+
+  <main>
+
+    <div class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">BashSnippets</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Tools</span>
+    </div>
+
+    <h1 class="tools-hub-title">Free Bash Tools</h1>
+    <p class="tools-hub-subtitle">Interactive tools for Linux users and developers. No signup. No limits.</p>
+
+    <article class="tool-card">
+      <div class="tool-card-label">FREE TOOL</div>
+      <h2 class="tool-card-title">Bash Boilerplate Generator</h2>
+      <p class="tool-card-desc">Pick your options, inject a snippet from the library, and copy a production-ready .sh template. No blank files.</p>
+      <div class="tool-card-tags">
+        <span class="tool-card-tag">interactive</span>
+        <span class="tool-card-tag">free</span>
+      </div>
+      <a class="tool-card-btn" href="/tools/bash-boilerplate-generator.html">Open Tool →</a>
+    </article>
+
+    <!-- ADD NEW TOOLS HERE -->
+
+    <!-- BLOCK 1 — DigitalOcean affiliate box -->
+    <div style="max-width:960px;margin:40px auto 32px;padding:0 24px;">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:8px;padding:20px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;">
+          <div style="font-size:11px;color:var(--blue);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Recommended Hosting</div>
+          <div style="font-family:var(--heading-font);font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px;">Run these scripts on a $4/mo DigitalOcean Droplet</div>
+          <div style="font-size:13px;color:var(--muted);">Spin up a Linux VPS in 60 seconds. Perfect for cron jobs and running bash scripts 24/7.</div>
+        </div>
+        <a href="https://www.digitalocean.com/?refcode=7a196437764c" target="_blank" rel="noopener"
+          style="background:var(--blue);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:6px;text-decoration:none;white-space:nowrap;">Get $200 Free Credit →</a>
+      </div>
+    </div>
+
+    <!-- BLOCK 2 — AdSense ad slot -->
+    <div style="max-width:960px;margin:40px auto;padding:0 24px;">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5399156622542127"
+        data-ad-slot="AUTO" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <footer style="text-align:center;padding:32px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);">
+      <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:12px;">
+        <a href="/" style="color:var(--muted);">← BashSnippets</a>
+        <a href="/tools/" style="color:var(--muted);">Tools</a>
+        <a href="/snippets/" style="color:var(--muted);">All Snippets</a>
+        <a href="/about.html" style="color:var(--muted);">About</a>
+        <a href="/privacy.html" style="color:var(--muted);">Privacy</a>
+      </div>
+      <p>© <span id="year"></span> BashSnippets · Built by a Linux user, for Linux users.</p>
+      <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    </footer>
+
+  </main>
+
+</body>
+</html>

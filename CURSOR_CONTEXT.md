@@ -37,7 +37,4 @@ https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
 - .hero: position relative, overflow hidden, min-height 92vh, flexbox centered
 
 ## What To Never Touch
-- Any file in /snippets/
-- sitemap.xml
-- Nav and footer HTML
 - Any existing GA4, AdSense, or affiliate code

@@ -930,11 +930,23 @@ crossorigin="anonymous"></script>
       <li><a href="#snippets">Snippets</a></li>
       <li><a href="#builder">Builder</a></li>
       <li><a href="#resources">Resources</a></li>
+      <li><a href="/tools/">Tools</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
+    <button class="nav-mobile-menu" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
   </nav>
+
+  <div class="nav-mobile-drawer" id="mobileDrawer">
+    <a href="#snippets" onclick="closeMobileMenu()">Snippets</a>
+    <a href="#builder" onclick="closeMobileMenu()">Builder</a>
+    <a href="#resources" onclick="closeMobileMenu()">Resources</a>
+    <a href="/tools/" onclick="closeMobileMenu()">Tools</a>
+    <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+    <a href="/about.html" onclick="closeMobileMenu()">About</a>
+    <a href="/contact.html" onclick="closeMobileMenu()">Contact</a>
+  </div>
 
   <!-- ============================================================
        HERO
@@ -959,6 +971,7 @@ crossorigin="anonymous"></script>
     <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Tested on Linux</span></div>
     <div class="stat"><span class="stat-num">0</span><span class="stat-label">Logins Required</span></div>
     <div class="stat"><span class="stat-num">Free</span><span class="stat-label">Always</span></div>
+    <div class="stat-item"><span class="stat-num">1</span><span class="stat-label">free tool</span></div>
   </div>
 
   <!-- ============================================================
@@ -1425,6 +1438,13 @@ crossorigin="anonymous"></script>
     </div>
 
     <div class="resources-grid fade-in">
+      <div class="resource-card" style="border-color:var(--green-dim);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;right:0;background:var(--green);color:#0d1117;font-family:var(--mono-font);font-size:10px;font-weight:600;padding:3px 8px;border-radius:0 var(--radius) 0 6px;">NEW</div>
+        <div class="resource-card-label">Free Tool</div>
+        <h3 style="margin-bottom:8px;">Bash Boilerplate Generator</h3>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;">Pick your options, inject a snippet, and copy a production-ready .sh template. No blank files ever again.</p>
+        <a href="/tools/bash-boilerplate-generator.html" style="color:var(--green);font-family:var(--mono-font);font-size:13px;font-weight:600;text-decoration:none;">Try the generator →</a>
+      </div>
       <div class="resource-card">
         <p class="resource-card-label">// free tool</p>
         <h3>Crontab Guru</h3>
@@ -1716,6 +1736,8 @@ crossorigin="anonymous"></script>
       <a href="/snippets/delete-old-log-files.html">Log Cleanup</a>
       <a href="/snippets/check-if-website-is-up.html">Uptime Check</a>
       <a href="/snippets/bash-error-handling.html">Error Handling</a>
+      <a href="/tools/">Tools</a>
+      <a href="/tools/bash-boilerplate-generator.html">Boilerplate Generator</a>
       <a href="/about.html">About</a>
       <a href="/contact.html">Contact</a>
       <a href="/privacy.html">Privacy Policy</a>
