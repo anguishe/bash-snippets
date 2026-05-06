@@ -296,7 +296,7 @@ crossorigin="anonymous"></script>
     nav {
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 8;
       background: rgba(13,17,23,0.93);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -305,6 +305,15 @@ crossorigin="anonymous"></script>
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    nav.nav--hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      nav { transition: none; }
     }
 
     .nav-logo {
@@ -930,15 +939,18 @@ crossorigin="anonymous"></script>
        Links to all pages. Internal anchor links use #id format.
        External pages use full relative paths (/about.html etc.)
        ============================================================ -->
-      <!-- Browse All Snippets CTA -->
-    <div style="margin-top:32px;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-      <div>
-        <div style="font-family:var(--heading-font);font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">More scripts in the library →</div>
-        <div style="font-size:13px;color:var(--muted);">Check if your website is up · Bash error handling · Create dated folders · and more</div>
-      </div>
-      <a href="/snippets/" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Scripts →</a>
-    </div>
+  <nav id="site-nav">
+    <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
 
+    <ul class="nav-links">
+      <li><a href="#snippets">Snippets</a></li>
+      <li><a href="#builder">Builder</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
 
   <!-- ============================================================
        HERO
@@ -1296,6 +1308,15 @@ crossorigin="anonymous"></script>
            ============================================================ -->
 
     </div><!-- /snippets-grid -->
+
+    <!-- Browse All Snippets CTA -->
+    <div style="margin-top:32px;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:var(--heading-font);font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">More scripts in the library →</div>
+        <div style="font-size:13px;color:var(--muted);">Check if your website is up · Bash error handling · Create dated folders · and more</div>
+      </div>
+      <a href="/snippets/" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Scripts →</a>
+    </div>
   </section>
 
   <!-- ============================================================
@@ -1833,9 +1854,8 @@ crossorigin="anonymous"></script>
   width: 100vw;
   height: 100vh;
   z-index: 3;
-  pointer-events: auto;
+  pointer-events: none;
 `;
-      css3DRenderer.domElement.style.pointerEvents = 'auto';
       document.body.appendChild(css3DRenderer.domElement);
 
       const css3DScene = new THREE.Scene();
@@ -2366,6 +2386,20 @@ crossorigin="anonymous"></script>
       cards.forEach(function (card) {
         io.observe(card);
       });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('site-nav');
+      if (!nav) return;
+      var threshold = 12;
+      function updateNavScrollState() {
+        if (window.scrollY > threshold) nav.classList.add('nav--hidden');
+        else nav.classList.remove('nav--hidden');
+      }
+      window.addEventListener('scroll', updateNavScrollState, { passive: true });
+      updateNavScrollState();
     })();
   </script>
 
