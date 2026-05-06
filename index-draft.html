@@ -278,12 +278,19 @@ crossorigin="anonymous"></script>
 
     html { scroll-behavior: smooth; }
 
+    html, body {
+      overflow: hidden !important;
+      height: 100%;
+      width: 100%;
+    }
+
     body {
       font-family: var(--mono-font);
-      background: var(--bg);
+      background: #0d1117;
       color: var(--text);
       line-height: 1.7;
       font-size: 15px;
+      padding-bottom: min(6000px, 420vh);
     }
 
     a { color: var(--blue); text-decoration: none; }
@@ -295,7 +302,7 @@ crossorigin="anonymous"></script>
     nav {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 2;
       background: rgba(13,17,23,0.93);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -329,10 +336,40 @@ crossorigin="anonymous"></script>
        HERO SECTION
        ============================================================ */
     .hero {
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      min-height: 92vh;
       max-width: 860px;
       margin: 0 auto;
       padding: 80px 24px 60px;
       text-align: center;
+    }
+
+    #hero-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero > :not(#hero-canvas) {
+      position: relative;
+      z-index: 2;
+      display: none !important;
+    }
+
+    .hero-glow {
+      color: var(--green);
+      position: relative;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { text-shadow: 0 0 8px rgba(57, 211, 83, 0.4); }
+      50% { text-shadow: 0 0 24px rgba(57, 211, 83, 0.8), 0 0 50px rgba(57, 211, 83, 0.2); }
     }
 
     .hero-badge {
@@ -346,6 +383,8 @@ crossorigin="anonymous"></script>
       margin-bottom: 24px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      animation: fadeUp 0.7s ease-out forwards;
+      opacity: 0;
     }
 
     .hero h1 {
@@ -355,6 +394,9 @@ crossorigin="anonymous"></script>
       line-height: 1.15;
       letter-spacing: -1px;
       margin-bottom: 20px;
+      animation: fadeUp 0.9s ease-out 0.2s forwards;
+      opacity: 0;
+      transform: translateY(14px);
     }
     .hero h1 em { font-style: normal; color: var(--green); }
 
@@ -364,9 +406,76 @@ crossorigin="anonymous"></script>
       max-width: 600px;
       margin: 0 auto 36px;
       line-height: 1.8;
+      animation: fadeUp 0.9s ease-out 0.4s forwards;
+      opacity: 0;
+      transform: translateY(10px);
     }
 
-    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.9s ease-out 0.6s forwards;
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    /* ============================================================
+       CSS3D HERO TEXT — placed in 3D tunnel via CSS3DObject.
+       Uses fixed pixel dimensions because CSS3D renderer scales
+       the wrapper down to world-space (scale ~0.006).
+       ============================================================ */
+    .t-badge {
+      display: inline-block;
+      background: #1a4a2e;
+      color: #39d353;
+      border: 1px solid #39d353;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      padding: 4px 14px;
+      border-radius: 100px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .t-h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 64px;
+      line-height: 1.15;
+      letter-spacing: -2px;
+      color: #e6edf3;
+      text-align: center;
+      width: 700px;
+    }
+    .t-h1 em { font-style: normal; color: #e6edf3; }
+    .t-h1 em span {
+      color: #39d353;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    .t-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 17px;
+      color: #8b949e;
+      text-align: center;
+      width: 520px;
+      line-height: 1.8;
+    }
+    .t-cta {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     /* ============================================================
        BUTTONS
@@ -420,6 +529,8 @@ crossorigin="anonymous"></script>
        STATS BAR
        ============================================================ */
     .stats-bar {
+      position: relative;
+      z-index: 2;
       display: flex;
       justify-content: center;
       gap: 48px;
@@ -464,7 +575,18 @@ crossorigin="anonymous"></script>
     /* ============================================================
        SECTION LAYOUT
        ============================================================ */
-    section { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+    section {
+      position: relative;
+      z-index: 2;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    body > div:not(.hero):not(.stats-bar) {
+      position: relative;
+      z-index: 2;
+    }
 
     .section-label {
       font-size: 11px;
@@ -501,9 +623,19 @@ crossorigin="anonymous"></script>
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      transition: border-color 0.2s, transform 0.15s;
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out,
+                  box-shadow 0.2s ease, border-color 0.2s ease;
     }
-    .snippet-card:hover { border-color: var(--green); transform: translateY(-2px); }
+    .snippet-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .snippet-card:hover {
+      box-shadow: -3px 0 0 var(--green), 0 0 20px rgba(57,211,83,0.06);
+      border-color: var(--green);
+    }
 
     .snippet-header {
       display: flex;
@@ -773,6 +905,8 @@ crossorigin="anonymous"></script>
        FOOTER
        ============================================================ */
     footer {
+      position: relative;
+      z-index: 2;
       border-top: 1px solid var(--border);
       padding: 40px 24px;
       text-align: center;
@@ -866,8 +1000,9 @@ crossorigin="anonymous"></script>
        HERO
        ============================================================ -->
   <div class="hero">
+    <canvas id="hero-canvas"></canvas>
     <div class="hero-badge">free · no login · no fluff</div>
-    <h1>Stop Googling the<br><em>Same Bash Commands</em></h1>
+    <h1>Stop Googling the<br><em>Same <span class="hero-glow">Bash</span> Commands</em></h1>
     <p>I got tired of re-searching the same bash one-liners every time I sat down at a terminal. So I started collecting them. This is that collection — real scripts, explained like a human wrote them.</p>
     <div class="hero-cta">
       <a class="btn-primary" href="#snippets">Browse Snippets</a>
@@ -1726,6 +1861,771 @@ crossorigin="anonymous"></script>
 
     // Init builder on load
     generateScript();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js"></script>
+  <script>
+    (function () {
+      const hero = document.querySelector('.hero');
+      const canvas = document.getElementById('hero-canvas');
+      if (!hero || !canvas || typeof THREE === 'undefined') return;
+
+      const isLowEnd = navigator.hardwareConcurrency <= 2 || window.innerWidth < 768;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+      camera.position.z = 4;
+
+      const cameraSpline = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0.0, 0.0, 4.0),
+        new THREE.Vector3(0.2, 0.12, -1.0),
+        new THREE.Vector3(0.0, 0.06, -6.5),
+        new THREE.Vector3(-0.15, 0.0, -12.0),
+        new THREE.Vector3(0.0, -0.06, -17.5),
+        new THREE.Vector3(0.12, 0.04, -28.0),
+        new THREE.Vector3(0.0, 0.0, -38.0),
+        new THREE.Vector3(-0.08, 0.03, -48.0),
+        new THREE.Vector3(0.06, -0.02, -58.0),
+        new THREE.Vector3(-0.05, 0.02, -68.0),
+        new THREE.Vector3(0.05, 0.0, -78.0),
+        new THREE.Vector3(0.0, 0.0, -88.0),
+        new THREE.Vector3(0.0, 0.0, -96.0)
+      ]);
+      window.BSAPP = window.BSAPP || {};
+      // Scroll hijack script runs later in the document; tick() runs on load before
+      // that, so these must exist or scrollVelocity decay poisons state with NaN.
+      if (typeof window.BSAPP.scrollProgress !== 'number' || Number.isNaN(window.BSAPP.scrollProgress)) {
+        window.BSAPP.scrollProgress = 0;
+      }
+      if (typeof window.BSAPP.scrollVelocity !== 'number' || Number.isNaN(window.BSAPP.scrollVelocity)) {
+        window.BSAPP.scrollVelocity = 0;
+      }
+      window.BSAPP.cameraSpline = cameraSpline;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: false });
+      renderer.setClearColor(0x0d1117);
+
+      const css3DRenderer = new THREE.CSS3DRenderer();
+      css3DRenderer.setSize(window.innerWidth, window.innerHeight);
+      css3DRenderer.domElement.style.cssText = `
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3;
+  pointer-events: auto;
+`;
+      css3DRenderer.domElement.style.pointerEvents = 'auto';
+      document.body.appendChild(css3DRenderer.domElement);
+
+      const css3DScene = new THREE.Scene();
+
+      window.BS = {
+        isLowEnd,
+        scene,
+        threeCamera: camera,
+        renderer,
+        camera: {
+          current: { x: 0, y: 0, z: 4 },
+          target: { x: 0, y: 0, z: 4 }
+        },
+        mouse: { x: 0, y: 0 },
+        drag: { active: false, startX: 0, startY: 0, lastX: 0, lastY: 0 },
+        sceneRotation: {
+          current: { x: 0, y: 0 },
+          target: { x: 0, y: 0 }
+        }
+      };
+      window.BS.css3DRenderer = css3DRenderer;
+      window.BS.css3DScene = css3DScene;
+      window.BSAPP.css3DRenderer = css3DRenderer;
+      window.BSAPP.css3DScene = css3DScene;
+      const BS = window.BS;
+
+      function buildCards() {
+        const cards = document.querySelectorAll('#snippets .snippet-card');
+
+        const snippetZStep = 5.5;
+        const positions = [
+          { x: 0, y: 0, z: -19.0 },
+          { x: 0, y: 0, z: -24.5 },
+          { x: 0, y: 0, z: -30.0 },
+          { x: 0, y: 0, z: -35.5 },
+          { x: 0, y: 0, z: -41.0 },
+          { x: 0, y: 0, z: -46.5 },
+          { x: 0, y: 0, z: -52.0 },
+          { x: 0, y: 0, z: -57.5 },
+          { x: 0, y: 0, z: -63.0 },
+          { x: 0, y: 0, z: -68.5 },
+          { x: 0, y: 0, z: -74.0 },
+          { x: 0, y: 0, z: -79.5 }
+        ];
+
+        const css3DCards = [];
+        const baseScale = 0.008;
+
+        cards.forEach((card, i) => {
+          const clone = card.cloneNode(true);
+          clone.style.cssText = `
+      width: 320px;
+      pointer-events: auto;
+      margin: 0;
+      opacity: 0;
+      transform: none;
+      transition: none;
+    `;
+
+          const obj = new THREE.CSS3DObject(clone);
+          const pos = positions[i] || { x: 0, y: 0, z: -(19 + i * snippetZStep) };
+          obj.userData = {
+            type: 'snippet',
+            baseScale,
+            baseX: pos.x,
+            baseY: pos.y,
+            baseZ: pos.z
+          };
+          obj.position.set(pos.x, pos.y, pos.z);
+          obj.scale.setScalar(baseScale * 0.82);
+          css3DScene.add(obj);
+          css3DCards.push(obj);
+        });
+
+        window.BS.css3DCards = css3DCards;
+      }
+
+      buildCards();
+
+      function buildTunnelSections() {
+        const builder = document.getElementById('builder');
+        const resources = document.getElementById('resources');
+        const faq = document.getElementById('faq');
+        if (!window.BS.css3DCards || !builder || !resources || !faq) return;
+
+        const builderClone = builder.cloneNode(true);
+        builderClone.style.cssText = `
+      width: 700px;
+      pointer-events: auto;
+      margin: 0;
+    `;
+        const builderObj = new THREE.CSS3DObject(builderClone);
+        builderObj.position.set(0, 0, -85);
+        builderObj.scale.set(0.009, 0.009, 0.009);
+        css3DScene.add(builderObj);
+
+        const resourcesClone = resources.cloneNode(true);
+        resourcesClone.style.cssText = `
+      width: 800px;
+      pointer-events: auto;
+      margin: 0;
+    `;
+        const resourcesObj = new THREE.CSS3DObject(resourcesClone);
+        resourcesObj.position.set(0, 0, -89);
+        resourcesObj.scale.set(0.009, 0.009, 0.009);
+        css3DScene.add(resourcesObj);
+
+        const faqClone = faq.cloneNode(true);
+        faqClone.style.cssText = `
+      width: 700px;
+      pointer-events: auto;
+      margin: 0;
+    `;
+        const faqObj = new THREE.CSS3DObject(faqClone);
+        faqObj.position.set(0, 0, -93);
+        faqObj.scale.set(0.009, 0.009, 0.009);
+        css3DScene.add(faqObj);
+
+        window.BS.css3DCards.push(builderObj, resourcesObj, faqObj);
+      }
+
+      buildTunnelSections();
+
+      function buildHeroElements() {
+        const css3DS = window.BSAPP.css3DScene;
+        window.BSAPP.heroObjects = [];
+
+        const items = [
+          {
+            html: '<div class="t-badge">free · no login · no fluff</div>',
+            pos: [0, 0.9, -2.0],
+            scale: 0.006
+          },
+          {
+            html: '<div class="t-h1">Stop Googling the<br>' +
+                  '<em>Same <span>Bash</span> Commands</em></div>',
+            pos: [0, 0.12, -6.5],
+            scale: 0.007
+          },
+          {
+            html: '<div class="t-sub">I got tired of re-searching the ' +
+                  'same bash one-liners every time I sat down at a terminal. ' +
+                  'So I started collecting them. This is that collection — ' +
+                  'real scripts, explained like a human wrote them.</div>',
+            pos: [0, -0.32, -12.0],
+            scale: 0.006
+          },
+          {
+            html: '<div class="t-cta">' +
+                    '<a href="/snippets/" class="btn-primary">Browse Snippets</a>' +
+                    '<a href="/builder.html" class="btn-secondary">Try the Builder</a>' +
+                  '</div>',
+            pos: [0, -0.52, -17.0],
+            scale: 0.006,
+            interactive: true
+          }
+        ];
+
+        items.forEach((item, i) => {
+          const el = document.createElement('div');
+          el.innerHTML = item.html;
+          el.style.cssText = item.interactive
+            ? 'pointer-events: auto;'
+            : 'pointer-events: none;';
+          const obj = new THREE.CSS3DObject(el);
+          obj.position.set(item.pos[0], item.pos[1], item.pos[2]);
+          obj.scale.setScalar(item.scale);
+          obj.userData.heroIndex = i;
+          obj.userData.heroBaseScale = item.scale;
+          css3DS.add(obj);
+          window.BSAPP.heroObjects.push(obj);
+        });
+      }
+      buildHeroElements();
+
+      const GLYPHS = ['#', '$', '>', '~', '/', '[', ']', '_'];
+      const COLOR_GREEN = 0x39d353;
+      const COLOR_BLUE = 0x58a6ff;
+      const COLOR_AMBER = 0xe3b341;
+
+      function makeGlyphTexture(ch) {
+        const c = document.createElement('canvas');
+        c.width = 32;
+        c.height = 32;
+        const ctx = c.getContext('2d');
+        ctx.clearRect(0, 0, 32, 32);
+        ctx.font = "bold 24px 'IBM Plex Mono', ui-monospace, monospace";
+        ctx.fillStyle = '#39d353';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(ch, 16, 17);
+        const t = new THREE.CanvasTexture(c);
+        t.minFilter = THREE.LinearFilter;
+        t.magFilter = THREE.LinearFilter;
+        return t;
+      }
+
+      const glyphTextures = GLYPHS.map(makeGlyphTexture);
+      window.BS.textures = glyphTextures;
+
+      function pickColor() {
+        const r = Math.random();
+        return r < 0.15 ? COLOR_BLUE : r < 0.23 ? COLOR_AMBER : COLOR_GREEN;
+      }
+
+      function makeParticleGroup(count, zMin, zMax, speedRange, opacityRange, scale) {
+        const group = new THREE.Group();
+        const geo = new THREE.PlaneGeometry(0.04 * scale, 0.18 * scale);
+        for (let i = 0; i < count; i++) {
+          const tex = window.BS.textures[(Math.random() * window.BS.textures.length) | 0];
+          const mat = new THREE.MeshBasicMaterial({
+            map: tex,
+            color: pickColor(),
+            transparent: true,
+            depthWrite: false
+          });
+          const particle = new THREE.Mesh(geo, mat);
+          particle.position.set(
+            Math.random() * 16 - 8,
+            Math.random() * 10 - 5,
+            zMin + Math.random() * (zMax - zMin)
+          );
+          particle.userData.speed = speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
+          particle.userData.baseOpacity = opacityRange[0] + Math.random() * (opacityRange[1] - opacityRange[0]);
+          particle.userData.phase = Math.random() * Math.PI * 2;
+          mat.opacity = particle.userData.baseOpacity;
+          group.add(particle);
+        }
+        return group;
+      }
+
+      const nearGroup = makeParticleGroup(
+        isLowEnd ? 300 : 700,
+        2, 0,
+        [0.004, 0.010],
+        [0.5, 0.9],
+        1.0
+      );
+
+      const midGroup = makeParticleGroup(
+        isLowEnd ? 300 : 800,
+        0, -10,
+        [0.002, 0.006],
+        [0.3, 0.7],
+        1.1
+      );
+
+      const deepGroup = makeParticleGroup(
+        isLowEnd ? 100 : 300,
+        -10, -22,
+        [0.001, 0.003],
+        [0.15, 0.4],
+        1.3
+      );
+
+      window.BS.particleGroups = { near: nearGroup, mid: midGroup, deep: deepGroup };
+      scene.add(nearGroup);
+      scene.add(midGroup);
+      scene.add(deepGroup);
+
+      const mouse = { x: 0, y: 0 };
+      if (!isLowEnd) {
+        window.addEventListener('mousemove', (e) => {
+          mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -((e.clientY / window.innerHeight) * 2 - 1);
+        }, { passive: true });
+      }
+
+      const startTime = performance.now();
+      const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+      const smoothstep = (t) => t * t * (3 - 2 * t);
+      /** Opacity for hero CSS3D layers: one layer peaks as camera passes its Z. */
+      function heroLayerOpacity(camZ, layerZ) {
+        const dist = Math.abs(camZ - layerZ);
+        const plateau = 1.15;
+        const tail = 6.2;
+        if (dist <= plateau) return 1;
+        if (dist >= tail) return 0;
+        return 1 - smoothstep((dist - plateau) / (tail - plateau));
+      }
+      const HERO_SEGMENT_END_Z = -19.5;
+
+      if (!isLowEnd) {
+        document.addEventListener('mousemove', (e) => {
+          BS.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+          BS.mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+          BS.sceneRotation.target.y = BS.mouse.x * 0.06;
+          BS.sceneRotation.target.x = BS.mouse.y * 0.04;
+        }, { passive: true });
+
+        document.addEventListener('mousedown', (e) => {
+          BS.drag.active = true;
+          BS.drag.startX = BS.drag.lastX = e.clientX;
+          BS.drag.startY = BS.drag.lastY = e.clientY;
+          document.body.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!BS.drag.active) return;
+          const deltaX = (e.clientX - BS.drag.lastX) * 0.008;
+          const deltaY = (e.clientY - BS.drag.lastY) * 0.005;
+          BS.sceneRotation.target.y += deltaX;
+          BS.sceneRotation.target.x += deltaY;
+          BS.sceneRotation.target.x = clamp(BS.sceneRotation.target.x, -0.4, 0.4);
+          BS.drag.lastX = e.clientX;
+          BS.drag.lastY = e.clientY;
+        }, { passive: true });
+
+        const endDrag = () => {
+          BS.drag.active = false;
+          document.body.style.cursor = '';
+        };
+        document.addEventListener('mouseup', endDrag);
+        document.addEventListener('mouseleave', endDrag);
+      }
+
+      const vortexPoints = [];
+      for (let i = 0; i < 8; i++) {
+        const p = i / 7;
+        const angle = p * Math.PI * 2 * 2.5;
+        const radius = 3.5 + (0.2 - 3.5) * p;
+        const z = 2 + (-6 - 2) * p;
+        vortexPoints.push(new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, z));
+      }
+
+      const vortexCurve = new THREE.CatmullRomCurve3(vortexPoints);
+      const vortexGeo = new THREE.TubeGeometry(vortexCurve, 80, 0.06, 8, false);
+      const vortexMat = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        color: 0x1a4a2e,
+        opacity: 0.12,
+        transparent: true
+      });
+      const vortexTube = new THREE.Mesh(vortexGeo, vortexMat);
+      scene.add(vortexTube);
+      window.BS.vortexTube = vortexTube;
+
+      let glitchTimer = null;
+      let glitchActive = false;
+      let glitchStart = 0;
+      let scanline = null;
+
+      function randomizeParticlePosition(p) {
+        p.position.x = Math.random() * 16 - 8;
+        p.position.y = Math.random() * 10 - 5;
+      }
+
+      function scheduleNextGlitch() {
+        glitchTimer = setTimeout(startGlitch, 4000 + Math.random() * 3000);
+      }
+
+      function startGlitch() {
+        glitchActive = true;
+        glitchStart = performance.now();
+
+        const allGroups = [nearGroup, midGroup, deepGroup];
+        for (let i = 0; i < 8; i++) {
+          const g = allGroups[(Math.random() * allGroups.length) | 0];
+          if (!g.children.length) continue;
+          randomizeParticlePosition(g.children[(Math.random() * g.children.length) | 0]);
+        }
+
+        const scanGeo = new THREE.PlaneGeometry(20, 0.008);
+        const scanMat = new THREE.MeshBasicMaterial({
+          color: 0x39d353,
+          opacity: 0.06,
+          transparent: true,
+          depthWrite: false
+        });
+        scanline = new THREE.Mesh(scanGeo, scanMat);
+        scanline.position.set(0, 3, 0.5);
+        scene.add(scanline);
+      }
+
+      function updateGlitch(now) {
+        if (!glitchActive) return;
+
+        const elapsed = now - glitchStart;
+        if (elapsed <= 180) {
+          const pulse = elapsed / 180;
+          vortexMat.opacity = 0.12 + (1 - Math.abs(pulse * 2 - 1)) * 0.33;
+        } else {
+          vortexMat.opacity = 0.12;
+        }
+
+        if (scanline) {
+          if (elapsed <= 400) {
+            scanline.position.y = 3 + (-6 * (elapsed / 400));
+          } else {
+            scene.remove(scanline);
+            scanline.geometry.dispose();
+            scanline.material.dispose();
+            scanline = null;
+            glitchActive = false;
+            scheduleNextGlitch();
+          }
+        }
+      }
+
+      function syncRendererSize() {
+        const w = hero.clientWidth;
+        const h = hero.clientHeight;
+        if (w < 1 || h < 1) return;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+        css3DRenderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      let resizeTimer;
+      function onResize() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(syncRendererSize, 50);
+      }
+
+      let scrollFrameGate = false;
+      function updateCameraTargetFromScroll() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+
+        BS.camera.target.z = 4 - (scrollPercent * 46);
+        BS.camera.target.x = Math.sin(scrollPercent * Math.PI * 1.5) * 1.4;
+        BS.camera.target.y = scrollPercent * -3.5;
+      }
+
+      function onScroll() {
+        if (scrollFrameGate) return;
+        scrollFrameGate = true;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            updateCameraTargetFromScroll();
+            scrollFrameGate = false;
+          });
+        });
+      }
+
+      let rafId = null;
+      let loopRunning = false;
+      let frameCounter = 0;
+
+      function tick() {
+        if (!loopRunning) return;
+        rafId = requestAnimationFrame(tick);
+
+        // Scroll progress update
+        const APP = window.BSAPP;
+        if (typeof APP.scrollVelocity !== 'number' || Number.isNaN(APP.scrollVelocity)) APP.scrollVelocity = 0;
+        if (typeof APP.scrollProgress !== 'number' || Number.isNaN(APP.scrollProgress)) APP.scrollProgress = 0;
+        APP.scrollVelocity *= 0.942;
+        APP.scrollProgress += APP.scrollVelocity;
+        APP.scrollProgress = Math.max(0, Math.min(1, APP.scrollProgress));
+
+        // Higher exponent = more wheel travel per spline segment (snippets feel less rushed).
+        const splineT = Math.pow(APP.scrollProgress, 1.38);
+
+        // Camera follows spline
+        const splinePos = cameraSpline.getPoint(splineT);
+        const lookAhead = Math.min(splineT + 0.022, 1.0);
+        const splineLook = cameraSpline.getPoint(lookAhead);
+        camera.position.lerp(splinePos, 0.065);
+        camera.lookAt(splineLook);
+
+        BS.camera.current.x = camera.position.x;
+        BS.camera.current.y = camera.position.y;
+        BS.camera.current.z = camera.position.z;
+
+        // Hero: each layer peaks by distance to camera Z (no shared single fade).
+        if (window.BSAPP.heroObjects) {
+          const camZ = camera.position.z;
+          window.BSAPP.heroObjects.forEach(obj => {
+            let op = heroLayerOpacity(camZ, obj.position.z);
+            if (camZ <= HERO_SEGMENT_END_Z) op = 0;
+            obj.element.style.opacity = op;
+            const peak = 1 - Math.min(Math.abs(camZ - obj.position.z) / 5.5, 1);
+            const scaleMul = 0.96 + 0.06 * peak * peak;
+            obj.scale.setScalar(obj.userData.heroBaseScale * scaleMul);
+          });
+        }
+
+        const now = performance.now();
+        const t = (now - startTime) * 0.001;
+
+        const nearChildren = nearGroup.children;
+        for (let i = 0; i < nearChildren.length; i++) {
+          const p = nearChildren[i];
+          p.position.y -= p.userData.speed;
+          if (p.position.y < -5.5) {
+            p.position.y = 5.5;
+            p.position.x = Math.random() * 16 - 8;
+          }
+          p.material.opacity = p.userData.baseOpacity + Math.sin(t + p.userData.phase) * 0.15;
+        }
+
+        const midChildren = midGroup.children;
+        for (let i = 0; i < midChildren.length; i++) {
+          const p = midChildren[i];
+          p.position.y -= p.userData.speed;
+          if (p.position.y < -5.5) {
+            p.position.y = 5.5;
+            p.position.x = Math.random() * 16 - 8;
+          }
+          p.material.opacity = p.userData.baseOpacity + Math.sin(t + p.userData.phase) * 0.15;
+        }
+
+        const deepChildren = deepGroup.children;
+        for (let i = 0; i < deepChildren.length; i++) {
+          const p = deepChildren[i];
+          p.position.y -= p.userData.speed;
+          if (p.position.y < -5.5) {
+            p.position.y = 5.5;
+            p.position.x = Math.random() * 16 - 8;
+          }
+          p.material.opacity = p.userData.baseOpacity + Math.sin(t + p.userData.phase) * 0.15;
+        }
+
+        if (!isLowEnd) {
+          const tx = mouse.x * 0.4;
+          const ty = mouse.y * 0.4;
+          nearGroup.position.x += (tx - nearGroup.position.x) * 0.03;
+          nearGroup.position.y += (ty - nearGroup.position.y) * 0.03;
+          midGroup.position.x += (tx - midGroup.position.x) * 0.03;
+          midGroup.position.y += (ty - midGroup.position.y) * 0.03;
+          deepGroup.position.x += (tx - deepGroup.position.x) * 0.03;
+          deepGroup.position.y += (ty - deepGroup.position.y) * 0.03;
+        }
+
+        vortexTube.rotation.z += 0.0008;
+        updateGlitch(now);
+
+        const rotLerp = 0.05;
+        BS.sceneRotation.current.x += (BS.sceneRotation.target.x - BS.sceneRotation.current.x) * rotLerp;
+        BS.sceneRotation.current.y += (BS.sceneRotation.target.y - BS.sceneRotation.current.y) * rotLerp;
+        scene.rotation.x = BS.sceneRotation.current.x;
+        scene.rotation.y = BS.sceneRotation.current.y;
+
+        frameCounter += 1;
+        if (frameCounter % 3 === 0) {
+          if (window.BS.css3DCards) {
+            const cards = window.BS.css3DCards;
+            const snippetObjs = [];
+            for (let ci = 0; ci < cards.length; ci++) {
+              const o = cards[ci];
+              if (o.userData && o.userData.type === 'snippet') snippetObjs.push(o);
+            }
+            let winnerSnippetIdx = 0;
+            let winnerDist = Infinity;
+            for (let si = 0; si < snippetObjs.length; si++) {
+              const d = Math.abs(camera.position.z - snippetObjs[si].userData.baseZ);
+              if (d < winnerDist) {
+                winnerDist = d;
+                winnerSnippetIdx = si;
+              }
+            }
+            cards.forEach(obj => {
+              if (obj.userData && obj.userData.type === 'snippet') {
+                const si = snippetObjs.indexOf(obj);
+                const dist = Math.abs(camera.position.z - obj.userData.baseZ);
+                const inner = 2.4;
+                const outer = 8.2;
+                let reveal = dist <= inner ? 1 : dist < outer ? (outer - dist) / (outer - inner) : 0;
+                reveal = smoothstep(clamp(reveal, 0, 1));
+                if (si !== winnerSnippetIdx) reveal *= 0.22;
+                const opacity = clamp(reveal * 0.98, 0, 1);
+                const scale = obj.userData.baseScale * (0.82 + (reveal * 0.2));
+
+                obj.element.style.opacity = opacity;
+                obj.position.x = obj.userData.baseX;
+                obj.position.y = obj.userData.baseY;
+                obj.position.z = obj.userData.baseZ;
+                obj.scale.setScalar(scale);
+                return;
+              }
+
+              const dist = Math.abs(camera.position.z - obj.position.z);
+              let opacity, scale;
+              if (dist < 3.2) {
+                opacity = 1.0;
+                scale = 1.0;
+              } else if (dist < 12) {
+                const tt = (dist - 3.2) / (12 - 3.2);
+                opacity = 1.0 - (tt * 0.82);
+                scale = 1.0 - (tt * 0.18);
+              } else {
+                opacity = 0.08;
+                scale = 0.82;
+              }
+              obj.element.style.opacity = opacity;
+              obj.scale.setScalar(scale * 0.009);
+            });
+          }
+        }
+
+        renderer.render(scene, camera);
+        css3DRenderer.render(css3DScene, camera);
+      }
+
+      function startLoop() {
+        if (loopRunning || document.hidden) return;
+        loopRunning = true;
+        tick();
+      }
+
+      function stopLoop() {
+        loopRunning = false;
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+
+      window.addEventListener('resize', onResize);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopLoop();
+        else startLoop();
+      });
+      window.addEventListener('beforeunload', () => {
+        stopLoop();
+        if (css3DRenderer.domElement.parentNode) {
+          css3DRenderer.domElement.parentNode.removeChild(css3DRenderer.domElement);
+        }
+      });
+
+      syncRendererSize();
+      updateCameraTargetFromScroll();
+      scheduleNextGlitch();
+      startLoop();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var cards = document.querySelectorAll('.snippet-card');
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var index = Array.prototype.indexOf.call(cards, el);
+          el.style.transitionDelay = (index * 80) + 'ms';
+          el.classList.add('visible');
+          io.unobserve(el);
+        });
+      }, { threshold: 0.12 });
+      cards.forEach(function (card) {
+        io.observe(card);
+      });
+    })();
+  </script>
+
+  <script>
+    // ============================================================
+    // SCROLL HIJACK ENGINE — drives window.BSAPP.scrollProgress,
+    // which the Three.js camera spline samples in tick().
+    // Merge with any pre-existing BSAPP (e.g. cameraSpline set above)
+    // so we don't clobber it.
+    // ============================================================
+    window.BSAPP = Object.assign({
+      scrollProgress: 0.0,
+      scrollVelocity: 0.0,
+      scrollActive: false,
+      touchStartY: 0,
+      lastTouchY: 0,
+      navHidden: false,
+      milestones: { 50: false }
+    }, window.BSAPP || {});
+    if (Number.isNaN(window.BSAPP.scrollProgress)) window.BSAPP.scrollProgress = 0;
+    if (Number.isNaN(window.BSAPP.scrollVelocity)) window.BSAPP.scrollVelocity = 0;
+
+      window.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY) * Math.min(Math.abs(e.deltaY), 100);
+      window.BSAPP.scrollVelocity += delta * 0.000038;
+      if (!window.BSAPP.scrollActive) {
+        window.BSAPP.scrollActive = true;
+        document.dispatchEvent(new Event('bs:firstscroll'));
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchstart', (e) => {
+      window.BSAPP.touchStartY = e.touches[0].clientY;
+      window.BSAPP.lastTouchY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      const delta = window.BSAPP.lastTouchY - e.touches[0].clientY;
+      window.BSAPP.scrollVelocity += delta * 0.000095;
+      window.BSAPP.lastTouchY = e.touches[0].clientY;
+      if (!window.BSAPP.scrollActive) {
+        window.BSAPP.scrollActive = true;
+        document.dispatchEvent(new Event('bs:firstscroll'));
+      }
+    }, { passive: true });
+
+    window.addEventListener('keydown', (e) => {
+      const map = {
+        ArrowDown: 0.0032, ArrowUp: -0.0032,
+        PageDown: 0.017, PageUp: -0.017,
+        Space: 0.009
+      };
+      if (map[e.key] !== undefined) {
+        e.preventDefault();
+        window.BSAPP.scrollVelocity += map[e.key];
+        if (!window.BSAPP.scrollActive && map[e.key] > 0) {
+          window.BSAPP.scrollActive = true;
+          document.dispatchEvent(new Event('bs:firstscroll'));
+        }
+      }
+    });
   </script>
 
 </body>
