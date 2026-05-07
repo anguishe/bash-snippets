@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav and footer links to root-relative destinations; changed homepage snippet CTAs to Browse All Snippets; added Browse All Tools CTA; updated DigitalOcean affiliate link to include refcode; remapped unpublished guide/footer hrefs to existing pages. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,10 +8,11 @@
   <!-- ============================================================
     PAGE TITLE & META — Update if you change the site focus
     ============================================================ -->
-  <title>Bash Snippets – Real Bash Script Examples, Explained Simply</title>
-  <meta name="description" content="I got tired of Googling the same bash commands over and over, so I built this. Copy-paste bash scripts with plain-English explanations. No fluff, just working code." />
+  <title>Bash Script Examples and Tools Hub – BashSnippets.xyz</title>
+  <meta name="description" content="Browse free bash script examples for backups, cron, monitoring, grep, chmod, and Linux automation. Copy commands, learn patterns, and run scripts today." />
   <meta name="keywords" content="bash script examples, bash for beginners, linux shell scripts, bash cheat sheet, bash automation scripts, linux command examples, bash scripting tutorial, cron job examples, bash one liners" />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
 
   <!-- ============================================================
     CANONICAL URL — Always points to your custom domain.
@@ -76,23 +78,18 @@ crossorigin="anonymous"></script>
     Update "name" field below if you ever rename the site.
     ============================================================ -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Bash Snippets",
-    "url": "https://bashsnippets.xyz/",
-    "description": "Free bash script examples and tutorials for Linux beginners, written by a real person who still looks things up",
-    "author": {
-      "@type": "Person",
-      "@id": "https://bashsnippets.xyz/#author",
-      "name": "BashSnippets"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://bashsnippets.xyz/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "BashSnippets",
+  "url": "https://bashsnippets.xyz",
+  "description": "Free bash script library for Linux users, sysadmins, and developers.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://bashsnippets.xyz/snippets/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
   }
+}
   </script>
 
   <!-- ============================================================
@@ -229,6 +226,10 @@ crossorigin="anonymous"></script>
     }
   }
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -915,6 +916,26 @@ crossorigin="anonymous"></script>
     }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -926,10 +947,10 @@ crossorigin="anonymous"></script>
   <nav id="site-nav">
     <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
     <ul class="nav-links">
-      <li><a href="#snippets">Snippets</a></li>
-      <li><a href="#builder">Builder</a></li>
-      <li><a href="#resources">Resources</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="/snippets/">Snippets</a></li>
+      <li><a href="/#builder">Builder</a></li>
+      <li><a href="/#resources">Resources</a></li>
+      <li><a href="/#faq">FAQ</a></li>
       <li><a href="/tools/">Tools</a></li>
       <li><a href="/about.html">About</a></li>
       <li><a href="/contact.html">Contact</a></li>
@@ -937,10 +958,10 @@ crossorigin="anonymous"></script>
     <button class="nav-mobile-menu" id="nav-toggle" aria-label="Open menu">☰</button>
   </nav>
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="#snippets">Snippets</a>
-    <a href="#builder">Builder</a>
-    <a href="#resources">Resources</a>
-    <a href="#faq">FAQ</a>
+    <a href="/snippets/">Snippets</a>
+    <a href="/#builder">Builder</a>
+    <a href="/#resources">Resources</a>
+    <a href="/#faq">FAQ</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -956,8 +977,8 @@ crossorigin="anonymous"></script>
     <h1>Stop Googling the<br><em>Same <span class="hero-glow">Bash</span> Commands</em></h1>
     <p>I got tired of re-searching the same bash one-liners every time I sat down at a terminal. So I started collecting them. This is that collection — real scripts, explained like a human wrote them.</p>
     <div class="hero-cta">
-      <a class="btn-primary" href="#snippets">Browse Snippets</a>
-      <a class="btn-secondary" href="#builder">Try the Builder</a>
+      <a class="btn-primary" href="/snippets/">Browse All Snippets</a>
+      <a class="btn-secondary" href="/#builder">Try the Builder</a>
     </div>
   </div>
 
@@ -1315,7 +1336,8 @@ crossorigin="anonymous"></script>
         <div style="font-family:var(--heading-font);font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">More scripts in the library →</div>
         <div style="font-size:13px;color:var(--muted);">Check if your website is up · Bash error handling · Create dated folders · and more</div>
       </div>
-      <a href="/snippets/" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Scripts →</a>
+      <a href="/snippets/" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Snippets</a>
+      <a href="/tools/" style="background:var(--blue);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Tools</a>
     </div>
   </section>
 
@@ -1426,7 +1448,7 @@ crossorigin="anonymous"></script>
         <p>The fastest way to get good at bash is having a real Linux server to experiment on. DigitalOcean gives new users $200 in free credit for 60 days. Plenty of time to run every script on this site. <em style="font-size:11px; color:#6e7681;">(Affiliate link — we earn a small commission if you sign up)</em></p>
       </div>
       <!-- REPLACE THIS HREF with your DigitalOcean referral link -->
-      <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
+      <a class="btn-affiliate" href="https://www.digitalocean.com/?refcode=7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
     </div>
 
     <!-- ============================================================
@@ -1498,12 +1520,12 @@ crossorigin="anonymous"></script>
        hurt SEO. Add cards one at a time as pages go live.
 
        Pages to build (in priority order):
-         1. /cron-jobs.html        ← build first
-         2. /bash-one-liners.html
-         3. /bash-cheatsheet.html
-         4. /bash-if-else.html
-         5. /bash-loops.html
-         6. /bash-functions.html
+         1. /tools/cron-job-builder.html        ← build first
+         2. /snippets/
+         3. /snippets/
+         4. /snippets/
+         5. /snippets/
+         6. /snippets/
        ============================================================ -->
   <!--
   <section id="guides">
@@ -1518,42 +1540,42 @@ crossorigin="anonymous"></script>
         <p class="resource-card-label">// guide</p>
         <h3>Cron Jobs — Complete Guide</h3>
         <p>10 real cron examples. Cron syntax explained in plain English. Common mistakes and how to fix them.</p>
-        <a class="resource-link" href="/cron-jobs.html">Read the guide →</a>
+        <a class="resource-link" href="/tools/cron-job-builder.html">Read the guide →</a>
       </div>
 
       <div class="resource-card">
         <p class="resource-card-label">// guide</p>
         <h3>50 Bash One-Liners</h3>
         <p>The bash one-liners worth bookmarking — file ops, text processing, system monitoring, network, and git.</p>
-        <a class="resource-link" href="/bash-one-liners.html">Read the guide →</a>
+        <a class="resource-link" href="/snippets/">Read the guide →</a>
       </div>
 
       <div class="resource-card">
         <p class="resource-card-label">// reference</p>
         <h3>Bash Cheat Sheet</h3>
         <p>Every bash syntax you actually use — variables, loops, conditionals, functions, and special variables.</p>
-        <a class="resource-link" href="/bash-cheatsheet.html">Read the guide →</a>
+        <a class="resource-link" href="/snippets/">Read the guide →</a>
       </div>
 
       <div class="resource-card">
         <p class="resource-card-label">// guide</p>
         <h3>Bash If/Else — Full Examples</h3>
         <p>10 if/else examples from basic to nested. String and number comparison, file existence checks.</p>
-        <a class="resource-link" href="/bash-if-else.html">Read the guide →</a>
+        <a class="resource-link" href="/snippets/">Read the guide →</a>
       </div>
 
       <div class="resource-card">
         <p class="resource-card-label">// guide</p>
         <h3>Bash Loops — For, While, Until</h3>
         <p>Every type of bash loop with real examples. Loop through files, arrays, counters, and more.</p>
-        <a class="resource-link" href="/bash-loops.html">Read the guide →</a>
+        <a class="resource-link" href="/snippets/">Read the guide →</a>
       </div>
 
       <div class="resource-card">
         <p class="resource-card-label">// guide</p>
         <h3>Bash Functions</h3>
         <p>How to write reusable bash functions. Arguments, return values, local variables, and real-world examples.</p>
-        <a class="resource-link" href="/bash-functions.html">Read the guide →</a>
+        <a class="resource-link" href="/snippets/">Read the guide →</a>
       </div>
 
     </div>
@@ -1728,7 +1750,7 @@ crossorigin="anonymous"></script>
         <div style="font-family:var(--heading-font);font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">More scripts in the library →</div>
         <div style="font-size:13px;color:var(--muted);">Check if your website is up · Bash error handling · Create dated folders · and more</div>
       </div>
-      <a href="/snippets/" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Scripts →</a>
+      <a href="/snippets/" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:13px;padding:10px 20px;border-radius:var(--radius);text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Browse All Snippets</a>
     </div>
 
   </section>
@@ -1740,12 +1762,12 @@ crossorigin="anonymous"></script>
        ============================================================ -->
   <footer>
         <div class="footer-links">
-      <a href="#snippets">Snippets</a>
-      <a href="#builder">Builder</a>
-      <a href="#resources">Resources</a>
-      <a href="#faq">FAQ</a>
+      <a href="/snippets/">Snippets</a>
+      <a href="/#builder">Builder</a>
+      <a href="/#resources">Resources</a>
+      <a href="/#faq">FAQ</a>
       <a href="/snippets/">All Scripts</a>
-      <a href="/bash-scripts/">Script Library on GitHub →</a>
+      <a href="/snippets/">Script Library on GitHub →</a>
       <a href="/snippets/automated-file-backup.html">File Backup</a>
       <a href="/snippets/disk-space-warning.html">Disk Warning</a>
       <a href="/snippets/delete-old-log-files.html">Log Cleanup</a>
@@ -1758,9 +1780,9 @@ crossorigin="anonymous"></script>
       <a href="/privacy.html">Privacy Policy</a>
 
       <!-- Add cluster page links here as they go live:
-      <a href="/cron-jobs.html">Cron Jobs</a>
-      <a href="/bash-one-liners.html">One-Liners</a>
-      <a href="/bash-cheatsheet.html">Cheat Sheet</a>
+      <a href="/tools/cron-job-builder.html">Cron Jobs</a>
+      <a href="/snippets/">One-Liners</a>
+      <a href="/snippets/">Cheat Sheet</a>
       -->
     </div>
     <p>Built by a Linux user, for Linux users. All scripts tested on Ubuntu 22.04 LTS and macOS Ventura.</p>

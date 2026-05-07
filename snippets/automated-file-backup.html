@@ -1,18 +1,22 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, related-card, footer, and affiliate links; added Explore More Tools CTA above Related Snippets; added required Back to All Snippets link. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Automated File Backup Script – Bash Snippets</title>
-  <meta name="description" content="A beginner bash script that automatically backs up any folder with a timestamp. Copy-paste ready. Works on Linux, macOS, and any cron schedule." />
+  <title>Automated File Backup Bash Script – BashSnippets.xyz</title>
+  <meta name="description" content="Copy an automated file backup bash script for Linux or macOS folders with timestamps, rsync options, and cron scheduling. Build safer backups today." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/automated-file-backup.html" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Automated File Backup Script – Bash Snippets" />
   <meta property="og:description" content="Copy-paste bash script that backs up any folder with a datestamp. Beginner friendly. Cron compatible." />
   <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="automated file backup bash script" />
   <meta property="og:url" content="https://bashsnippets.xyz/snippets/automated-file-backup.html" />
   <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -146,6 +150,10 @@
     }
   }
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -360,13 +368,60 @@
       .affiliate-box { flex-direction: column; align-items: flex-start; }
     }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Automated File Backup Script",
+      "item": "https://bashsnippets.xyz/snippets/automated-file-backup.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Automated File Backup Bash Script \u2013 BashSnippets.xyz",
+  "description": "Copy an automated file backup bash script for Linux or macOS folders with timestamps, rsync options, and cron scheduling. Build safer backups today.",
+  "url": "https://bashsnippets.xyz/snippets/automated-file-backup.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
   <ul class="nav-links">
-    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/snippets/">Snippets</a></li>
     <li><a href="/#builder">Builder</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/tools/">Tools</a></li>
@@ -378,8 +433,8 @@
 </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -389,8 +444,8 @@
 <main>
 
   <div class="breadcrumb">
-    <a href="/">Home</a><span>›</span>
-    <a href="/#snippets">Snippets</a><span>›</span>
+    <a href="/">BashSnippets</a><span>›</span>
+    <a href="/snippets/">Snippets</a><span>›</span>
     Automated File Backup
   </div>
 
@@ -588,7 +643,7 @@
       <strong>Run your backup scripts in the cloud</strong>
       DigitalOcean droplets start at $4/month. Spin one up to run your bash scripts 24/7 — includes $200 free credit for new accounts.
     </div>
-    <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
+    <a class="btn-affiliate" href="https://www.digitalocean.com/?refcode=7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
   </div>
   <a href="https://www.digitalocean.com/?refcode=7a196437764c&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" alt="DigitalOcean Referral Badge" /></a>
 
@@ -642,6 +697,19 @@
     <a href="/tools/bash-boilerplate-generator.html" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:12px;padding:9px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Try the Generator →</a>
   </div>
 
+  <div class="explore-tools-cta" style="border:1px solid var(--green);background:var(--green-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+    <p style="color:var(--green);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+      ⚙️ Free Tools
+    </p>
+    <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+      Use our interactive tools to build bash scripts, look up exit codes, and
+      generate cron jobs — no signup needed.
+    </p>
+    <a href="/tools/" style="display:inline-block;background:var(--green);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+      Browse All Tools →
+    </a>
+  </div>
+
   <h2>Related Snippets</h2>
   <div class="related-grid">
     <a class="related-card" href="/snippets/disk-space-warning.html">
@@ -652,16 +720,24 @@
       <div class="related-card-title">Delete Old Log Files</div>
       <div class="related-card-tag">intermediate · automation</div>
     </a>
-    <a class="related-card" href="/#snippets">
+    <a class="related-card" href="/snippets/">
       <div class="related-card-title">← All Snippets</div>
       <div class="related-card-tag">Browse the full library</div>
     </a>
   </div>
 
 </main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: backup.sh
+License: MIT
+Topic: Automated file backup in Bash
+Usage: This bash script backs up a folder to a timestamped destination and can be scheduled with cron.
+URL: https://bashsnippets.xyz/snippets/automated-file-backup.html
+</div>
 
 <footer>
-  <a href="/">← Back to Bash Snippets</a>
+  <a href="/snippets/">← Back to All Snippets</a>
   <a href="/tools/">Tools</a>
   <a href="/about.html">About</a>
   <a href="/contact.html">Contact</a>

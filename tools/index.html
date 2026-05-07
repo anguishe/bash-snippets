@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, footer, and affiliate links; added Explore More Snippets CTA. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,9 +8,10 @@
   <!-- ============================================================
     PAGE TITLE & META
     ============================================================ -->
-  <title>Free Bash Tools – BashSnippets.xyz</title>
-  <meta name="description" content="Free interactive tools for Linux users, developers, and sysadmins. No signup. No limits." />
+  <title>Free Bash Tools for Linux Scripts – BashSnippets.xyz</title>
+  <meta name="description" content="Explore free bash tools for boilerplates, chmod permissions, cron jobs, and exit codes. Build commands faster and copy safer Linux script helpers." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
 
   <!-- ============================================================
     CANONICAL URL
@@ -67,6 +69,10 @@ crossorigin="anonymous"></script>
     FONTS — Loaded from Google Fonts CDN.
     Syne = headings, IBM Plex Mono = body/code
     ============================================================ -->
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
@@ -286,6 +292,20 @@ crossorigin="anonymous"></script>
     }
     .tool-card-btn:hover { text-decoration: none; filter: brightness(1.05); }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "BashSnippets",
+  "url": "https://bashsnippets.xyz",
+  "description": "Free bash script library for Linux users, sysadmins, and developers.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://bashsnippets.xyz/snippets/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+  </script>
 </head>
 <body>
 
@@ -296,7 +316,7 @@ crossorigin="anonymous"></script>
     <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
 
     <ul class="nav-links">
-      <li><a href="/#snippets">Snippets</a></li>
+      <li><a href="/snippets/">Snippets</a></li>
       <li><a href="/#builder">Builder</a></li>
       <li><a href="/#resources">Resources</a></li>
       <li><a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a></li>
@@ -308,8 +328,8 @@ crossorigin="anonymous"></script>
   </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -355,7 +375,7 @@ crossorigin="anonymous"></script>
 
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px;max-width:400px;">
   <div style="font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Free Tool</div>
-  <h3 style="font-family:var(--heading-font);font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Bash Exit Code Lookup</h3>
+  <h2 style="font-family:var(--heading-font);font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Bash Exit Code Lookup</h2>
   <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px;">Look up exit codes 0-255. Get the meaning, causes, and a copy-paste error handler in if/else, case, or inline style.</p>
   <div style="display:flex;gap:6px;margin-bottom:16px;">
     <span style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:var(--mono-font);font-size:11px;padding:4px 8px;border-radius:4px;">interactive</span>
@@ -366,7 +386,7 @@ crossorigin="anonymous"></script>
 
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:24px;max-width:400px;">
   <div style="font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Free Tool</div>
-  <h3 style="font-family:var(--heading-font);font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Cron Job Builder</h3>
+  <h2 style="font-family:var(--heading-font);font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Cron Job Builder</h2>
   <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:12px;">Build cron expressions visually and wrap them in production-safe bash with logging, PATH, and lock files. See the next 10 run times.</p>
   <div style="display:flex;gap:6px;margin-bottom:16px;">
     <span style="background:var(--bg3);border:1px solid var(--border);color:var(--muted);font-family:var(--mono-font);font-size:11px;padding:4px 8px;border-radius:4px;">interactive</span>
@@ -423,6 +443,19 @@ crossorigin="anonymous"></script>
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5399156622542127"
         data-ad-slot="AUTO" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="explore-snippets-cta" style="border:1px solid var(--blue);background:var(--blue-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+      <p style="color:var(--blue);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+        📋 Copy-Paste Snippets
+      </p>
+      <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+        All snippets are free, beginner-friendly, and production-tested.
+        Find a script for your exact use case.
+      </p>
+      <a href="/snippets/" style="display:inline-block;background:var(--blue);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+        Browse All Snippets →
+      </a>
     </div>
 
     <footer style="text-align:center;padding:32px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);">

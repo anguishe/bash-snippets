@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, footer, and affiliate links; fixed broken related snippet and footer links; added Explore More Snippets CTA. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,9 +8,10 @@
   <!-- ============================================================
     PAGE TITLE & META
     ============================================================ -->
-  <title>Chmod Permissions Builder – Visual Octal Calculator | BashSnippets</title>
-  <meta name="description" content="Build Linux file permissions visually. Click rwx checkboxes, see octal numbers live. Generate chmod commands instantly. No more Googling permission codes." />
+  <title>Chmod Permissions Builder for Linux – BashSnippets.xyz</title>
+  <meta name="description" content="Build Linux chmod permissions visually with rwx checkboxes, octal values, and ready commands. Generate safer file permission commands instantly now." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
 
   <!-- ============================================================
     CANONICAL URL
@@ -53,30 +55,30 @@
     STRUCTURED DATA (JSON-LD) — BreadcrumbList
     ============================================================ -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "https://bashsnippets.xyz"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Tools",
-        "item": "https://bashsnippets.xyz/tools/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Chmod Permissions Builder",
-        "item": "https://bashsnippets.xyz/tools/chmod-permissions-builder.html"
-      }
-    ]
-  }
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tools",
+      "item": "https://bashsnippets.xyz/tools/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Chmod Permissions Builder",
+      "item": "https://bashsnippets.xyz/tools/chmod-permissions-builder.html"
+    }
+  ]
+}
   </script>
 
   <!-- ============================================================
@@ -104,6 +106,10 @@ crossorigin="anonymous"></script>
     FONTS - Loaded from Google Fonts CDN.
     Syne = headings, IBM Plex Mono = body/code
     ============================================================ -->
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
@@ -627,6 +633,71 @@ crossorigin="anonymous"></script>
       }
     }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does chmod 755 mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "chmod 755 gives the owner read, write, and execute permissions, while group and others get read and execute permissions."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does chmod 644 mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "chmod 644 gives the owner read and write permissions, while group and others can only read the file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate chmod permissions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Add read as 4, write as 2, and execute as 1 for each permission group, then combine the three numbers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can this chmod builder generate symbolic permissions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The tool shows octal and symbolic chmod formats so you can copy the style you prefer."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Use the Chmod Permissions Builder",
+  "description": "Build Linux chmod permissions visually with rwx checkboxes, octal values, and ready commands. Generate safer file permission commands instantly now.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Select permissions",
+      "text": "Click read, write, and execute checkboxes for owner, group, and others."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Review chmod output",
+      "text": "Check the generated octal and symbolic permission values."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Copy the command",
+      "text": "Copy the chmod command and apply it to the intended file or directory."
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -637,7 +708,7 @@ crossorigin="anonymous"></script>
     <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
 
     <ul class="nav-links">
-      <li><a href="/#snippets">Snippets</a></li>
+      <li><a href="/snippets/">Snippets</a></li>
       <li><a href="/#builder">Builder</a></li>
       <li><a href="/#resources">Resources</a></li>
       <li><a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a></li>
@@ -649,8 +720,8 @@ crossorigin="anonymous"></script>
   </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -812,6 +883,19 @@ crossorigin="anonymous"></script>
 
     </div>
 
+    <div class="explore-snippets-cta" style="border:1px solid var(--blue);background:var(--blue-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+      <p style="color:var(--blue);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+        📋 Copy-Paste Snippets
+      </p>
+      <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+        All snippets are free, beginner-friendly, and production-tested.
+        Find a script for your exact use case.
+      </p>
+      <a href="/snippets/" style="display:inline-block;background:var(--blue);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+        Browse All Snippets →
+      </a>
+    </div>
+
     <!-- ============================================================
          RELATED SNIPPETS
          ============================================================ -->
@@ -825,9 +909,9 @@ crossorigin="anonymous"></script>
           <p class="snippet-link-desc">chmod best practices, recursive permission changes, security hardening</p>
         </a>
 
-        <a href="/snippets/find-files-by-permission.html" class="snippet-link">
-          <div class="snippet-link-title blue">Find Files By Permission</div>
-          <p class="snippet-link-desc">find command to search for files with specific permissions (777, 666, etc)</p>
+        <a href="/snippets/search-files-for-text-grep.html" class="snippet-link">
+          <div class="snippet-link-title blue">Search Files for Text</div>
+          <p class="snippet-link-desc">grep command patterns for searching file contents quickly</p>
         </a>
 
         <a href="/snippets/automated-file-backup.html" class="snippet-link">
@@ -847,7 +931,7 @@ crossorigin="anonymous"></script>
         <div style="font:700 20px var(--heading-font);color:var(--blue);">Need a Linux Server?</div>
       </div>
       <p style="font:400 15px var(--mono-font);color:var(--text);margin-bottom:16px;line-height:1.6;">Practice these chmod commands on a real Linux server. DigitalOcean droplets start at $4/month.</p>
-      <a href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored" style="display:inline-block;background:var(--blue);color:var(--bg);padding:12px 32px;border-radius:6px;font:700 14px var(--heading-font);text-decoration:none;transition:opacity 0.2s ease, transform 0.2s ease;">
+      <a href="https://www.digitalocean.com/?refcode=7a196437764c" target="_blank" rel="noopener sponsored" style="display:inline-block;background:var(--blue);color:var(--bg);padding:12px 32px;border-radius:6px;font:700 14px var(--heading-font);text-decoration:none;transition:opacity 0.2s ease, transform 0.2s ease;">
         Get $200 Free Credit →
       </a>
     </div>
@@ -859,12 +943,12 @@ crossorigin="anonymous"></script>
        ============================================================ -->
   <footer>
     <div class="footer-links">
-      <a href="/#snippets">Snippets</a>
+      <a href="/snippets/">Snippets</a>
       <a href="/#builder">Builder</a>
       <a href="/#resources">Resources</a>
       <a href="/#faq">FAQ</a>
       <a href="/snippets/">All Scripts</a>
-      <a href="/bash-scripts/">Script Library on GitHub →</a>
+      <a href="/snippets/">Script Library on GitHub →</a>
       <a href="/snippets/automated-file-backup.html">File Backup</a>
       <a href="/snippets/disk-space-warning.html">Disk Warning</a>
       <a href="/snippets/delete-old-log-files.html">Log Cleanup</a>

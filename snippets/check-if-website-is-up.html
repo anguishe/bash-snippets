@@ -1,17 +1,21 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, related-card, footer, and affiliate links; added Explore More Tools CTA above Related Snippets; added required Back to All Snippets link. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Check If Website Is Up – Bash Uptime Script | Bash Snippets</title>
-  <meta name="description" content="<code>curl -o /dev/null -s -w '%{http_code}' https://yoursite.com</code> returns one number — the HTTP status code. 200 means your site is up. Anything else means investigate. Wrap it in a five-line script, schedule it with cron every five minutes, and you will know before your users do." />
+  <title>Check Website Uptime Bash Script – BashSnippets.xyz</title>
+  <meta name="description" content="Copy a check website uptime bash script using curl status codes, cron, logs, and email alerts. Monitor sites and catch outages before users do." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/check-if-website-is-up.html" />
 
   <meta property="og:title" content="Check If Website Is Up – Bash Uptime Script | Bash Snippets" />
   <meta property="og:description" content="Bash script that pings your site every 5 minutes and alerts you the second it goes down. Beginner friendly. Cron ready." />
   <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="check website uptime bash script" />
   <meta property="og:url" content="https://bashsnippets.xyz/snippets/check-if-website-is-up.html" />
   <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -123,6 +127,10 @@
     }
   }
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -245,13 +253,60 @@
     footer a:hover { color:var(--text); text-decoration:none; }
     @media(max-width:640px) { .nav-links { display:none; } .nav-mobile-menu { display:block; } .affiliate-box { flex-direction:column; align-items:flex-start; } }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Check If Your Website Is Up",
+      "item": "https://bashsnippets.xyz/snippets/check-if-website-is-up.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Check Website Uptime Bash Script \u2013 BashSnippets.xyz",
+  "description": "Copy a check website uptime bash script using curl status codes, cron, logs, and email alerts. Monitor sites and catch outages before users do.",
+  "url": "https://bashsnippets.xyz/snippets/check-if-website-is-up.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
   <ul class="nav-links">
-    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/snippets/">Snippets</a></li>
     <li><a href="/#builder">Builder</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/tools/">Tools</a></li>
@@ -264,8 +319,8 @@
 </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -274,7 +329,7 @@
 
 <main>
   <div class="breadcrumb">
-    <a href="/">Home</a><span class="breadcrumb-sep">›</span>
+    <a href="/">BashSnippets</a><span class="breadcrumb-sep">›</span>
     <a href="/snippets/">Snippets</a><span class="breadcrumb-sep">›</span>
     Check If Website Is Up
   </div>
@@ -513,6 +568,19 @@
     <a href="/tools/bash-boilerplate-generator.html" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:12px;padding:9px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Try the Generator →</a>
   </div>
 
+  <div class="explore-tools-cta" style="border:1px solid var(--green);background:var(--green-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+    <p style="color:var(--green);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+      ⚙️ Free Tools
+    </p>
+    <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+      Use our interactive tools to build bash scripts, look up exit codes, and
+      generate cron jobs — no signup needed.
+    </p>
+    <a href="/tools/" style="display:inline-block;background:var(--green);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+      Browse All Tools →
+    </a>
+  </div>
+
   <h2>Related Snippets</h2>
   <div class="related-grid">
     <a class="related-card" href="/snippets/disk-space-warning.html">
@@ -533,10 +601,18 @@
     </a>
   </div>
 </main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: uptimecheck.sh
+License: MIT
+Topic: Website uptime monitoring with Bash
+Usage: This bash script checks a website HTTP status code and alerts when the site is down.
+URL: https://bashsnippets.xyz/snippets/check-if-website-is-up.html
+</div>
 
 <footer>
-  <a href="/">Home</a>
-  <a href="/snippets/">All Snippets</a>
+  <a href="/">BashSnippets</a>
+  <a href="/snippets/">← Back to All Snippets</a>
   <a href="/tools/">Tools</a>
   <a href="/about.html">About</a>
   <a href="/contact.html">Contact</a>

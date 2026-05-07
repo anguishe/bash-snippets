@@ -1,12 +1,14 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized Snippets nav to /snippets/ and verified snippet card, footer, and affiliate destinations. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>All Bash Script Examples – Free Copy-Paste Scripts | Bash Snippets</title>
-  <meta name="description" content="Browse all free bash scripts on BashSnippets.xyz. Automation, monitoring, file management, server tools and more. Copy-paste ready. No signup." />
+  <title>Free Bash Script Examples Library – BashSnippets.xyz</title>
+  <meta name="description" content="Browse free bash script examples for backups, monitoring, grep, chmod, cron, and system tasks. Copy working Linux snippets and learn each command." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/" />
 
   <meta property="og:title" content="All Bash Scripts – Free Library | Bash Snippets" />
@@ -50,18 +52,23 @@
 
     <!-- Schema: WebSite -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "BashSnippets",
-    "url": "https://bashsnippets.xyz",
-    "description": "Free copy-paste bash scripts for Linux users and developers. Plain-English explanations. New scripts weekly.",
-    "author": {
-      "@type": "Person",
-      "@id": "https://bashsnippets.xyz/#author"
-    }
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "BashSnippets",
+  "url": "https://bashsnippets.xyz",
+  "description": "Free bash script library for Linux users, sysadmins, and developers.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://bashsnippets.xyz/snippets/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
   }
+}
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -143,13 +150,33 @@
     footer a:hover { color:var(--text); text-decoration:none; }
     @media(max-width:640px) { .nav-links { display:none; } .nav-mobile-menu { display:block; } }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
   <ul class="nav-links">
-    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/snippets/">Snippets</a></li>
     <li><a href="/#builder">Builder</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/#faq">FAQ</a></li>
@@ -161,8 +188,8 @@
 </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -349,7 +376,7 @@
 </div>
 
 <footer>
-  <a href="/">Home</a>
+  <a href="/">BashSnippets</a>
   <a href="/snippets/">All Snippets</a>
   <a href="/about.html">About</a>
   <a href="/contact.html">Contact</a>

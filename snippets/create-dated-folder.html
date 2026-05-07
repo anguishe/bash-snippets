@@ -1,17 +1,21 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, related-card, footer, and affiliate links; added Explore More Tools CTA above Related Snippets; added required Back to All Snippets link. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Create a Dated Folder with Bash – Timestamp Directories | Bash Snippets</title>
-  <meta name="description" content="A bash one-liner that creates a folder with today's date in the name. Never lose track of project folders again. Works on Linux and macOS." />
+  <title>Create Dated Folder Bash Script – BashSnippets.xyz</title>
+  <meta name="description" content="Copy a create dated folder bash script using date formats, timestamps, and reusable names. Organize backups, project folders, and daily work faster." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/create-dated-folder.html" />
 
   <meta property="og:title" content="Create a Dated Folder with Bash | Bash Snippets" />
   <meta property="og:description" content="One bash command that creates a timestamped folder. Beginner friendly. Works on Linux and macOS." />
   <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="create dated folder bash script" />
   <meta property="og:url" content="https://bashsnippets.xyz/snippets/create-dated-folder.html" />
   <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -19,38 +23,45 @@
   <meta property="og:image:alt" content="BashSnippets — copy-paste bash scripts for linux and devs" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://bashsnippets.xyz/og-image.png" />
-
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How do I create a folder with today's date in bash?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Run: mkdir \"$(date +%Y-%m-%d)_project\" — this creates a folder named something like 2026-05-03_project. The date command with +%Y-%m-%d formats the date as year-month-day, which sorts correctly in file managers."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "How do I add a timestamp to a folder name in Linux?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use command substitution: mkdir \"folder_$(date +%Y-%m-%d_%H-%M)\" — the $() syntax runs the date command and inserts its output directly into the folder name. This gives you both date and time in the name."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What date format is best for folder names?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Use ISO 8601 format: YYYY-MM-DD (year-month-day). This sorts correctly in every file manager because the year comes first. Formats like MM-DD-YYYY sort incorrectly by month instead of year."
-        }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I create a folder with today's date in bash?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Run: mkdir \"$(date +%Y-%m-%d)_project\" \u2014 this creates a folder named something like 2026-05-03_project. The date command with +%Y-%m-%d formats the date as year-month-day, which sorts correctly in file managers."
       }
-    ]
-  }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I add a timestamp to a folder name in Linux?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use command substitution: mkdir \"folder_$(date +%Y-%m-%d_%H-%M)\" \u2014 the $() syntax runs the date command and inserts its output directly into the folder name. This gives you both date and time in the name."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What date format is best for folder names?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use ISO 8601 format: YYYY-MM-DD (year-month-day). This sorts correctly in every file manager because the year comes first. Formats like MM-DD-YYYY sort incorrectly by month instead of year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this dated folder command in a backup script?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Dated folders are useful for backup scripts because each run can write to a unique timestamped directory."
+      }
+    }
+  ]
+}
   </script>
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -94,6 +105,10 @@
     }
   }
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -196,13 +211,85 @@
     footer a:hover { color:var(--text); text-decoration:none; }
     @media(max-width:640px) { .nav-links { display:none; } .nav-mobile-menu { display:block; } .affiliate-box { flex-direction:column; align-items:flex-start; } }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Create a Dated Folder with Bash",
+  "description": "Copy a create dated folder bash script using date formats, timestamps, and reusable names. Organize backups, project folders, and daily work faster.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose a date format",
+      "text": "Pick a date format such as YYYY-MM-DD for folders that sort cleanly."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Run mkdir with date",
+      "text": "Use command substitution so mkdir receives the current date in the folder name."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Customize the folder name",
+      "text": "Add a project name or timestamp after the date when you need more detail."
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Create a Dated Folder with Bash",
+      "item": "https://bashsnippets.xyz/snippets/create-dated-folder.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Create Dated Folder Bash Script \u2013 BashSnippets.xyz",
+  "description": "Copy a create dated folder bash script using date formats, timestamps, and reusable names. Organize backups, project folders, and daily work faster.",
+  "url": "https://bashsnippets.xyz/snippets/create-dated-folder.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
   <ul class="nav-links">
-    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/snippets/">Snippets</a></li>
     <li><a href="/#builder">Builder</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/tools/">Tools</a></li>
@@ -215,8 +302,8 @@
 </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -225,7 +312,7 @@
 
 <main>
   <div class="breadcrumb">
-    <a href="/">Home</a><span class="breadcrumb-sep">›</span>
+    <a href="/">BashSnippets</a><span class="breadcrumb-sep">›</span>
     <a href="/snippets/">Snippets</a><span class="breadcrumb-sep">›</span>
     Create Dated Folder
   </div>
@@ -406,6 +493,19 @@
     <a href="/tools/bash-boilerplate-generator.html" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:12px;padding:9px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Try the Generator →</a>
   </div>
 
+  <div class="explore-tools-cta" style="border:1px solid var(--green);background:var(--green-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+    <p style="color:var(--green);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+      ⚙️ Free Tools
+    </p>
+    <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+      Use our interactive tools to build bash scripts, look up exit codes, and
+      generate cron jobs — no signup needed.
+    </p>
+    <a href="/tools/" style="display:inline-block;background:var(--green);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+      Browse All Tools →
+    </a>
+  </div>
+
   <h2>Related Snippets</h2>
   <div class="related-grid">
     <a class="related-card" href="/snippets/automated-file-backup.html">
@@ -426,10 +526,18 @@
     </a>
   </div>
 </main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: dated-folder.sh
+License: MIT
+Topic: Creating dated folders in Bash
+Usage: This bash command creates folders with date or timestamp names for organized project and backup directories.
+URL: https://bashsnippets.xyz/snippets/create-dated-folder.html
+</div>
 
 <footer>
-  <a href="/">Home</a>
-  <a href="/snippets/">All Snippets</a>
+  <a href="/">BashSnippets</a>
+  <a href="/snippets/">← Back to All Snippets</a>
   <a href="/tools/">Tools</a>
   <a href="/about.html">About</a>
   <a href="/contact.html">Contact</a>

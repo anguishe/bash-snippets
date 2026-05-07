@@ -1,17 +1,21 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, related-card, footer, and affiliate links; added Explore More Tools CTA above Related Snippets; added required Back to All Snippets link. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Quick System Info Report Script – Bash Snippets</title>
-  <meta name="description" content="A bash script that prints a quick system snapshot — hostname, uptime, RAM, disk, and IP — in one command. Copy-paste ready. Alias it to 'syscheck' for instant access." />
+  <title>Quick System Info Report Script – BashSnippets.xyz</title>
+  <meta name="description" content="Copy a quick system info bash script for hostname, uptime, RAM, disk, IP address, aliases, and macOS variants. Run a server snapshot instantly." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/quick-system-info-report.html" />
 
   <meta property="og:title" content="Quick System Info Report Script – Bash Snippets" />
   <meta property="og:description" content="One bash command to see your hostname, uptime, RAM, disk usage, and IP. Perfect for servers and VPS. Beginner friendly." />
   <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="quick system info bash script" />
   <meta property="og:url" content="https://bashsnippets.xyz/snippets/quick-system-info-report.html" />
   <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -123,6 +127,10 @@
     }
   }
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -221,13 +229,60 @@
     footer a:hover { color:var(--text); text-decoration:none; }
     @media (max-width:640px) { .nav-links { display:none; } .affiliate-box { flex-direction:column; align-items:flex-start; } }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Quick System Info Report Script",
+      "item": "https://bashsnippets.xyz/snippets/quick-system-info-report.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Quick System Info Report Script \u2013 BashSnippets.xyz",
+  "description": "Copy a quick system info bash script for hostname, uptime, RAM, disk, IP address, aliases, and macOS variants. Run a server snapshot instantly.",
+  "url": "https://bashsnippets.xyz/snippets/quick-system-info-report.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
   <ul class="nav-links">
-    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/snippets/">Snippets</a></li>
     <li><a href="/#builder">Builder</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/tools/">Tools</a></li>
@@ -239,8 +294,8 @@
 </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -250,8 +305,8 @@
 <main>
 
   <div class="breadcrumb">
-    <a href="/">Home</a><span>›</span>
-    <a href="/#snippets">Snippets</a><span>›</span>
+    <a href="/">BashSnippets</a><span>›</span>
+    <a href="/snippets/">Snippets</a><span>›</span>
     Quick System Info Report
   </div>
 
@@ -417,7 +472,7 @@
       <strong>SSH into your own cloud server</strong>
       Run syscheck on a real VPS. DigitalOcean droplets from $4/month — new accounts get $200 free credit.
     </div>
-    <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
+    <a class="btn-affiliate" href="https://www.digitalocean.com/?refcode=7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
     <a href="https://www.digitalocean.com/?refcode=7a196437764c&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" alt="DigitalOcean Referral Badge" /></a>
 </div>
 
@@ -466,6 +521,19 @@
     <a href="/tools/bash-boilerplate-generator.html" style="background:var(--green);color:#0d1117;font-family:var(--mono-font);font-weight:600;font-size:12px;padding:9px 16px;border-radius:6px;text-decoration:none;white-space:nowrap;flex-shrink:0;">Try the Generator →</a>
   </div>
 
+  <div class="explore-tools-cta" style="border:1px solid var(--green);background:var(--green-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+    <p style="color:var(--green);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+      ⚙️ Free Tools
+    </p>
+    <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+      Use our interactive tools to build bash scripts, look up exit codes, and
+      generate cron jobs — no signup needed.
+    </p>
+    <a href="/tools/" style="display:inline-block;background:var(--green);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+      Browse All Tools →
+    </a>
+  </div>
+
   <h2>Related Snippets</h2>
   <div class="related-grid">
     <a class="related-card" href="/snippets/disk-space-warning.html">
@@ -476,16 +544,24 @@
       <div class="related-card-title">Delete Old Log Files</div>
       <div class="related-card-tag">intermediate · automation</div>
     </a>
-    <a class="related-card" href="/#snippets">
+    <a class="related-card" href="/snippets/">
       <div class="related-card-title">← All Snippets</div>
       <div class="related-card-tag">Browse the full library</div>
     </a>
   </div>
 
 </main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: syscheck.sh
+License: MIT
+Topic: Quick Linux system information reports
+Usage: This bash script prints hostname, uptime, memory, disk, and IP information in one terminal report.
+URL: https://bashsnippets.xyz/snippets/quick-system-info-report.html
+</div>
 
 <footer>
-  <a href="/">← Back to Bash Snippets</a>
+  <a href="/snippets/">← Back to All Snippets</a>
   <a href="/tools/">Tools</a>
   <a href="/about.html">About</a>
   <a href="/contact.html">Contact</a>

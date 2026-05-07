@@ -1,18 +1,22 @@
 <!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, related-card, footer, and affiliate links; added Explore More Tools CTA above Related Snippets; added required Back to All Snippets link. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Linux File Permissions &amp; chmod Guide – BashSnippets.xyz</title>
-  <meta name="description" content="Master Linux file permissions with chmod, chown, and find. Octal vs symbolic mode, 644/755 patterns, recursive changes, and a permission audit script. Copy-paste ready." />
+  <title>Linux File Permissions Bash Guide – BashSnippets.xyz</title>
+  <meta name="description" content="Use this Linux file permissions bash guide to audit chmod, chown, find, 644/755 patterns, and world-writable files. Copy safer commands today." />
   <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/file-permissions-security.html" />
 
   <!-- Open Graph -->
   <meta property="og:title" content="Linux File Permissions &amp; chmod Guide – BashSnippets.xyz" />
   <meta property="og:description" content="chmod, chown, find -perm — everything you need to lock down Linux permissions. Includes copy-paste audit script." />
   <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="linux file permissions bash guide" />
   <meta property="og:url" content="https://bashsnippets.xyz/snippets/file-permissions-security.html" />
   <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -150,6 +154,10 @@
     }
   }
   </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -292,13 +300,60 @@
       .affiliate-box { flex-direction: column; align-items: flex-start; }
     }
   </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Linux File Permissions & Security",
+      "item": "https://bashsnippets.xyz/snippets/file-permissions-security.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Linux File Permissions Bash Guide \u2013 BashSnippets.xyz",
+  "description": "Use this Linux file permissions bash guide to audit chmod, chown, find, 644/755 patterns, and world-writable files. Copy safer commands today.",
+  "url": "https://bashsnippets.xyz/snippets/file-permissions-security.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
 </head>
 <body>
 
 <nav>
   <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
   <ul class="nav-links">
-    <li><a href="/#snippets">Snippets</a></li>
+    <li><a href="/snippets/">Snippets</a></li>
     <li><a href="/#builder">Builder</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/tools/">Tools</a></li>
@@ -310,8 +365,8 @@
 </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
-    <a href="/">Home</a>
-    <a href="/#snippets">Snippets</a>
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
     <a href="/tools/">Tools</a>
     <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
@@ -322,7 +377,7 @@
 
   <div class="breadcrumb">
     <a href="/">BashSnippets</a><span>›</span>
-    <a href="/#snippets">Snippets</a><span>›</span>
+    <a href="/snippets/">Snippets</a><span>›</span>
     File Permissions &amp; Security
   </div>
 
@@ -552,6 +607,19 @@
   <h3>What permissions should SSH private keys have?</h3>
   <p>SSH private keys must be <code>chmod 600</code> (<code>rw-------</code>). If permissions are too open, SSH will refuse to use the key and show a warning: <code>WARNING: UNPROTECTED PRIVATE KEY FILE!</code></p>
 
+  <div class="explore-tools-cta" style="border:1px solid var(--green);background:var(--green-dim);border-radius:8px;padding:16px 20px;margin:24px 0;">
+    <p style="color:var(--green);font-family:var(--mono-font);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px;">
+      ⚙️ Free Tools
+    </p>
+    <p style="color:var(--text);font-size:14px;margin:0 0 12px;line-height:1.5;">
+      Use our interactive tools to build bash scripts, look up exit codes, and
+      generate cron jobs — no signup needed.
+    </p>
+    <a href="/tools/" style="display:inline-block;background:var(--green);color:#0d1117;font-family:var(--mono-font);font-size:13px;font-weight:600;padding:8px 16px;border-radius:6px;text-decoration:none;">
+      Browse All Tools →
+    </a>
+  </div>
+
   <h2>Related Snippets</h2>
   <div class="related-grid">
     <a class="related-card" href="/snippets/automated-file-backup.html">
@@ -573,9 +641,17 @@
   </div>
 
 </main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: permissions-audit.sh
+License: MIT
+Topic: Linux file permissions and chmod security
+Usage: This bash script audits Linux permissions and reports dangerous world-writable files.
+URL: https://bashsnippets.xyz/snippets/file-permissions-security.html
+</div>
 
 <footer>
-  <a href="/">← Back to Bash Snippets</a>
+  <a href="/snippets/">← Back to All Snippets</a>
   <a href="/tools/">Tools</a>
   <a href="/about.html">About</a>
   <a href="/contact.html">Contact</a>
