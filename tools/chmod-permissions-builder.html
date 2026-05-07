@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ============================================================
+    PAGE TITLE & META
+    ============================================================ -->
+  <title>Chmod Permissions Builder – Visual Octal Calculator | BashSnippets</title>
+  <meta name="description" content="Build Linux file permissions visually. Click rwx checkboxes, see octal numbers live. Generate chmod commands instantly. No more Googling permission codes." />
+  <meta name="author" content="BashSnippets" />
+
+  <!-- ============================================================
+    CANONICAL URL
+    ============================================================ -->
+  <link rel="canonical" href="https://bashsnippets.xyz/tools/chmod-permissions-builder.html" />
+
+  <!-- ============================================================
+    OPEN GRAPH
+    ============================================================ -->
+  <meta property="og:title" content="Chmod Permissions Builder – Visual Octal Calculator | BashSnippets" />
+  <meta property="og:description" content="Build Linux file permissions visually. Click rwx checkboxes, see octal numbers live. Generate chmod commands instantly. No more Googling permission codes." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bashsnippets.xyz/tools/chmod-permissions-builder.html" />
+
+  <!-- ============================================================
+    STRUCTURED DATA (JSON-LD) — WebApplication
+    ============================================================ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Chmod Permissions Builder",
+    "description": "Visual chmod calculator for Linux file permissions. Build permissions with checkboxes, see octal and symbolic notation instantly, generate chmod commands.",
+    "url": "https://bashsnippets.xyz/tools/chmod-permissions-builder.html",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "BashSnippets",
+      "url": "https://bashsnippets.xyz"
+    }
+  }
+  </script>
+
+  <!-- ============================================================
+    STRUCTURED DATA (JSON-LD) — BreadcrumbList
+    ============================================================ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://bashsnippets.xyz"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Tools",
+        "item": "https://bashsnippets.xyz/tools/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Chmod Permissions Builder",
+        "item": "https://bashsnippets.xyz/tools/chmod-permissions-builder.html"
+      }
+    ]
+  }
+  </script>
+
+  <!-- ============================================================
+    GOOGLE ANALYTICS (GA4)
+    ============================================================ -->
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6B01TGE8XS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-6B01TGE8XS');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127"
+crossorigin="anonymous"></script>
+
+  <!-- ============================================================
+    FAVICON
+    ============================================================ -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- ============================================================
+    FONTS - Loaded from Google Fonts CDN.
+    Syne = headings, IBM Plex Mono = body/code
+    ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       BASE RESET & CSS VARIABLES
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --bg3:         #1c2128;
+      --border:      #30363d;
+      --green:       #39d353;
+      --green-dim:   #1a4a2e;
+      --amber:       #e3b341;
+      --blue:        #58a6ff;
+      --blue-dim:    #0d2a4a;
+      --muted:       #8b949e;
+      --text:        #e6edf3;
+      --radius:      8px;
+      --mono-font:    'IBM Plex Mono', monospace;
+      --heading-font: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--mono-font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ============================================================
+       NAVIGATION (copied from index.html)
+       ============================================================ */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      background: rgba(13,17,23,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    nav.nav--hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      nav { transition: none; }
+    }
+
+    .nav-logo {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-links a.active { color: var(--green); }
+
+    /* ============================================================
+       MOBILE NAV (hamburger + drawer)
+       ============================================================ */
+    .nav-mobile-menu {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 18px;
+      padding: 4px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: var(--mono-font);
+      line-height: 1;
+    }
+    .nav-mobile-menu:hover { color: var(--text); border-color: var(--muted); }
+
+    .nav-mobile-drawer {
+      display: none;
+      flex-direction: column;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      gap: 4px;
+      position: sticky;
+      top: 53px;
+      z-index: 7;
+    }
+    .nav-mobile-drawer.open { display: flex; }
+    .nav-mobile-drawer a {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+    }
+    .nav-mobile-drawer a:last-child { border-bottom: none; }
+    .nav-mobile-drawer a:hover { color: var(--text); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-menu { display: block; }
+    }
+
+    /* ============================================================
+       MAIN LAYOUT
+       ============================================================ */
+    main {
+      max-width: none;
+      margin: 0;
+      padding: 40px 0 80px;
+    }
+
+    /* ============================================================
+       BREADCRUMB
+       ============================================================ */
+    .breadcrumb {
+      font-family: var(--mono-font);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .breadcrumb a {
+      color: var(--muted);
+    }
+    .breadcrumb a:hover {
+      color: var(--text);
+      text-decoration: none;
+    }
+    .breadcrumb-sep {
+      color: var(--border);
+    }
+
+    /* ============================================================
+       PAGE INTRO
+       ============================================================ */
+    .page-intro {
+      margin-bottom: 40px;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 24px;
+    }
+    .page-intro .intro-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+    .page-intro h1 {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+    .page-intro .intro-subtext {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       PERMISSION GRID
+       ============================================================ */
+    #permission-grid {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .grid-row {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .grid-row.header-row { margin-bottom: 24px; }
+
+    .label-col {
+      font: 600 15px var(--mono-font);
+      color: var(--muted);
+      align-self: center;
+    }
+
+    .header-col {
+      text-align: center;
+      font: 700 12px var(--mono-font);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      align-self: center;
+    }
+    .header-col.owner  { color: var(--green); }
+    .header-col.group  { color: var(--blue);  }
+    .header-col.others { color: var(--amber); }
+
+    .checkbox-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 56px;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .checkbox-cell input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      accent-color: var(--green);
+    }
+
+    .checkbox-cell:hover {
+      background: var(--bg3);
+      border-color: var(--green);
+    }
+    .checkbox-cell:has(input[type="checkbox"]:checked) {
+      border-color: var(--green);
+    }
+    .checkbox-cell:focus-within {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(57, 211, 83, 0.18);
+    }
+
+    @media (max-width: 599px) {
+      #permission-grid { padding: 0 16px; }
+      .grid-row {
+        grid-template-columns: 100px 1fr 1fr 1fr;
+        gap: 8px;
+      }
+      .label-col   { font-size: 13px; }
+      .header-col  { font-size: 11px; }
+      .checkbox-cell { height: 48px; }
+    }
+
+    /* ============================================================
+       OUTPUT PANEL — octal, symbolic, and command displays
+       ============================================================ */
+    #output-panel {
+      max-width: 900px;
+      margin: 40px auto 60px;
+      padding: 0 24px;
+    }
+
+    .output-card {
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    #octal-display    { padding: 32px; }
+    #symbolic-display { padding: 24px; }
+
+    .output-label {
+      font: 600 12px var(--mono-font);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    #octal-value {
+      font: 800 72px var(--mono-font);
+      color: var(--green);
+      letter-spacing: 8px;
+      line-height: 1;
+    }
+
+    #symbolic-value {
+      font: 700 36px var(--mono-font);
+      color: var(--text);
+      line-height: 1;
+    }
+
+    #command-display {
+      background: var(--bg3);
+      border: 2px solid var(--green);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: left;
+    }
+    #command-display .output-label {
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    #command-value {
+      font: 600 20px var(--mono-font);
+      color: var(--text);
+      margin-bottom: 16px;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    /* Copy button base styles live in CSS (not inline) so :hover can override. */
+    #copy-btn {
+      background: var(--green);
+      color: var(--bg);
+      border: none;
+      border-radius: 6px;
+      padding: 12px 32px;
+      font: 700 14px var(--heading-font);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    #copy-btn:hover {
+      background: var(--green-dim);
+      transform: translateY(-1px);
+    }
+    #copy-btn:active {
+      transform: translateY(0);
+    }
+    #copy-btn:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 599px) {
+      #output-panel    { padding: 0 16px; margin: 24px auto 48px; }
+      #octal-display   { padding: 24px; }
+      #symbolic-display{ padding: 20px; }
+      #command-display { padding: 20px; }
+      #octal-value     { font-size: 52px; letter-spacing: 6px; }
+      #symbolic-value  { font-size: 24px; }
+      #command-value   { font-size: 15px; }
+      #copy-btn        { width: 100%; padding: 14px 16px; }
+    }
+
+    /* ============================================================
+       RELATED SNIPPETS — card grid below warnings
+       Class-based so :hover can override the base border colour
+       (inline border:... would win over a:hover { border-color }).
+       ============================================================ */
+    #related-snippets {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+    #related-snippets h2 {
+      font: 700 28px var(--heading-font);
+      color: var(--text);
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+    .snippet-link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .snippet-link {
+      display: block;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-decoration: none;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .snippet-link:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+    .snippet-link-title {
+      font: 700 18px var(--heading-font);
+      margin-bottom: 8px;
+    }
+    .snippet-link-title.green { color: var(--green); }
+    .snippet-link-title.blue  { color: var(--blue);  }
+    .snippet-link-title.amber { color: var(--amber); }
+    .snippet-link-desc {
+      font: 400 14px var(--mono-font);
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ============================================================
+       FOOTER — copied from index.html
+       ============================================================ */
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 2;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 599px) {
+      #related-snippets       { margin: 40px auto; padding: 0 16px; }
+      #related-snippets h2    { font-size: 22px; }
+      .snippet-link-grid      { grid-template-columns: 1fr; }
+      #affiliate-box          { margin: 40px 16px; padding: 20px; }
+    }
+
+    /* ============================================================
+       UX POLISH — fade-in entry, octal pulse, reset button
+       ============================================================ */
+
+    /* Reset button base styles live in CSS (not inline) so :hover can override. */
+    #reset-btn {
+      background: var(--bg2);
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 24px;
+      font: 600 13px var(--heading-font);
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      margin-left: 12px;
+    }
+    #reset-btn:hover {
+      background: var(--bg3);
+      border-color: var(--green);
+      transform: translateY(-1px);
+    }
+    #reset-btn:active { transform: translateY(0); }
+    #reset-btn:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* Initial fade-in for the main interactive panels.
+       `both` keeps opacity:0 before the animation starts to avoid FOUC. */
+    @keyframes chmod-fade-up {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    #permission-grid { animation: chmod-fade-up 600ms ease-out 80ms both; }
+    #output-panel    { animation: chmod-fade-up 600ms ease-out 200ms both; }
+
+    /* Pulse the octal number when its value changes. */
+    @keyframes octal-pulse {
+      0%   { transform: scale(1);    text-shadow: 0 0 0   rgba(57, 211, 83, 0); }
+      40%  { transform: scale(1.06); text-shadow: 0 0 18px rgba(57, 211, 83, 0.45); }
+      100% { transform: scale(1);    text-shadow: 0 0 0   rgba(57, 211, 83, 0); }
+    }
+    #octal-value.pulse {
+      animation: octal-pulse 380ms ease;
+      transform-origin: center;
+      display: inline-block;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #permission-grid,
+      #output-panel,
+      #octal-value.pulse,
+      #reset-btn,
+      #copy-btn { animation: none; transition: none; }
+      #copy-btn:hover,
+      #reset-btn:hover,
+      .snippet-link:hover,
+      .checkbox-cell:hover { transform: none; }
+    }
+
+    @media (max-width: 599px) {
+      /* Stack reset under copy when copy goes full-width on mobile. */
+      #reset-btn {
+        margin-left: 0;
+        margin-top: 12px;
+        width: 100%;
+        padding: 12px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <nav id="site-nav">
+    <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
+
+    <ul class="nav-links">
+      <li><a href="/#snippets">Snippets</a></li>
+      <li><a href="/#builder">Builder</a></li>
+      <li><a href="/#resources">Resources</a></li>
+      <li><a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+
+    <button class="nav-mobile-menu" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
+  </nav>
+
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/">Home</a>
+    <a href="/#snippets">Snippets</a>
+    <a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a>
+    <a href="/snippets/">All Snippets</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('site-nav');
+      if (!nav) return;
+      var threshold = 12;
+      function updateNavScrollState() {
+        if (window.scrollY > threshold) nav.classList.add('nav--hidden');
+        else nav.classList.remove('nav--hidden');
+      }
+      window.addEventListener('scroll', updateNavScrollState, { passive: true });
+      updateNavScrollState();
+    })();
+  </script>
+
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">BashSnippets</a>
+      <span class="breadcrumb-sep">/</span>
+      <a href="/tools/">Tools</a>
+      <span class="breadcrumb-sep">/</span>
+      <span>Chmod Permissions Builder</span>
+    </div>
+
+    <!-- Page intro -->
+    <div class="page-intro">
+      <div class="intro-label">FREE TOOL</div>
+      <h1>Chmod Permissions Builder</h1>
+      <p class="intro-subtext">Click permissions. See octal numbers. Copy the chmod command. Visual permission management for Linux files and directories.</p>
+    </div>
+
+    <!-- ============================================================
+         PERMISSION GRID
+         3 columns (Owner / Group / Others) x 3 rows (r / w / x).
+         IDs are: {scope}-{perm} where scope ∈ owner|group|others
+         and perm ∈ read|write|execute. Defaults reflect 740 (rwxr-----).
+         ============================================================ -->
+    <div id="permission-grid">
+
+      <div class="grid-row header-row">
+        <div class="label-col" aria-hidden="true"></div>
+        <div class="header-col owner">Owner</div>
+        <div class="header-col group">Group</div>
+        <div class="header-col others">Others</div>
+      </div>
+
+      <div class="grid-row read">
+        <div class="label-col">Read (r)</div>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="owner-read" aria-label="Owner read" checked>
+        </label>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="group-read" aria-label="Group read" checked>
+        </label>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="others-read" aria-label="Others read">
+        </label>
+      </div>
+
+      <div class="grid-row write">
+        <div class="label-col">Write (w)</div>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="owner-write" aria-label="Owner write" checked>
+        </label>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="group-write" aria-label="Group write">
+        </label>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="others-write" aria-label="Others write">
+        </label>
+      </div>
+
+      <div class="grid-row execute">
+        <div class="label-col">Execute (x)</div>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="owner-execute" aria-label="Owner execute" checked>
+        </label>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="group-execute" aria-label="Group execute">
+        </label>
+        <label class="checkbox-cell">
+          <input type="checkbox" id="others-execute" aria-label="Others execute">
+        </label>
+      </div>
+
+    </div>
+
+    <!-- ============================================================
+         OUTPUT / COMMAND PANEL
+         Live-updated from the checkbox grid above.
+         Initial static values get overwritten by updatePermissions()
+         on load so JS-disabled visitors still see something readable.
+         ============================================================ -->
+    <div id="output-panel">
+
+      <div id="octal-display" class="output-card">
+        <div class="output-label">Octal Notation</div>
+        <div id="octal-value" aria-live="polite">755</div>
+      </div>
+
+      <div id="symbolic-display" class="output-card">
+        <div class="output-label">Symbolic Notation</div>
+        <div id="symbolic-value" aria-live="polite">rwxr-xr-x</div>
+      </div>
+
+      <div id="command-display">
+        <div class="output-label">Generated Command</div>
+        <div id="command-value">chmod 755 filename</div>
+        <button id="copy-btn" type="button" aria-label="Copy chmod command to clipboard">
+          Copy Command
+        </button>
+        <button id="reset-btn" type="button" aria-label="Reset permissions to 755 (rwxr-xr-x)">
+          Reset to 755
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ============================================================
+         SECURITY WARNINGS — context-aware cards toggled by JS
+         Only one is visible at a time, based on the current octal.
+         ============================================================ -->
+    <div id="security-warnings" style="max-width:900px;margin:40px auto;padding:0 24px;" aria-live="polite">
+
+      <div id="warning-777" class="security-card" role="alert" style="display:none;background:#4a1a1a;border:2px solid #FF4444;border-radius:var(--radius);padding:20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:28px;" aria-hidden="true">⚠️</span>
+          <div style="font:700 16px var(--heading-font);color:#FF4444;">SECURITY RISK: 777 Permissions</div>
+        </div>
+        <p style="font:400 14px var(--mono-font);color:var(--text);margin:0;line-height:1.55;">chmod 777 gives EVERYONE full read/write/execute access. Never use this on production servers or sensitive files. Anyone can modify or delete the file.</p>
+      </div>
+
+      <div id="warning-666" class="security-card" role="alert" style="display:none;background:#4a2e1a;border:2px solid var(--amber);border-radius:var(--radius);padding:20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:28px;" aria-hidden="true">⚠️</span>
+          <div style="font:700 16px var(--heading-font);color:var(--amber);">WARNING: 666 Permissions</div>
+        </div>
+        <p style="font:400 14px var(--mono-font);color:var(--text);margin:0;line-height:1.55;">chmod 666 gives everyone read/write access (no execute). Avoid this on config files, logs, or any file containing sensitive data.</p>
+      </div>
+
+      <div id="info-644" class="security-card" style="display:none;background:var(--bg2);border:2px solid var(--green);border-radius:var(--radius);padding:20px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <span style="font-size:28px;" aria-hidden="true">✓</span>
+          <div style="font:700 16px var(--heading-font);color:var(--green);">SAFE: Standard File Permissions</div>
+        </div>
+        <p style="font:400 14px var(--mono-font);color:var(--text);margin:0;line-height:1.55;">chmod 644 is the standard permission for regular files. Owner can read/write, everyone else can only read. This is secure for most use cases.</p>
+      </div>
+
+    </div>
+
+    <!-- ============================================================
+         RELATED SNIPPETS
+         ============================================================ -->
+    <div id="related-snippets">
+      <h2>Related Bash Scripts</h2>
+
+      <div class="snippet-link-grid">
+
+        <a href="/snippets/file-permissions-security.html" class="snippet-link">
+          <div class="snippet-link-title green">Secure File Permissions</div>
+          <p class="snippet-link-desc">chmod best practices, recursive permission changes, security hardening</p>
+        </a>
+
+        <a href="/snippets/find-files-by-permission.html" class="snippet-link">
+          <div class="snippet-link-title blue">Find Files By Permission</div>
+          <p class="snippet-link-desc">find command to search for files with specific permissions (777, 666, etc)</p>
+        </a>
+
+        <a href="/snippets/automated-file-backup.html" class="snippet-link">
+          <div class="snippet-link-title amber">Automated File Backup</div>
+          <p class="snippet-link-desc">Backup scripts that preserve permissions with tar and rsync</p>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ============================================================
+         DIGITALOCEAN AFFILIATE BOX — refcode 7a196437764c
+         ============================================================ -->
+    <div id="affiliate-box" style="max-width:900px;margin:60px auto;padding:24px;background:var(--blue-dim);border:2px solid var(--blue);border-radius:var(--radius);">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+        <span style="font-size:32px;" aria-hidden="true">🚀</span>
+        <div style="font:700 20px var(--heading-font);color:var(--blue);">Need a Linux Server?</div>
+      </div>
+      <p style="font:400 15px var(--mono-font);color:var(--text);margin-bottom:16px;line-height:1.6;">Practice these chmod commands on a real Linux server. DigitalOcean droplets start at $4/month.</p>
+      <a href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored" style="display:inline-block;background:var(--blue);color:var(--bg);padding:12px 32px;border-radius:6px;font:700 14px var(--heading-font);text-decoration:none;transition:opacity 0.2s ease, transform 0.2s ease;">
+        Get $200 Free Credit →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER — copied from index.html
+       ============================================================ -->
+  <footer>
+    <div class="footer-links">
+      <a href="/#snippets">Snippets</a>
+      <a href="/#builder">Builder</a>
+      <a href="/#resources">Resources</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/snippets/">All Scripts</a>
+      <a href="/bash-scripts/">Script Library on GitHub →</a>
+      <a href="/snippets/automated-file-backup.html">File Backup</a>
+      <a href="/snippets/disk-space-warning.html">Disk Warning</a>
+      <a href="/snippets/delete-old-log-files.html">Log Cleanup</a>
+      <a href="/snippets/check-if-website-is-up.html">Uptime Check</a>
+      <a href="/snippets/bash-error-handling.html">Error Handling</a>
+      <a href="/tools/">Tools</a>
+      <a href="/tools/bash-boilerplate-generator.html">Boilerplate Generator</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+    </div>
+    <p>Built by a Linux user, for Linux users. All scripts tested on Ubuntu 22.04 LTS and macOS Ventura.</p>
+    <p>No tracking. No paywalls. No newsletter popups.</p>
+    <p style="margin-top:8px;">
+      © <span id="year"></span> BashSnippets
+      &nbsp;·&nbsp; <a href="mailto:Anguisheh1@gmail.com">Anguisheh1@gmail.com</a>
+      &nbsp;·&nbsp; <a href="/privacy.html">Privacy</a>
+    </p>
+    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  </footer>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    if (navToggle && navDrawer) {
+      navToggle.addEventListener('click', () => {
+        navDrawer.classList.toggle('open');
+        navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  </script>
+
+  <!-- ============================================================
+       CHMOD PERMISSIONS BUILDER — calculation logic
+       ============================================================ -->
+  <script>
+    const PERM_VALUES = { read: 4, write: 2, execute: 1 };
+
+    const checkboxes = {
+      owner: {
+        read:    document.getElementById('owner-read'),
+        write:   document.getElementById('owner-write'),
+        execute: document.getElementById('owner-execute')
+      },
+      group: {
+        read:    document.getElementById('group-read'),
+        write:   document.getElementById('group-write'),
+        execute: document.getElementById('group-execute')
+      },
+      others: {
+        read:    document.getElementById('others-read'),
+        write:   document.getElementById('others-write'),
+        execute: document.getElementById('others-execute')
+      }
+    };
+
+    function calculateDigit(category) {
+      let value = 0;
+      if (checkboxes[category].read.checked)    value += PERM_VALUES.read;
+      if (checkboxes[category].write.checked)   value += PERM_VALUES.write;
+      if (checkboxes[category].execute.checked) value += PERM_VALUES.execute;
+      return value;
+    }
+
+    function calculateSymbolic(category) {
+      let symbolic = '';
+      symbolic += checkboxes[category].read.checked    ? 'r' : '-';
+      symbolic += checkboxes[category].write.checked   ? 'w' : '-';
+      symbolic += checkboxes[category].execute.checked ? 'x' : '-';
+      return symbolic;
+    }
+
+    const octalEl = document.getElementById('octal-value');
+    let lastOctal = '';
+
+    function updatePermissions() {
+      const ownerDigit  = calculateDigit('owner');
+      const groupDigit  = calculateDigit('group');
+      const othersDigit = calculateDigit('others');
+      const octal = `${ownerDigit}${groupDigit}${othersDigit}`;
+
+      const ownerSym  = calculateSymbolic('owner');
+      const groupSym  = calculateSymbolic('group');
+      const othersSym = calculateSymbolic('others');
+      const symbolic = `${ownerSym}${groupSym}${othersSym}`;
+
+      octalEl.textContent = octal;
+      document.getElementById('symbolic-value').textContent = symbolic;
+      document.getElementById('command-value').textContent  = `chmod ${octal} filename`;
+
+      document.getElementById('warning-777').style.display = (octal === '777') ? 'block' : 'none';
+      document.getElementById('warning-666').style.display = (octal === '666') ? 'block' : 'none';
+      document.getElementById('info-644').style.display    = (octal === '644') ? 'block' : 'none';
+
+      if (lastOctal && lastOctal !== octal) {
+        octalEl.classList.remove('pulse');
+        // Force reflow so the animation restarts cleanly on rapid clicks.
+        void octalEl.offsetWidth;
+        octalEl.classList.add('pulse');
+      }
+      lastOctal = octal;
+
+      if (window.history && window.history.replaceState) {
+        try {
+          window.history.replaceState(null, '', `#chmod=${octal}`);
+        } catch (_) { /* ignore (e.g. file:// schemes) */ }
+      }
+    }
+
+    // Apply checkboxes from a 3-digit octal string. Returns true on success.
+    function applyOctal(octal) {
+      if (!/^[0-7]{3}$/.test(octal)) return false;
+      const cats = ['owner', 'group', 'others'];
+      cats.forEach((cat, i) => {
+        const d = parseInt(octal[i], 10);
+        checkboxes[cat].read.checked    = (d & 4) !== 0;
+        checkboxes[cat].write.checked   = (d & 2) !== 0;
+        checkboxes[cat].execute.checked = (d & 1) !== 0;
+      });
+      return true;
+    }
+
+    function applyHash() {
+      const m = window.location.hash.match(/^#chmod=([0-7]{3})$/);
+      return m ? applyOctal(m[1]) : false;
+    }
+
+    window.addEventListener('hashchange', () => {
+      if (applyHash()) updatePermissions();
+    });
+
+    Object.values(checkboxes).forEach(category => {
+      Object.values(category).forEach(checkbox => {
+        checkbox.addEventListener('change', updatePermissions);
+      });
+    });
+
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.addEventListener('click', () => {
+      const command = document.getElementById('command-value').textContent;
+
+      const flashCopied = () => {
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.background = 'var(--green-dim)';
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy Command';
+          // Clear the inline override so :hover can take over again.
+          copyBtn.style.background = '';
+        }, 2000);
+      };
+
+      const flashFailed = () => {
+        copyBtn.textContent = 'Copy failed';
+        setTimeout(() => { copyBtn.textContent = 'Copy Command'; }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(command).then(flashCopied).catch(flashFailed);
+      } else {
+        flashFailed();
+      }
+    });
+
+    // Reset to 755 (rwxr-xr-x) — the most common default for executables.
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      applyOctal('755');
+      updatePermissions();
+    });
+
+    // Keyboard shortcut: 'c' copies the command (when no form field is focused).
+    // Ctrl/Cmd/Alt + c is intentionally ignored so OS-level copy still works.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'c' || e.ctrlKey || e.metaKey || e.altKey) return;
+      const tag = document.activeElement && document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (document.activeElement && document.activeElement.isContentEditable) return;
+      copyBtn.click();
+    });
+
+    // Initial state: honour ?#chmod=NNN if present, otherwise use markup defaults.
+    applyHash();
+    updatePermissions();
+  </script>
+
+</body>
+</html>
