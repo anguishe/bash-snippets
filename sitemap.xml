@@ -108,25 +108,35 @@
 
 <url>
   <loc>https://bashsnippets.xyz/tools/</loc>
-  <lastmod>2026-05-06</lastmod>
+  <lastmod>2026-05-07</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
 </url>
+
 <url>
   <loc>https://bashsnippets.xyz/tools/bash-boilerplate-generator.html</loc>
-  <lastmod>2026-05-06</lastmod>
+  <lastmod>2026-05-07</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
+
 <url>
-  <loc>https://bashsnippets.xyz/tools/bash-exit-code-lookup.html</loc>
-  <lastmod>2026-05-06</lastmod>
+  <loc>https://bashsnippets.xyz/tools/exit-code-lookup.html</loc>
+  <lastmod>2026-05-07</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
+
 <url>
   <loc>https://bashsnippets.xyz/tools/cron-job-builder.html</loc>
-  <lastmod>2026-05-06</lastmod>
+  <lastmod>2026-05-07</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://bashsnippets.xyz/tools/chmod-permissions-builder.html</loc>
+  <lastmod>2026-05-07</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
