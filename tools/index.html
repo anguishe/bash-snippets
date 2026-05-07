@@ -304,14 +304,14 @@ crossorigin="anonymous"></script>
       <li><a href="/contact.html">Contact</a></li>
     </ul>
 
-    <button class="nav-mobile-menu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
+    <button class="nav-mobile-menu" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
   </nav>
 
   <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/">Home</a>
     <a href="/#snippets">Snippets</a>
-    <a href="/#builder">Builder</a>
-    <a href="/#resources">Resources</a>
-    <a href="/tools/" style="color:var(--green);font-weight:600;">Tools</a>
+    <a href="/tools/">Tools</a>
+    <a href="/snippets/">All Snippets</a>
     <a href="/about.html">About</a>
     <a href="/contact.html">Contact</a>
   </div>
@@ -330,23 +330,6 @@ crossorigin="anonymous"></script>
     })();
   </script>
 
-  <script>
-    (function () {
-      var btn = document.querySelector('.nav-mobile-menu');
-      var drawer = document.getElementById('nav-drawer');
-      if (!btn || !drawer) return;
-      btn.addEventListener('click', function () {
-        var open = drawer.classList.toggle('open');
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-      drawer.addEventListener('click', function (e) {
-        if (e.target && e.target.tagName === 'A') {
-          drawer.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    })();
-  </script>
 
   <main>
 
@@ -407,6 +390,34 @@ crossorigin="anonymous"></script>
       </div>
     </div>
 
+    <div style="background:linear-gradient(135deg,#1a1f2e 0%,#161b27 100%);
+      border:1px solid #30363d; border-left:3px solid #e3b341;
+      border-radius:8px; padding:20px 24px; display:flex;
+      align-items:center; justify-content:space-between;
+      gap:16px; flex-wrap:wrap; margin:24px 0;">
+      <div>
+        <div style="font-size:11px;color:#e3b341;font-family:'IBM Plex Mono',monospace;
+          text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">
+          // domain registration
+        </div>
+        <strong style="color:#f0f6fc;font-size:15px;">
+          Ready to deploy your scripts? Grab a domain.
+        </strong>
+        <p style="color:#8b949e;font-size:13px;margin:6px 0 0;">
+          Namecheap domains from $1.98/yr. Free WhoisGuard privacy included.
+          Point it at your GitHub Pages or VPS in minutes.
+        </p>
+      </div>
+      <a href="https://namecheap.pxf.io/c/7260430/1632743/5618"
+        target="_blank" rel="noopener sponsored"
+        style="background:#e3b341;color:#0d1117;font-family:'IBM Plex Mono',monospace;
+          font-weight:600;font-size:13px;padding:10px 18px;border-radius:8px;
+          text-decoration:none;white-space:nowrap;transition:opacity .2s;"
+        onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+        Get a Domain →
+      </a>
+    </div>
+
     <!-- BLOCK 2 — AdSense ad slot -->
     <div style="max-width:960px;margin:40px auto;padding:0 24px;">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5399156622542127"
@@ -427,6 +438,17 @@ crossorigin="anonymous"></script>
     </footer>
 
   </main>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    if (navToggle && navDrawer) {
+      navToggle.addEventListener('click', () => {
+        navDrawer.classList.toggle('open');
+        navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  </script>
 
 </body>
 </html>

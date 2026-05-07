@@ -155,6 +155,13 @@
     .nav-links { display:flex; gap:20px; list-style:none; }
     .nav-links a { font-size:13px; color:var(--muted); transition:color 0.2s; }
     .nav-links a:hover { color:var(--text); text-decoration:none; }
+    .nav-mobile-menu { display:none; background:transparent; border:1px solid var(--border); color:var(--muted); font-size:18px; padding:4px 10px; border-radius:var(--radius); cursor:pointer; font-family:var(--mono-font); line-height:1; }
+    .nav-mobile-menu:hover { color:var(--text); border-color:var(--muted); }
+    .nav-mobile-drawer { display:none; flex-direction:column; background:var(--bg2); border-bottom:1px solid var(--border); padding:12px 24px; gap:4px; position:sticky; top:53px; z-index:7; }
+    .nav-mobile-drawer.open { display:flex; }
+    .nav-mobile-drawer a { font-size:14px; color:var(--muted); padding:8px 0; border-bottom:1px solid var(--border); text-decoration:none; }
+    .nav-mobile-drawer a:last-child { border-bottom:none; }
+    .nav-mobile-drawer a:hover { color:var(--text); }
     main { max-width:860px; margin:0 auto; padding:60px 24px 80px; }
     .breadcrumb { font-size:12px; color:var(--muted); margin-bottom:32px; }
     .breadcrumb a { color:var(--muted); }
@@ -228,7 +235,17 @@
     <li><a href="/about.html">About</a></li>
     <li><a href="/contact.html">Contact</a></li>
   </ul>
+  <button class="nav-mobile-menu" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
 </nav>
+
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/">Home</a>
+    <a href="/#snippets">Snippets</a>
+    <a href="/tools/">Tools</a>
+    <a href="/snippets/">All Snippets</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
 
 <main>
 
@@ -252,7 +269,14 @@
     </p>
   </div>
 
-  <div class="ad-slot">Advertisement</div>
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <h2>The Script</h2>
   <p>Paste this into <code>syscheck.sh</code>. It runs instantly and requires no additional tools — everything used here is pre-installed on Linux and macOS.</p>
@@ -334,7 +358,14 @@
     <p>Add the alias to <code>~/.zshrc</code> instead of <code>~/.bashrc</code>, then run <code>source ~/.zshrc</code>. Everything else stays the same.</p>
   </div>
 
-  <div class="ad-slot">Advertisement</div>
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <h2>Variations</h2>
 
@@ -403,7 +434,14 @@
     <tr><td>awk '{print $1}'</td><td>Grabs just the first IP from hostname -I output</td></tr>
   </table>
 
-  <div class="ad-slot">Advertisement</div>
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <h2>Frequently Asked Questions</h2>
 
@@ -464,5 +502,16 @@
     });
   }
 </script>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    if (navToggle && navDrawer) {
+      navToggle.addEventListener('click', () => {
+        navDrawer.classList.toggle('open');
+        navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  </script>
 </body>
 </html>

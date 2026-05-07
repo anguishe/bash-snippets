@@ -95,6 +95,13 @@
     .nav-links { display:flex; gap:20px; list-style:none; align-items:center; }
     .nav-links a { font-size:13px; color:var(--muted); transition:color 0.2s; }
     .nav-links a:hover { color:var(--text); text-decoration:none; }
+    .nav-mobile-menu { display:none; background:transparent; border:1px solid var(--border); color:var(--muted); font-size:18px; padding:4px 10px; border-radius:var(--radius); cursor:pointer; font-family:var(--mono-font); line-height:1; }
+    .nav-mobile-menu:hover { color:var(--text); border-color:var(--muted); }
+    .nav-mobile-drawer { display:none; flex-direction:column; background:var(--bg2); border-bottom:1px solid var(--border); padding:12px 24px; gap:4px; position:sticky; top:53px; z-index:7; }
+    .nav-mobile-drawer.open { display:flex; }
+    .nav-mobile-drawer a { font-size:14px; color:var(--muted); padding:8px 0; border-bottom:1px solid var(--border); text-decoration:none; }
+    .nav-mobile-drawer a:last-child { border-bottom:none; }
+    .nav-mobile-drawer a:hover { color:var(--text); }
     .nav-links a.active { color:var(--green); }
     .nav-snippets-btn { background:var(--green-dim); color:var(--green); border:1px solid var(--green); padding:4px 12px; border-radius:100px; font-size:12px; font-weight:600; }
     .nav-snippets-btn:hover { background:var(--green); color:#0d1117; text-decoration:none; }
@@ -134,7 +141,7 @@
     footer { border-top:1px solid var(--border); padding:28px 24px; text-align:center; font-size:12px; color:var(--muted); display:flex; justify-content:center; gap:24px; flex-wrap:wrap; }
     footer a { color:var(--muted); }
     footer a:hover { color:var(--text); text-decoration:none; }
-    @media(max-width:640px) { .nav-links { display:none; } }
+    @media(max-width:640px) { .nav-links { display:none; } .nav-mobile-menu { display:block; } }
   </style>
 </head>
 <body>
@@ -150,7 +157,17 @@
     <li><a href="/contact.html">Contact</a></li>
     <li><a href="/snippets/" class="nav-snippets-btn active">All Scripts →</a></li>
   </ul>
+  <button class="nav-mobile-menu" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
 </nav>
+
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/">Home</a>
+    <a href="/#snippets">Snippets</a>
+    <a href="/tools/">Tools</a>
+    <a href="/snippets/">All Snippets</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
 
 <div class="page-hero">
   <h1>All <em>Free Scripts</em></h1>
@@ -169,7 +186,14 @@
 
 <div class="snippets-grid-wrap">
 
-  <div class="ad-slot">Advertisement</div>
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 <!-- Namecheap Affiliate -->
   <div class="affiliate-box" style="border-color:#d85121;">
     <div class="affiliate-box-text">
@@ -301,7 +325,14 @@
 
   </div>
 
-  <div class="ad-slot">Advertisement</div>
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
 </div>
 
@@ -323,5 +354,16 @@ function filterCards(tag, btn) {
   });
 }
 </script>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    if (navToggle && navDrawer) {
+      navToggle.addEventListener('click', () => {
+        navDrawer.classList.toggle('open');
+        navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  </script>
 </body>
 </html>

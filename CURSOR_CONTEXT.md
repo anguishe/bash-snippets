@@ -14,6 +14,7 @@
 - GA4: G-6B01TGE8XS
 - AdSense: ca-pub-5399156622542127
 - DigitalOcean affiliate: refcode 7a196437764c
+- NameCheap affiliate link: https://namecheap.pxf.io/c/7260430/1632743/5618
 
 ## Three.js CDN (use ONLY this version/URL)
 https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
