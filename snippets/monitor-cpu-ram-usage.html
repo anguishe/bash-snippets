@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-08: New snippet — monitor CPU & RAM usage; structure matches disk-space-warning.html skeleton. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Monitor CPU and RAM Usage with Bash – BashSnippets.xyz</title>
+  <meta name="description" content="A bash script that checks CPU and memory usage and alerts you when usage passes a threshold. Copy-paste ready. Schedule with cron on any Linux server." />
+  <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Monitor CPU and RAM Usage with Bash – BashSnippets.xyz" />
+  <meta property="og:description" content="A bash script that checks CPU and memory usage and alerts you when usage passes a threshold. Copy-paste ready. Schedule with cron on any Linux server." />
+  <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="cpu ram monitor bash script" />
+  <meta property="og:url" content="https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html" />
+  <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BashSnippets — copy-paste bash scripts for linux and devs" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://bashsnippets.xyz/og-image.png" />
+
+  <!-- Schema: HowTo -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Monitor CPU and RAM Usage with a Bash Script",
+    "description": "A bash script that checks CPU and memory usage and logs a warning when usage passes a threshold you set. Schedule it with cron on any Linux server.",
+   "author": {
+      "@type": "Person",
+      "@id": "https://bashsnippets.xyz/#author",
+      "name": "BashSnippets"
+    },
+    "datePublished": "2026-05-08",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Create the script",
+        "text": "Run: nano monitor.sh in your terminal and paste the script."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Set your threshold",
+        "text": "Change THRESHOLD=80 to your preferred percentage."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Make it executable",
+        "text": "Run chmod +x monitor.sh"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Schedule with cron",
+        "text": "Add to crontab -e: 0 * * * * /home/user/monitor.sh >> /var/log/monitor.log 2>&1"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Schema: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I check CPU usage in bash?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the top command with batch mode: top -bn1 | grep 'Cpu(s)'. To get just the idle percentage as a number, pipe through awk: top -bn1 | grep 'Cpu(s)' | awk '{print $8}'"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I check RAM usage in Linux?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the free command: free -h shows human-readable output. In a script, use: free | awk '/Mem:/ {printf \"%.0f\", $3/$2*100}' to get RAM usage as a percentage."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get an alert when CPU is too high?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Write a bash script that captures the CPU percentage, then compare it to a threshold with an if statement. Schedule it with cron to run every minute or hour."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a normal CPU usage percentage on a Linux server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Under 70% is generally healthy for a production server. Sustained usage above 80-90% usually indicates a process that needs investigation with top or htop."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I find which process is using the most CPU?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Run: ps aux --sort=-%cpu | head -10 to see the top 10 CPU-consuming processes. Or use top interactively and press P to sort by CPU."
+        }
+      }
+    ]
+  }
+  </script>
+    <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+   <!-- Schema: Author / Person -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://bashsnippets.xyz/#author",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz",
+    "sameAs": [
+      "https://youtube.com/@BashSnippets",
+      "https://tiktok.com/@BashSnippets",
+      "https://dev.to/bashsnippets",
+      "https://coderlegion.com/user/BashSnippets"
+    ],
+    "knowsAbout": [
+      "bash scripting",
+      "Linux system administration",
+      "shell automation",
+      "DevOps",
+      "cron jobs"
+    ]
+  }
+  </script>
+
+    <!-- Schema: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz",
+    "description": "Free copy-paste bash scripts for Linux users and developers. Plain-English explanations. New scripts weekly.",
+    "author": {
+      "@type": "Person",
+      "@id": "https://bashsnippets.xyz/#author"
+    }
+  }
+  </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6B01TGE8XS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6B01TGE8XS');
+  </script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --bg3:         #1c2128;
+      --border:      #30363d;
+      --green:       #39d353;
+      --green-dim:   #1a4a2e;
+      --amber:       #e3b341;
+      --amber-dim:   #3d2f0d;
+      --blue:        #58a6ff;
+      --blue-dim:    #0d2a4a;
+      --text:        #e6edf3;
+      --muted:       #8b949e;
+      --heading-font: 'Syne', sans-serif;
+      --mono-font:    'IBM Plex Mono', monospace;
+      --radius:       8px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--mono-font); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo { font-family: var(--heading-font); font-weight: 800; font-size: 18px; color: var(--green); letter-spacing: -0.5px; text-decoration: none; }
+    .nav-logo span { color: var(--muted); }
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-mobile-menu { display:none; background:transparent; border:1px solid var(--border); color:var(--muted); font-size:18px; padding:4px 10px; border-radius:var(--radius); cursor:pointer; font-family:var(--mono-font); line-height:1; }
+    .nav-mobile-menu:hover { color:var(--text); border-color:var(--muted); }
+    .nav-mobile-drawer { display:none; flex-direction:column; background:var(--bg2); border-bottom:1px solid var(--border); padding:12px 24px; gap:4px; position:sticky; top:53px; z-index:7; }
+    .nav-mobile-drawer.open { display:flex; }
+    .nav-mobile-drawer a { font-size:14px; color:var(--muted); padding:8px 0; border-bottom:1px solid var(--border); text-decoration:none; }
+    .nav-mobile-drawer a:last-child { border-bottom:none; }
+    .nav-mobile-drawer a:hover { color:var(--text); }
+
+    main { max-width: 860px; margin: 0 auto; padding: 60px 24px 80px; }
+
+    .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--text); text-decoration: none; }
+    .breadcrumb span { margin: 0 6px; }
+
+    .page-header { margin-bottom: 40px; }
+    .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; }
+    .tag-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+    .tag-blue  { background: var(--blue-dim);  color: var(--blue);  border: 1px solid var(--blue); }
+    .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+
+    h1 { font-family: var(--heading-font); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .page-intro { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 680px; }
+
+    h2 { font-family: var(--heading-font); font-size: 1.3rem; font-weight: 700; margin: 48px 0 16px; color: var(--text); }
+    h2::before { content: '// '; color: var(--green); }
+    h3 { font-family: var(--heading-font); font-size: 1rem; font-weight: 700; margin: 28px 0 10px; color: var(--green); }
+
+    p { color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+    ul, ol { padding-left: 24px; color: var(--muted); line-height: 1.9; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+    strong { color: var(--text); font-weight: 600; }
+
+    .code-block { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 24px 0; }
+    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); font-size: 12px; color: var(--muted); }
+    .code-header .filename { color: var(--green); font-weight: 600; }
+    .copy-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: var(--mono-font); font-size: 11px; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+    .copy-btn:hover { border-color: var(--green); color: var(--green); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    pre { padding: 24px; overflow-x: auto; font-family: var(--mono-font); font-size: 14px; line-height: 1.7; color: var(--text); }
+    .comment { color: var(--muted); }
+    .kw  { color: var(--green); }
+    .var { color: var(--blue); }
+    .str { color: var(--amber); }
+    .num { color: #f78166; }
+
+    code { background: var(--bg3); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; font-family: var(--mono-font); font-size: 13px; color: var(--green); }
+
+    .callout { border-left: 3px solid var(--green); background: var(--bg2); padding: 16px 20px; border-radius: 0 var(--radius) var(--radius) 0; margin: 24px 0; }
+    .callout.amber { border-left-color: var(--amber); }
+    .callout.blue  { border-left-color: var(--blue); }
+    .callout-title { font-weight: 600; color: var(--text); font-size: 13px; margin-bottom: 6px; }
+    .callout p { margin-bottom: 0; font-size: 13px; }
+
+    .var-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    .var-table th { text-align: left; padding: 10px 12px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .var-table td { padding: 10px 12px; border-bottom: 1px solid var(--bg3); color: var(--muted); vertical-align: top; }
+    .var-table td:first-child { color: var(--green); font-weight: 600; }
+    .var-table tr:last-child td { border-bottom: none; }
+
+    .ad-slot { border: 1px dashed var(--border); border-radius: var(--radius); padding: 24px; text-align: center; color: var(--muted); font-size: 12px; background: var(--bg2); margin: 40px 0; }
+
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+    .related-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; transition: border-color 0.2s; display: block; text-decoration: none; }
+    .related-card:hover { border-color: var(--green); text-decoration: none; }
+    .related-card-title { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--muted); }
+
+    .affiliate-box { background: var(--bg2); border: 1px solid var(--amber); border-radius: var(--radius); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 40px 0; flex-wrap: wrap; }
+    .affiliate-box-text { font-size: 13px; color: var(--muted); }
+    .affiliate-box-text strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 14px; }
+    .btn-affiliate { background: var(--amber); color: #0d1117; font-family: var(--mono-font); font-weight: 600; font-size: 13px; padding: 10px 20px; border-radius: var(--radius); border: none; cursor: pointer; white-space: nowrap; display: inline-block; transition: opacity 0.2s; text-decoration: none; }
+    .btn-affiliate:hover { opacity: 0.85; text-decoration: none; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: 12px; color: var(--muted); display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-menu { display: block; }
+      .affiliate-box { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Monitor CPU & RAM Usage",
+      "item": "https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Monitor CPU and RAM Usage with Bash \u2013 BashSnippets.xyz",
+  "description": "A bash script that checks CPU and memory usage and alerts you when usage passes a threshold. Copy-paste ready. Schedule with cron on any Linux server.",
+  "url": "https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
+  <ul class="nav-links">
+    <li><a href="/snippets/">Snippets</a></li>
+    <li><a href="/#builder">Builder</a></li>
+    <li><a href="/#resources">Resources</a></li>
+    <li><a href="/tools/">Tools</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-mobile-menu" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
+</nav>
+
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
+    <a href="/tools/">Tools</a>
+    <a href="/snippets/">All Snippets</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+<main>
+
+  <div class="breadcrumb">
+    <a href="/">BashSnippets</a><span>›</span>
+    <a href="/snippets/">Snippets</a><span>›</span>
+    Monitor CPU &amp; RAM Usage
+  </div>
+
+  <div class="page-header">
+    <div class="tag-row">
+      <span class="tag tag-green">beginner</span>
+      <span class="tag tag-blue">monitor</span>
+      <span class="tag tag-amber">cron-ready</span>
+    </div>
+    <h1>Monitor CPU and RAM Usage</h1>
+    <p class="page-intro" style="font-style:italic;margin-bottom:16px;">Get notified when your server is struggling — before users notice.</p>
+    <p class="page-intro">You deployed your app, set up cron, and walked away. Three hours later your server is at 97% CPU and you find out from a user. This script runs silently on a schedule and logs a warning the moment resources spike past your threshold.</p>
+    <p class="page-intro">Works on any Linux system — Ubuntu, Debian, CentOS. Uses <code>top</code> and <code>free</code>, which are available on every distro by default. No dependencies to install.</p>
+  </div>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h2>The Script</h2>
+  <p>Paste this into <code>monitor.sh</code>. Adjust <code>THRESHOLD</code> and <code>LOG_FILE</code> if you want a different cutoff or log path.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="filename">monitor.sh</span>
+      <button class="copy-btn" onclick="copyCode(this)" type="button">copy</button>
+    </div>
+    <pre><span class="comment">#!/bin/bash</span>
+
+<span class="var">CHECK</span>=<span class="str">"✓"</span>
+<span class="var">CROSS</span>=<span class="str">"✗"</span>
+
+<span class="comment"># --- Configuration ---</span>
+<span class="var">THRESHOLD</span>=<span class="num">80</span>                    <span class="comment"># Alert when usage exceeds this %</span>
+<span class="var">LOG_FILE</span>=<span class="str">"/var/log/resource-monitor.log"</span>
+<span class="var">DATE</span>=$(<span class="kw">date</span> <span class="str">'+%Y-%m-%d %H:%M:%S'</span>)
+
+<span class="comment"># --- CPU Usage ---</span>
+<span class="var">CPU</span>=$(<span class="kw">top</span> -bn1 | <span class="kw">grep</span> <span class="str">"Cpu(s)"</span> | <span class="kw">awk</span> <span class="str">'{print $2}'</span> | <span class="kw">cut</span> -d<span class="str">'%'</span> -f1 | <span class="kw">cut</span> -d<span class="str">','</span> -f1 | <span class="kw">xargs</span> <span class="kw">printf</span> <span class="str">"%.0f"</span>)
+
+<span class="comment"># --- RAM Usage ---</span>
+<span class="var">RAM</span>=$(<span class="kw">free</span> | <span class="kw">awk</span> <span class="str">'/Mem:/ {printf "%.0f", $3/$2*100}'</span>)
+
+<span class="kw">echo</span> <span class="str">"[$DATE] CPU: ${CPU}% | RAM: ${RAM}%"</span>
+
+<span class="comment"># --- CPU Alert ---</span>
+<span class="kw">if</span> [ <span class="str">"$CPU"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"$CROSS [$DATE] WARNING: CPU at ${CPU}% (threshold: ${THRESHOLD}%)"</span> | <span class="kw">tee</span> -a <span class="str">"$LOG_FILE"</span>
+<span class="kw">else</span>
+  <span class="kw">echo</span> <span class="str">"$CHECK CPU OK: ${CPU}%"</span>
+<span class="kw">fi</span>
+
+<span class="comment"># --- RAM Alert ---</span>
+<span class="kw">if</span> [ <span class="str">"$RAM"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"$CROSS [$DATE] WARNING: RAM at ${RAM}% (threshold: ${THRESHOLD}%)"</span> | <span class="kw">tee</span> -a <span class="str">"$LOG_FILE"</span>
+<span class="kw">else</span>
+  <span class="kw">echo</span> <span class="str">"$CHECK RAM OK: ${RAM}%"</span>
+<span class="kw">fi</span></pre>
+  </div>
+
+  <h2>How It Works</h2>
+  <table class="var-table">
+    <tr><th>Line / piece</th><th>What it does</th></tr>
+    <tr><td>THRESHOLD=80</td><td>The percentage at which a warning fires.</td></tr>
+    <tr><td>top -bn1</td><td>Runs <code>top</code> in batch mode for one iteration (non-interactive).</td></tr>
+    <tr><td>awk '{print $2}'</td><td>Extracts the CPU usage column from <code>top</code> output.</td></tr>
+    <tr><td>free | awk '/Mem:/ ...'</td><td>Parses <code>free</code> output to calculate RAM used / total × 100.</td></tr>
+    <tr><td>tee -a "$LOG_FILE"</td><td>Prints to stdout <em>and</em> appends to the log file.</td></tr>
+    <tr><td>$DATE</td><td>Timestamp so every log entry is traceable.</td></tr>
+  </table>
+
+  <h2>How to Run</h2>
+  <ol>
+    <li><code>nano monitor.sh</code></li>
+    <li>Paste the script. <strong>Ctrl+X → Y → Enter</strong> to save.</li>
+    <li><code>chmod +x monitor.sh</code></li>
+    <li>Test: <code>./monitor.sh</code></li>
+    <li>Schedule: <code>crontab -e</code> → add: <code>0 * * * * /home/user/monitor.sh</code></li>
+  </ol>
+
+  <div class="callout blue">
+    <div class="callout-title">💡 Log cron output</div>
+    <p>To match the HowTo schema and keep a paper trail, append: <code>&gt;&gt; /var/log/monitor.log 2&gt;&amp;1</code> to your cron line (use a path you can write to, or run the job as a user that owns the log).</p>
+  </div>
+
+  <h2>Variations</h2>
+
+  <h3>Email when a threshold trips</h3>
+  <p>Pipe the warning line to mail: <code>... | mail -s "CPU Alert" you@example.com</code> (install <code>mailutils</code> on Debian/Ubuntu if needed).</p>
+
+  <h3>Check a specific process</h3>
+  <p>Use per-process CPU with something like: <code>ps aux | grep processname | awk '{sum+=$3} END {print sum}'</code> (filter <code>grep</code> so you don’t count the <code>grep</code> line itself).</p>
+
+  <h3>Feed a dashboard</h3>
+  <p>Append JSON lines (timestamp, CPU, RAM) to a file and graph them with a small script or external tool.</p>
+
+  <!-- AD SLOT BOTTOM -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="affiliate-box">
+    <div class="affiliate-box-text">
+      <strong>Run this monitor on a server that's always watching</strong>
+      Monitoring only works if it's running 24/7. A $4/mo DigitalOcean Droplet gives you a dedicated Linux environment for cron jobs, monitoring scripts, and backups — always on, never sleeping. New accounts get $200 in credits.
+    </div>
+    <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Start your Droplet →</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>How do I check CPU usage in bash?</h3>
+  <p>Use <code>top</code> in batch mode: <code>top -bn1 | grep 'Cpu(s)'</code>. For idle as a number, pipe through awk: <code>top -bn1 | grep 'Cpu(s)' | awk '{print $8}'</code></p>
+
+  <h3>How do I check RAM usage in Linux?</h3>
+  <p>Use <code>free</code>: <code>free -h</code> is human-readable. In a script: <code>free | awk '/Mem:/ {printf "%.0f", $3/$2*100}'</code> gives RAM usage as a percentage.</p>
+
+  <h3>How do I get an alert when CPU is too high?</h3>
+  <p>Capture CPU use in a script, compare to a threshold with an <code>if</code>, then schedule the script with <code>cron</code> every minute or hour (or use email from the variations above).</p>
+
+  <h3>What is a normal CPU usage percentage on a Linux server?</h3>
+  <p>Under 70% is generally healthy for production. Sustained 80–90%+ usually means something worth inspecting with <code>top</code> or <code>htop</code>.</p>
+
+  <h3>How do I find which process is using the most CPU?</h3>
+  <p>Run: <code>ps aux --sort=-%cpu | head -10</code> for the top 10. Or run <code>top</code> interactively and press <strong>P</strong> to sort by CPU.</p>
+
+  <h2>Related Snippets</h2>
+  <div class="related-grid">
+    <a class="related-card" href="/snippets/disk-space-warning.html">
+      <div class="related-card-title">Disk Space Warning</div>
+      <div class="related-card-tag">beginner · monitor</div>
+    </a>
+    <a class="related-card" href="/snippets/check-if-website-is-up.html">
+      <div class="related-card-title">Check if Website Is Up</div>
+      <div class="related-card-tag">beginner · curl</div>
+    </a>
+    <a class="related-card" href="/snippets/bash-error-handling.html">
+      <div class="related-card-title">Bash Error Handling</div>
+      <div class="related-card-tag">intermediate · robust scripts</div>
+    </a>
+    <a class="related-card" href="/snippets/">
+      <div class="related-card-title">← All Snippets</div>
+      <div class="related-card-tag">Browse the full library</div>
+    </a>
+  </div>
+
+</main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: monitor.sh
+License: MIT
+Topic: CPU and RAM monitoring with Bash
+Usage: This bash script checks CPU and RAM against a threshold and logs warnings when usage is high.
+URL: https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html
+</div>
+
+<footer>
+  <a href="/snippets/">← Back to All Snippets</a>
+  <a href="/tools/">Tools</a>
+  <a href="/about.html">About</a>
+  <a href="/contact.html">Contact</a>
+  <a href="/privacy.html">Privacy Policy</a>
+</footer>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    if (navToggle && navDrawer) {
+      navToggle.addEventListener('click', () => {
+        navDrawer.classList.toggle('open');
+        navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  </script>
+
+</body>
+</html>

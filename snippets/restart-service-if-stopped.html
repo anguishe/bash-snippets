@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<!-- NAV AUDIT 2026-05-07: Normalized nav, breadcrumb, related-card, footer, and affiliate links; added Explore More Tools CTA above Related Snippets; added required Back to All Snippets link. -->
+<!-- NAV AUDIT 2026-05-08: Restart service watchdog snippet; mirrors disk-space-warning structure. -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Disk Space Warning Bash Script Guide – BashSnippets.xyz</title>
-  <meta name="description" content="Copy a disk space warning bash script using df, thresholds, cron, and email alerts. Monitor Linux servers and prevent full drives before they fail." />
+  <title>Bash Script to Restart a Service If Stopped – BashSnippets.xyz</title>
+  <meta name="description" content="A bash script that checks if a Linux service is running with systemctl and restarts it automatically if it has stopped. Schedule every minute with cron." />
   <meta name="author" content="BashSnippets" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://bashsnippets.xyz/snippets/disk-space-warning.html" />
+  <link rel="canonical" href="https://bashsnippets.xyz/snippets/restart-service-if-stopped.html" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Disk Space Warning Script – Bash Snippets" />
-  <meta property="og:description" content="Bash script that checks disk usage and alerts you when it passes a threshold. Beginner friendly. Perfect for servers and VPS." />
+  <meta property="og:title" content="Restart a Service If Stopped – Bash Snippets" />
+  <meta property="og:description" content="A bash watchdog using systemctl is-active checks and automatic restarts—ideal with a 1-minute cron job." />
   <meta property="og:type" content="article" />
   <meta property="article:section" content="Bash Scripts" />
-  <meta property="article:tag" content="disk space warning bash script" />
-  <meta property="og:url" content="https://bashsnippets.xyz/snippets/disk-space-warning.html" />
+  <meta property="article:tag" content="restart service bash script systemd" />
+  <meta property="og:url" content="https://bashsnippets.xyz/snippets/restart-service-if-stopped.html" />
   <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -30,34 +30,34 @@
   {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    "name": "How to Get a Disk Space Warning with a Bash Script",
-    "description": "A beginner bash script that checks disk usage percentage and prints a warning when it passes a threshold you set.",
+    "name": "How to Restart a Stopped Linux Service Automatically with Bash",
+    "description": "Use systemctl is-active to detect a stopped systemd unit, restart it with systemctl start, log results, and run the check every minute with cron.",
    "author": {
       "@type": "Person",
       "@id": "https://bashsnippets.xyz/#author",
       "name": "BashSnippets"
     },
-    "datePublished": "2026-05-01",
+    "datePublished": "2026-05-08",
     "step": [
       {
         "@type": "HowToStep",
-        "name": "Create the script file",
-        "text": "Run: nano diskcheck.sh in your terminal and paste the script."
+        "name": "Create the watchdog script",
+        "text": "Create service-watchdog.sh and paste the full bash script."
       },
       {
         "@type": "HowToStep",
-        "name": "Set your threshold",
-        "text": "Change THRESHOLD=80 to the disk percentage at which you want to be warned."
+        "name": "Set SERVICE and paths",
+        "text": "Change SERVICE to your systemd unit name (e.g. nginx). Optionally set NOTIFY_EMAIL for mail alerts and adjust LOG_FILE."
       },
       {
         "@type": "HowToStep",
         "name": "Make it executable",
-        "text": "Run chmod +x diskcheck.sh"
+        "text": "Run chmod +x service-watchdog.sh"
       },
       {
         "@type": "HowToStep",
-        "name": "Schedule with cron",
-        "text": "Add to crontab -e: 0 * * * * /home/user/diskcheck.sh to check every hour."
+        "name": "Schedule every minute with cron",
+        "text": "Add to crontab -e: * * * * * /full/path/to/service-watchdog.sh — optionally append >> /path/to/watchdog-cron.log 2>&1 to suppress cron email."
       }
     ]
   }
@@ -71,48 +71,48 @@
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "How do I check disk space in Linux with bash?",
+        "name": "How do I check if a service is running in bash?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use the df command. Running df -h / shows human-readable disk usage for your root partition. To get just the percentage as a number in a script, use: df / | awk 'NR==2{print $5}' | tr -d '%'"
+          "text": "Use systemctl is-active: systemctl is-active --quiet nginx returns exit code 0 if running, non-zero if stopped. Use in an if statement: if systemctl is-active --quiet nginx; then ..."
         }
       },
       {
         "@type": "Question",
-        "name": "How do I get an email when my disk is full?",
+        "name": "How do I restart a service automatically in Linux?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Combine the disk space check with the mail command: if df usage exceeds your threshold, run echo 'Disk at ${USAGE}%' | mail -s 'Disk Alert' you@example.com. Install mailutils first: sudo apt install mailutils. See our email alert snippet for a complete example."
+          "text": "Write a bash script that checks systemctl is-active and runs systemctl start if the service is stopped. Schedule it every minute with cron: * * * * * /home/user/watchdog.sh"
         }
       },
       {
         "@type": "Question",
-        "name": "How do I get an alert when disk space is low?",
+        "name": "What services can I monitor with this script?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Write a bash script that checks df output against a threshold, then use an if statement to print a warning or send an email with mail or sendmail. Schedule it with cron to run automatically."
+          "text": "Any systemd service: nginx, apache2, mysql, postgresql, redis, docker, ssh, and custom services. Change SERVICE='nginx' to any service name from systemctl list-units."
         }
       },
       {
         "@type": "Question",
-        "name": "How do I send an email alert from a bash script?",
+        "name": "How do I run a bash script every minute with cron?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Use the mail command: echo 'Disk almost full!' | mail -s 'Disk Warning' you@example.com. On most servers, you may need to install mailutils first: sudo apt install mailutils."
+          "text": "Open crontab -e and add: * * * * * /full/path/to/script.sh — the five asterisks mean 'every minute of every hour of every day'."
         }
       },
       {
         "@type": "Question",
-        "name": "What does df / command do in Linux?",
+        "name": "What is systemctl is-active?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "df stands for disk free. Running df / shows the disk space usage statistics for your root filesystem, including total size, used space, available space, and usage percentage."
+          "text": "systemctl is-active servicename checks whether a systemd service is currently running. It returns exit code 0 (success) if active, and 1+ (error) if inactive, failed, or not found."
         }
       }
     ]
   }
   </script>
-    <!-- Favicon -->
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
@@ -237,7 +237,9 @@
     .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
 
     h1 { font-family: var(--heading-font); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
-    .page-intro { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 680px; }
+    .tagline-lead { font-size: 16px; color: var(--text); line-height: 1.6; max-width: 680px; margin-bottom: 16px; font-style: italic; }
+    .page-intro { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 680px; margin-bottom: 16px; }
+    .page-intro:last-of-type { margin-bottom: 0; }
 
     h2 { font-family: var(--heading-font); font-size: 1.3rem; font-weight: 700; margin: 48px 0 16px; color: var(--text); }
     h2::before { content: '// '; color: var(--green); }
@@ -268,7 +270,7 @@
     .callout.amber { border-left-color: var(--amber); }
     .callout.blue  { border-left-color: var(--blue); }
     .callout-title { font-weight: 600; color: var(--text); font-size: 13px; margin-bottom: 6px; }
-    .callout p { margin-bottom: 0; font-size: 13px; }
+    .callout p { margin-bottom: 0; font-size: 13px; white-space: pre-wrap; font-family: var(--mono-font); }
 
     .var-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
     .var-table th { text-align: left; padding: 10px 12px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -320,19 +322,19 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Disk Space Warning Script",
-      "item": "https://bashsnippets.xyz/snippets/disk-space-warning.html"
+      "name": "Restart Service If Stopped",
+      "item": "https://bashsnippets.xyz/snippets/restart-service-if-stopped.html"
     }
   ]
 }
-  </script>
+</script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Disk Space Warning Bash Script Guide \u2013 BashSnippets.xyz",
-  "description": "Copy a disk space warning bash script using df, thresholds, cron, and email alerts. Monitor Linux servers and prevent full drives before they fail.",
-  "url": "https://bashsnippets.xyz/snippets/disk-space-warning.html",
+  "headline": "Bash Script to Restart a Service If Stopped \u2013 BashSnippets.xyz",
+  "description": "A bash script that checks if a Linux service is running with systemctl and restarts it automatically if it has stopped. Schedule every minute with cron.",
+  "url": "https://bashsnippets.xyz/snippets/restart-service-if-stopped.html",
   "author": {
     "@type": "Organization",
     "name": "BashSnippets",
@@ -346,7 +348,7 @@
   "inLanguage": "en-US",
   "isAccessibleForFree": true
 }
-  </script>
+</script>
 </head>
 <body>
 
@@ -378,20 +380,19 @@
   <div class="breadcrumb">
     <a href="/">BashSnippets</a><span>›</span>
     <a href="/snippets/">Snippets</a><span>›</span>
-    Disk Space Warning
+    Restart Service If Stopped
   </div>
 
   <div class="page-header">
     <div class="tag-row">
       <span class="tag tag-green">beginner</span>
-      <span class="tag tag-blue">monitor</span>
+      <span class="tag tag-blue">systemd</span>
       <span class="tag tag-blue">cron-ready</span>
     </div>
-    <h1>Disk Space Warning Script</h1>
-    <p class="page-intro">
-      Run df / to get your disk usage as a percentage. Compare it to a threshold. When it crosses 80%, print a warning. That's the entire script — no installs, no dependencies, just bash.
-      Schedule it hourly with cron and you'll never find out your disk is full from a crashed deployment.
-    </p>
+    <h1>Restart a Service If It's Stopped</h1>
+    <p class="tagline-lead">nginx goes down at 3am. This script brings it back up before anyone notices.</p>
+    <p class="page-intro">Services crash. nginx, MySQL, Redis — they all have bad moments. The difference between a 2-minute outage and a 2-hour outage is whether something is watching. This script runs every minute via cron, silently checks your service, and restarts it the moment it stops.</p>
+    <p class="page-intro">Uses <code>systemctl</code>, which is available on Ubuntu 16.04+, Debian 9+, CentOS 7+, and every other modern Linux distro. No dependencies needed.</p>
   </div>
 
   <!-- AD SLOT TOP -->
@@ -405,68 +406,83 @@
   </div>
 
   <h2>The Script</h2>
-  <p>Paste this into a file called <code>diskcheck.sh</code> and you're set. Change <code>THRESHOLD</code> to whatever percentage you want to be warned at.</p>
+  <p>Save as <code>service-watchdog.sh</code>. Set <code>SERVICE</code> to any unit from <code>systemctl list-units --type=service</code>. If you use <code>sudo systemctl start</code> inside the script (as below), configure passwordless sudo for that command for your cron user, or run the watchdog as root.</p>
 
   <div class="code-block">
     <div class="code-header">
-      <span class="filename">diskcheck.sh</span>
+      <span class="filename">service-watchdog.sh</span>
       <button class="copy-btn" onclick="copyCode(this)">copy</button>
     </div>
     <pre><span class="comment">#!/bin/bash</span>
-<span class="comment"># Disk Space Warning</span>
-<span class="comment"># Checks disk usage and warns if over 80%.</span>
-<span class="comment"># Great for daily cron on a server or VPS.</span>
-<span class="comment">#</span>
-<span class="comment"># USAGE: ./diskcheck.sh</span>
-<span class="comment"># REQUIRES: bash, df, awk, tr (all pre-installed on Linux/macOS)</span>
 
-<span class="var">THRESHOLD</span>=<span class="num">80</span>   <span class="comment"># ← warn when disk usage hits this %</span>
-<span class="var">PARTITION</span>=<span class="str">"/"</span>  <span class="comment"># ← which partition to check (/ = root)</span>
+<span class="var">CHECK</span>=<span class="str">"✓"</span>
+<span class="var">CROSS</span>=<span class="str">"✗"</span>
 
-<span class="var">USAGE</span>=$(<span class="kw">df</span> <span class="str">"$PARTITION"</span> | <span class="kw">awk</span> <span class="str">'NR==2{print $5}'</span> | <span class="kw">tr</span> -d <span class="str">'%'</span>)
+<span class="comment"># --- Configuration ---</span>
+<span class="var">SERVICE</span>=<span class="str">"nginx"</span>                              <span class="comment"># Change to your service name</span>
+<span class="var">LOG_FILE</span>=<span class="str">"/var/log/service-watchdog.log"</span>
+<span class="var">DATE</span>=$(<span class="kw">date</span> <span class="str">'+%Y-%m-%d %H:%M:%S'</span>)
+<span class="var">NOTIFY_EMAIL</span>=<span class="str">""</span>                              <span class="comment"># Optional: you@example.com</span>
 
-<span class="kw">if</span> [ <span class="str">"$USAGE"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
-  <span class="kw">echo</span> <span class="str">"⚠ WARNING: Disk at ${USAGE}% — time to clean up"</span>
+<span class="comment"># --- Check if service is running ---</span>
+<span class="kw">if</span> <span class="kw">systemctl</span> is-active --quiet <span class="str">"$SERVICE"</span>; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"$CHECK [$DATE] $SERVICE is running"</span>
 <span class="kw">else</span>
-  <span class="kw">echo</span> <span class="str">"✓ Disk OK: ${USAGE}% used (threshold: ${THRESHOLD}%)"</span>
+  <span class="kw">echo</span> <span class="str">"$CROSS [$DATE] $SERVICE is NOT running — attempting restart..."</span>
+  <span class="kw">echo</span> <span class="str">"$CROSS [$DATE] $SERVICE DOWN — restarting"</span> &gt;&gt; <span class="str">"$LOG_FILE"</span>
+
+  <span class="comment"># --- Attempt restart ---</span>
+  <span class="kw">if</span> <span class="kw">sudo systemctl start</span> <span class="str">"$SERVICE"</span>; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"$CHECK [$DATE] $SERVICE restarted successfully"</span> | <span class="kw">tee</span> -a <span class="str">"$LOG_FILE"</span>
+
+    <span class="comment"># --- Optional: send email notification ---</span>
+    <span class="kw">if</span> [ -n <span class="str">"$NOTIFY_EMAIL"</span> ]; <span class="kw">then</span>
+      <span class="kw">echo</span> <span class="str">"$SERVICE was down and has been restarted on $(hostname) at $DATE"</span> \
+        | <span class="kw">mail</span> -s <span class="str">"[RECOVERED] $SERVICE restarted"</span> <span class="str">"$NOTIFY_EMAIL"</span>
+    <span class="kw">fi</span>
+  <span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"$CROSS [$DATE] $SERVICE FAILED to restart — manual intervention needed"</span> \
+      | <span class="kw">tee</span> -a <span class="str">"$LOG_FILE"</span>
+
+    <span class="kw">if</span> [ -n <span class="str">"$NOTIFY_EMAIL"</span> ]; <span class="kw">then</span>
+      <span class="kw">echo</span> <span class="str">"$SERVICE failed to restart on $(hostname) at $DATE. Check: journalctl -u $SERVICE"</span> \
+        | <span class="kw">mail</span> -s <span class="str">"[CRITICAL] $SERVICE restart failed"</span> <span class="str">"$NOTIFY_EMAIL"</span>
+    <span class="kw">fi</span>
+  <span class="kw">fi</span>
 <span class="kw">fi</span></pre>
   </div>
 
   <div class="callout">
-    <div class="callout-title">✓ What this does, line by line</div>
-    <p><code>df "$PARTITION"</code> shows disk stats for your chosen partition. <code>awk 'NR==2{print $5}'</code> grabs the 5th column (usage %) from the second row. <code>tr -d '%'</code> strips the percent sign so the number can be compared mathematically. The <code>if</code> block then prints a warning or an all-clear.</p>
+    <div class="callout-title">Schedule this as a 1-minute cron job</div>
+    <p>* * * * * /home/user/service-watchdog.sh
+To suppress cron email output:
+* * * * * /home/user/service-watchdog.sh &gt;&gt; /var/log/watchdog-cron.log 2&gt;&amp;1</p>
   </div>
 
-  <h2>Step-by-Step Setup</h2>
+  <div class="callout blue">
+    <div class="callout-title">💡 Cron and sudo</div>
+    <p style="white-space:normal;">Cron runs with a minimal environment and no TTY. If <code>sudo systemctl start</code> prompts for a password, the job fails silently. Prefer a <code>sudoers</code> rule for your cron user (NOPASSWD for <code>/bin/systemctl start yourservice</code>) or run without <code>sudo</code> when the cron user already has permission to manage the unit.</p>
+  </div>
 
-  <h3>Step 1 — Create the file</h3>
+  <h2>How It Works</h2>
+  <p><code>systemctl is-active --quiet "$SERVICE"</code> asks systemd whether the unit is active. With <code>--quiet</code>, there is no output—only an exit status: <strong>0</strong> means running (script prints the ✓ path and exits), anything else means inactive, failed, or missing (<strong>non-zero</strong>), so the script enters the restart branch.</p>
+  <p>When the service is down, the script logs a line by appending to <code>LOG_FILE</code>. On success, <code>echo ... | tee -a "$LOG_FILE"</code> prints the recovered message <em>and</em> appends it to the log—the operator sees immediate feedback while cron still has an audit trail.</p>
+  <p>Failure handling is two levels deep: first, is the unit running? Second, did <code>systemctl start</code> succeed? If the restart command fails (bad unit name, dependency error, masked service), <code>if sudo systemctl start</code> is false—you get ✓/recovery email only after a verified start; otherwise the script emits a ✗ critical message, logs via <code>tee -a</code>, and sends a <strong>[CRITICAL]</strong> email pointing you at <code>journalctl -u $SERVICE</code> instead of implying the service is healthy.</p>
+
+  <h2>Quick setup</h2>
+  <h3>Executable and test</h3>
   <div class="code-block">
     <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="kw">nano</span> diskcheck.sh</pre>
+    <pre><span class="kw">chmod</span> +x /home/user/service-watchdog.sh
+/home/user/service-watchdog.sh</pre>
   </div>
-  <p>Paste the script, then press <strong>Ctrl+X → Y → Enter</strong> to save.</p>
 
-  <h3>Step 2 — Set your threshold</h3>
-  <p>Change <code>THRESHOLD=80</code> to match your needs:</p>
-  <table class="var-table">
-    <tr><th>Threshold</th><th>When to use it</th></tr>
-    <tr><td>THRESHOLD=70</td><td>Servers with fast-growing logs or databases — catch it early</td></tr>
-    <tr><td>THRESHOLD=80</td><td>General purpose — the sensible default for most setups</td></tr>
-    <tr><td>THRESHOLD=90</td><td>Storage servers where 90% full is normal and expected</td></tr>
-  </table>
-
-  <h3>Step 3 — Make it executable</h3>
+  <h3>Open crontab</h3>
   <div class="code-block">
     <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="kw">chmod</span> +x diskcheck.sh</pre>
+    <pre><span class="kw">crontab</span> -e</pre>
   </div>
-
-  <h3>Step 4 — Run it manually first</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre>./<span class="kw">diskcheck.sh</span></pre>
-  </div>
-  <p>You'll see either: <code>✓ Disk OK: 43% used (threshold: 80%)</code> or a warning if you're already over.</p>
+  <p>Paste one of the cron lines from the callout above, using your real path instead of <code>/home/user/</code>.</p>
 
   <!-- AD SLOT MID -->
   <div class="ad-slot">
@@ -478,144 +494,36 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <h2>Schedule It with Cron</h2>
-  <p>This script is useless if you only run it manually. The whole point is to let it run in the background and catch problems before they happen.</p>
-
-  <h3>Open your crontab</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="kw">crontab</span> -e</pre>
-  </div>
-
-  <h3>Pick your schedule</h3>
-  <div class="code-block">
-    <div class="code-header"><span class="filename">crontab</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="comment"># Check every hour</span>
-<span class="num">0 * * * *</span> /home/user/diskcheck.sh
-
-<span class="comment"># Check every day at 8am</span>
-<span class="num">0 8 * * *</span> /home/user/diskcheck.sh
-
-<span class="comment"># Check every 5 minutes (high-traffic servers)</span>
-<span class="num">*/5 * * * *</span> /home/user/diskcheck.sh</pre>
-  </div>
-
-  <div class="callout blue">
-    <div class="callout-title">💡 Use the full path in cron</div>
-    <p>Cron doesn't know where your script lives unless you tell it. Always use the full path like <code>/home/user/diskcheck.sh</code>, not just <code>./diskcheck.sh</code>.</p>
-  </div>
-
   <h2>Variations</h2>
 
-  <h3>Check multiple partitions at once</h3>
-  <p>Servers often have separate partitions for <code>/var</code>, <code>/home</code>, or <code>/data</code>. Check them all:</p>
-  <div class="code-block">
-    <div class="code-header"><span class="filename">diskcheck-multi.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="comment">#!/bin/bash</span>
-<span class="var">THRESHOLD</span>=<span class="num">80</span>
-<span class="var">PARTITIONS</span>=(<span class="str">"/"</span> <span class="str">"/var"</span> <span class="str">"/home"</span>)
+  <h3>Watch multiple services</h3>
+  <p>Use a Bash array of unit names and loop: for each element, call <code>systemctl is-active --quiet "$svc"</code> and restart on failure—the same logic as above, reused per service.</p>
 
-<span class="kw">for</span> <span class="var">p</span> <span class="kw">in</span> <span class="str">"${PARTITIONS[@]}"</span>; <span class="kw">do</span>
-  <span class="comment"># Skip if partition doesn't exist</span>
-  <span class="kw">mountpoint</span> -q <span class="str">"$p"</span> || <span class="kw">continue</span>
+  <h3>Use systemd’s own watchdog semantics</h3>
+  <p>For long-running apps you control, a unit drop-in can set <code>Restart=on-failure</code> (and related options) so systemd restarts the process without cron. Cron still helps when you want mail, extra logging, or cross-checks across several units.</p>
 
-  <span class="var">USAGE</span>=$(<span class="kw">df</span> <span class="str">"$p"</span> | <span class="kw">awk</span> <span class="str">'NR==2{print $5}'</span> | <span class="kw">tr</span> -d <span class="str">'%'</span>)
-  <span class="kw">if</span> [ <span class="str">"$USAGE"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
-    <span class="kw">echo</span> <span class="str">"⚠ $p is at ${USAGE}% — above ${THRESHOLD}% threshold"</span>
-  <span class="kw">else</span>
-    <span class="kw">echo</span> <span class="str">"✓ $p is OK: ${USAGE}%"</span>
-  <span class="kw">fi</span>
-<span class="kw">done</span></pre>
+  <h3>Slack or webhook alerts</h3>
+  <p>Replace the <code>mail</code> pipeline with <code>curl -X POST -H 'Content-Type: application/json'</code> to your Incoming Webhook URL, sending JSON with hostname, timestamp, and service name for recover vs. failure.</p>
+
+  <!-- AD SLOT (before affiliate) -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <h3>Send an email alert instead of just printing</h3>
-  <p>More useful than a print statement — sends you an actual email when the disk is almost full:</p>
-  <div class="code-block">
-    <div class="code-header"><span class="filename">diskcheck-email.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="comment">#!/bin/bash</span>
-<span class="var">THRESHOLD</span>=<span class="num">80</span>
-<span class="var">EMAIL</span>=<span class="str">"you@example.com"</span>  <span class="comment"># ← your email address</span>
-<span class="var">USAGE</span>=$(<span class="kw">df</span> / | <span class="kw">awk</span> <span class="str">'NR==2{print $5}'</span> | <span class="kw">tr</span> -d <span class="str">'%'</span>)
-
-<span class="kw">if</span> [ <span class="str">"$USAGE"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
-  <span class="kw">echo</span> <span class="str">"Disk is at ${USAGE}% on $(hostname). Clean it up."</span> \
-    | <span class="kw">mail</span> -s <span class="str">"⚠ Disk Warning: ${USAGE}% on $(hostname)"</span> <span class="str">"$EMAIL"</span>
-<span class="kw">fi</span></pre>
-  </div>
-
-  <div class="callout blue">
-    <div class="callout-title">💡 Install mail if it's missing</div>
-    <p>On Ubuntu/Debian: <code>sudo apt install mailutils</code>. On CentOS/RHEL: <code>sudo yum install mailx</code>. Then test it by running: <code>echo "test" | mail -s "test" you@example.com</code></p>
-  </div>
-
-  <h3>Show a full disk report</h3>
-  <p>A more detailed version that shows all mounted drives at once:</p>
-  <div class="code-block">
-    <div class="code-header"><span class="filename">diskcheck-report.sh</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
-    <pre><span class="comment">#!/bin/bash</span>
-<span class="comment"># Print a clean disk usage report for all real partitions</span>
-<span class="kw">echo</span> <span class="str">"=== Disk Space Report: $(date) ==="</span>
-<span class="kw">df</span> -h --output=target,used,avail,pcent \
-  | <span class="kw">grep</span> -v tmpfs \
-  | <span class="kw">grep</span> -v udev
-<span class="kw">echo</span> <span class="str">"=================================="</span></pre>
-  </div>
-
-  <h2>Disk Space Email Alert Variation</h2>
-
-  <h3>Add an Email Alert</h3>
-  <p>To get notified by email instead of just printing to the terminal, replace the echo warning with:</p>
-  <div class="code-block">
-    <div class="code-header">
-      <span class="filename">terminal</span>
-      <button class="copy-btn" onclick="copyCode(this)">copy</button>
-    </div>
-    <pre><span class="kw">echo</span> <span class="str">"Disk usage at ${USAGE}% on $(hostname)"</span> | \
-  <span class="kw">mail</span> -s <span class="str">"[ALERT] Disk Space Warning"</span> <span class="str">"you@example.com"</span></pre>
-  </div>
-  <p>Requires mailutils: <code>sudo apt install mailutils</code>. See the full <a href="/snippets/bash-send-email-alert.html">email alert snippet</a> for Gmail SMTP setup and spam prevention.</p>
-
-  <!-- AFFILIATE BOX -->
-   <!-- Namecheap Affiliate -->
-  <div class="affiliate-box" style="border-color:#d85121;">
-    <div class="affiliate-box-text">
-      <strong>If your site keeps going down, your hosting might be the problem.</strong>
-      Namecheap shared hosting starts at $1.58/mo. Free domain, free SSL,
-      99.9% uptime guarantee. Switch before the next outage finds you first.
-    </div>
-    <a class="btn-affiliate"
-       href="https://namecheap.pxf.io/c/7260430/1632743/5618"
-       target="_blank"
-       rel="noopener sponsored"
-       style="background:#d85121;color:#fff;">
-      View Hosting Plans →
-    </a>
-  </div>
+  <!-- DigitalOcean Affiliate -->
   <div class="affiliate-box">
     <div class="affiliate-box-text">
-      <strong>Schedule this warning on a server that runs 24/7</strong>
-      Your local machine sleeps. A $4/mo DigitalOcean Droplet runs this disk check every hour, forever. New users get $200 in credits — enough for 4+ months free.
+      <strong>This script only works if something is running it 24/7</strong>
+      Service monitoring is pointless on a machine that sleeps. A DigitalOcean Droplet runs this watchdog cron every minute, every hour, indefinitely — for $4/mo. New accounts get $200 in free credits.
     </div>
-    <a class="btn-affiliate" href="https://www.digitalocean.com/?refcode=7a196437764c" target="_blank" rel="noopener sponsored">Get $200 Free →</a>
+    <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Start your Droplet →</a>
   </div>
   <a href="https://www.digitalocean.com/?refcode=7a196437764c&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg" alt="DigitalOcean Referral Badge" /></a>
-
-  <h2>Common Mistakes</h2>
-
-  <div class="callout amber">
-    <div class="callout-title">⚠ Checking the wrong partition</div>
-    <p>On servers with separate mount points, <code>df /</code> only tells you about the root partition. If your logs live on <code>/var</code>, you need <code>df /var</code>. Run <code>df -h</code> with no arguments to see all partitions and their usage at once.</p>
-  </div>
-
-  <div class="callout amber">
-    <div class="callout-title">⚠ The script warns but nobody sees it</div>
-    <p>If you're running this via cron with no email configured, the output goes nowhere. Either set up email alerts (see variation above) or redirect output to a log file: add <code>&gt;&gt; /var/log/diskcheck.log 2&gt;&amp;1</code> to your cron line.</p>
-  </div>
-
-  <div class="callout amber">
-    <div class="callout-title">⚠ df output differs by OS</div>
-    <p>This script targets Linux. On macOS, the <code>df</code> output format is slightly different. Replace the awk command with: <code>df -P / | awk 'NR==2{print $5}' | tr -d '%'</code> for cross-platform compatibility.</p>
-  </div>
 
   <!-- AD SLOT BOTTOM -->
   <div class="ad-slot">
@@ -627,34 +535,32 @@
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <h2>Understanding the Commands</h2>
-  <p>Here's a breakdown of each command used in this script so you can adapt it confidently:</p>
-
   <table class="var-table">
-    <tr><th>Command</th><th>What it does</th></tr>
-    <tr><td>df /</td><td>Shows disk space stats for the root partition in 1K blocks</td></tr>
-    <tr><td>df -h /</td><td>Same as above but human-readable (shows GB/MB instead of blocks)</td></tr>
-    <tr><td>awk 'NR==2{print $5}'</td><td>Grabs the 5th column from line 2 — which is the "Use%" column</td></tr>
-    <tr><td>tr -d '%'</td><td>Strips the percent sign so the number can be used in math comparisons</td></tr>
-    <tr><td>[ "$USAGE" -gt "$THRESHOLD" ]</td><td>Integer comparison: is usage greater than threshold?</td></tr>
+    <caption style="caption-side:bottom;font-size:12px;color:var(--muted);text-align:left;padding-top:8px;">Quick reference — commands used in this script</caption>
+    <tr><th>Command</th><th>Role here</th></tr>
+    <tr><td>systemctl is-active --quiet</td><td>Exit 0 only when the unit is active; gates the restart path</td></tr>
+    <tr><td>sudo systemctl start</td><td>Attempts to bring the stopped unit back to active state</td></tr>
+    <tr><td>tee -a</td><td>Mirror stdout to the terminal (or cron mail) while appending <code>LOG_FILE</code></td></tr>
+    <tr><td>mail</td><td>Optional notifications when optional <code>NOTIFY_EMAIL</code> is set (needs mail routing configured)</td></tr>
+    <tr><td>journalctl -u SERVICE</td><td>Inspect why a restart failed (logs from systemd)</td></tr>
   </table>
 
   <h2>Frequently Asked Questions</h2>
 
-  <h3>How do I check disk space in Linux with bash?</h3>
-  <p>Use the <code>df</code> command. Running <code>df -h /</code> shows human-readable disk usage for your root partition. To extract just the percentage as a number you can use in a script: <code>df / | awk 'NR==2{print $5}' | tr -d '%'</code></p>
+  <h3>How do I check if a service is running in bash?</h3>
+  <p>Use <code>systemctl is-active</code>: <code>systemctl is-active --quiet nginx</code> returns exit code 0 if running, non-zero if stopped. Use in an <code>if</code> statement: <code>if systemctl is-active --quiet nginx; then ...</code></p>
 
-  <h3>How do I get an email when my disk is full?</h3>
-  <p>Combine the disk space check with the mail command: if <code>df</code> usage exceeds your threshold, run <code>echo 'Disk at ${USAGE}%' | mail -s 'Disk Alert' you@example.com</code>. Install mailutils first: <code>sudo apt install mailutils</code>. See our <a href="/snippets/bash-send-email-alert.html">email alert snippet</a> for a complete example.</p>
+  <h3>How do I restart a service automatically in Linux?</h3>
+  <p>Write a bash script that checks <code>systemctl is-active</code> and runs <code>systemctl start</code> if the service is stopped. Schedule it every minute with cron: <code>* * * * * /home/user/watchdog.sh</code></p>
 
-  <h3>How do I get an alert when disk space is low?</h3>
-  <p>Write a bash script that reads the <code>df</code> output, compares it to a threshold using an <code>if</code> statement, and sends an email with <code>mail</code> when it trips. Schedule it with <code>cron</code> to run automatically on a repeating interval.</p>
+  <h3>What services can I monitor with this script?</h3>
+  <p>Any systemd service: nginx, apache2, mysql, postgresql, redis, docker, ssh, and custom services. Change <code>SERVICE='nginx'</code> to any service name from <code>systemctl list-units</code>.</p>
 
-  <h3>How do I send an email alert from a bash script?</h3>
-  <p>Use the <code>mail</code> command: <code>echo "Disk almost full!" | mail -s "Disk Warning" you@example.com</code>. You may need to install it first: <code>sudo apt install mailutils</code> on Ubuntu/Debian.</p>
+  <h3>How do I run a bash script every minute with cron?</h3>
+  <p>Open <code>crontab -e</code> and add: <code>* * * * * /full/path/to/script.sh</code> — the five asterisks mean &quot;every minute of every hour of every day&quot;.</p>
 
-  <h3>What does the df / command do in Linux?</h3>
-  <p><code>df</code> stands for "disk free." Running <code>df /</code> shows the disk space statistics for your root filesystem — total size, used space, available space, and the usage percentage. Add the <code>-h</code> flag for human-readable output in GB and MB.</p>
+  <h3>What is systemctl is-active?</h3>
+  <p><code>systemctl is-active servicename</code> checks whether a systemd service is currently running. It returns exit code 0 (success) if active, and 1+ (error) if inactive, failed, or not found.</p>
 
   <div style="background:var(--bg2);border:1px solid var(--green-dim);border-left:3px solid var(--green);border-radius:8px;padding:18px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
     <div style="flex:1;min-width:200px;">
@@ -680,17 +586,17 @@
 
   <h2>Related Snippets</h2>
   <div class="related-grid">
+    <a class="related-card" href="/snippets/disk-space-warning.html">
+      <div class="related-card-title">Disk Space Warning</div>
+      <div class="related-card-tag">beginner · monitor</div>
+    </a>
+    <a class="related-card" href="/snippets/check-if-website-is-up.html">
+      <div class="related-card-title">Check If a Website Is Up</div>
+      <div class="related-card-tag">beginner · http</div>
+    </a>
     <a class="related-card" href="/snippets/bash-send-email-alert.html">
       <div class="related-card-title">Send Email Alert from Bash</div>
       <div class="related-card-tag">beginner · notify</div>
-    </a>
-    <a class="related-card" href="/snippets/automated-file-backup.html">
-      <div class="related-card-title">Automated File Backup</div>
-      <div class="related-card-tag">beginner · automation</div>
-    </a>
-    <a class="related-card" href="/snippets/delete-old-log-files.html">
-      <div class="related-card-title">Delete Old Log Files</div>
-      <div class="related-card-tag">intermediate · automation</div>
     </a>
     <a class="related-card" href="/snippets/">
       <div class="related-card-title">← All Snippets</div>
@@ -701,11 +607,11 @@
 </main>
 <div class="llm-context" style="display:none" aria-hidden="true">
 Source: BashSnippets.xyz — free bash script library
-Script: diskcheck.sh
+Script: service-watchdog.sh
 License: MIT
-Topic: Disk space monitoring with Bash
-Usage: This bash script checks disk usage against a threshold and warns before a drive fills up.
-URL: https://bashsnippets.xyz/snippets/disk-space-warning.html
+Topic: systemd service watchdog restart with Bash
+Usage: Cron-friendly script checks systemctl is-active and starts the unit if inactive, with logging and optional email.
+URL: https://bashsnippets.xyz/snippets/restart-service-if-stopped.html
 </div>
 
 <footer>

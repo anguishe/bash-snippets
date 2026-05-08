@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<!-- NAV AUDIT 2026-05-08: New snippet; mirrors automated-file-backup structure, GA4/AdSense/affiliates per CURSOR_CONTEXT. -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>MySQL Database Backup Bash Script – BashSnippets.xyz</title>
+  <meta name="description" content="A bash script that automatically backs up a MySQL or MariaDB database with mysqldump, adds a timestamp, and keeps only the last 7 backups. Schedule with cron." />
+  <meta name="author" content="BashSnippets" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bashsnippets.xyz/snippets/mysql-database-backup.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="MySQL Database Backup Script – Bash Snippets" />
+  <meta property="og:description" content="Automated mysqldump backups with timestamps, gzip compression, and retention cleanup. Cron-ready bash script." />
+  <meta property="og:type" content="article" />
+  <meta property="article:section" content="Bash Scripts" />
+  <meta property="article:tag" content="mysql database backup bash script" />
+  <meta property="og:url" content="https://bashsnippets.xyz/snippets/mysql-database-backup.html" />
+  <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BashSnippets — copy-paste bash scripts for linux and devs" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://bashsnippets.xyz/og-image.png" />
+
+  <!-- Schema: HowTo -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Back Up a MySQL Database with Bash",
+    "description": "Use mysqldump in a bash script to create compressed timestamped backups and prune files older than seven days.",
+    "author": {
+      "@type": "Person",
+      "@id": "https://bashsnippets.xyz/#author",
+      "name": "BashSnippets"
+    },
+    "datePublished": "2026-05-08",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Install mysqldump",
+        "text": "Ensure mysqldump is installed (MySQL or MariaDB client package). Verify with: mysqldump --version."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Configure variables",
+        "text": "Set DB_USER, DB_NAME, BACKUP_DIR, and KEEP_DAYS. Prefer ~/.my.cnf for passwords instead of hardcoding."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Save and chmod",
+        "text": "Save the script as mysql-backup.sh and run chmod +x mysql-backup.sh."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Schedule with cron",
+        "text": "Add a crontab entry such as 0 2 * * * /path/to/mysql-backup.sh to run nightly."
+      }
+    ]
+  }
+  </script>
+
+  <!-- Schema: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I backup a MySQL database with bash?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use mysqldump: mysqldump -u username -p dbname > backup.sql. In a script, pass the password with -p'password' or use a .my.cnf credentials file."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I automate MySQL backups with cron?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Write a mysqldump script, chmod +x it, then add to crontab: 0 2 * * * /home/user/mysql-backup.sh to run every night at 2am."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I keep only the last 7 MySQL backups?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use find to delete old files: find /backup/ -name '*.sql.gz' -mtime +7 -delete. This removes any backup files older than 7 days."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I compress MySQL backups?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Pipe mysqldump output through gzip: mysqldump ... | gzip > backup.sql.gz. A typical database compresses 80-90%, saving significant disk space."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I backup all MySQL databases at once?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use mysqldump --all-databases instead of specifying one database name. This creates a single dump of all databases."
+        }
+      }
+    ]
+  }
+  </script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon"
+    href="/favicon.ico" />
+  <link rel="icon" type="image/png"
+    sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon"
+    sizes="180x180" href="/apple-touch-icon.png" />
+
+   <!-- Schema: Author / Person -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": "https://bashsnippets.xyz/#author",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz",
+    "sameAs": [
+      "https://youtube.com/@BashSnippets",
+      "https://tiktok.com/@BashSnippets",
+      "https://dev.to/bashsnippets",
+      "https://coderlegion.com/user/BashSnippets"
+    ],
+    "knowsAbout": [
+      "bash scripting",
+      "Linux system administration",
+      "shell automation",
+      "DevOps",
+      "cron jobs",
+      "MySQL"
+    ]
+  }
+  </script>
+
+    <!-- Schema: WebSite -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz",
+    "description": "Free copy-paste bash scripts for Linux users and developers. Plain-English explanations. New scripts weekly.",
+    "author": {
+      "@type": "Person",
+      "@id": "https://bashsnippets.xyz/#author"
+    }
+  }
+  </script>
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6B01TGE8XS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6B01TGE8XS');
+  </script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127" crossorigin="anonymous"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --bg3:         #1c2128;
+      --border:      #30363d;
+      --green:       #39d353;
+      --green-dim:   #1a4a2e;
+      --amber:       #e3b341;
+      --amber-dim:   #3d2f0d;
+      --blue:        #58a6ff;
+      --blue-dim:    #0d2a4a;
+      --red:         #f85149;
+      --red-dim:     #3d1515;
+      --text:        #e6edf3;
+      --muted:       #8b949e;
+      --heading-font: 'Syne', sans-serif;
+      --mono-font:    'IBM Plex Mono', monospace;
+      --radius:       8px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--mono-font); background: var(--bg); color: var(--text); line-height: 1.7; font-size: 15px; }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo { font-family: var(--heading-font); font-weight: 800; font-size: 18px; color: var(--green); letter-spacing: -0.5px; text-decoration: none; }
+    .nav-logo span { color: var(--muted); }
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-mobile-menu { display:none; background:transparent; border:1px solid var(--border); color:var(--muted); font-size:18px; padding:4px 10px; border-radius:var(--radius); cursor:pointer; font-family:var(--mono-font); line-height:1; }
+    .nav-mobile-menu:hover { color:var(--text); border-color:var(--muted); }
+    .nav-mobile-drawer { display:none; flex-direction:column; background:var(--bg2); border-bottom:1px solid var(--border); padding:12px 24px; gap:4px; position:sticky; top:53px; z-index:7; }
+    .nav-mobile-drawer.open { display:flex; }
+    .nav-mobile-drawer a { font-size:14px; color:var(--muted); padding:8px 0; border-bottom:1px solid var(--border); text-decoration:none; }
+    .nav-mobile-drawer a:last-child { border-bottom:none; }
+    .nav-mobile-drawer a:hover { color:var(--text); }
+
+    /* MAIN LAYOUT */
+    main { max-width: 860px; margin: 0 auto; padding: 60px 24px 80px; }
+
+    /* BREADCRUMB */
+    .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 32px; }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb a:hover { color: var(--text); text-decoration: none; }
+    .breadcrumb span { margin: 0 6px; }
+
+    /* PAGE HEADER */
+    .page-header { margin-bottom: 40px; }
+    .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .tag {
+      font-size: 11px; padding: 3px 10px; border-radius: 100px;
+      text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600;
+    }
+    .tag-green { background: var(--green-dim); color: var(--green); border: 1px solid var(--green); }
+    .tag-blue  { background: var(--blue-dim);  color: var(--blue);  border: 1px solid var(--blue);  }
+    .tag-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid var(--amber); }
+
+    h1 { font-family: var(--heading-font); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+    .page-intro { font-size: 16px; color: var(--muted); line-height: 1.8; max-width: 680px; }
+
+    /* SECTION HEADINGS */
+    h2 { font-family: var(--heading-font); font-size: 1.3rem; font-weight: 700; margin: 48px 0 16px; color: var(--text); }
+    h2::before { content: '// '; color: var(--green); }
+    h3 { font-family: var(--heading-font); font-size: 1rem; font-weight: 700; margin: 28px 0 10px; color: var(--green); }
+
+    p { color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+    ul, ol { padding-left: 24px; color: var(--muted); line-height: 1.9; margin-bottom: 16px; }
+    li { margin-bottom: 4px; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* CODE BLOCK */
+    .code-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 24px 0;
+    }
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px; color: var(--muted);
+    }
+    .code-header .filename { color: var(--green); font-weight: 600; }
+    .copy-btn {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); font-family: var(--mono-font); font-size: 11px;
+      padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    }
+    .copy-btn:hover { border-color: var(--green); color: var(--green); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    pre {
+      padding: 24px;
+      overflow-x: auto;
+      font-family: var(--mono-font);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text);
+    }
+    .comment { color: var(--muted); }
+    .kw  { color: var(--green); }
+    .var { color: var(--blue); }
+    .str { color: var(--amber); }
+    .num { color: #f78166; }
+
+    /* INLINE CODE */
+    code {
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 2px 6px; border-radius: 4px;
+      font-family: var(--mono-font); font-size: 13px; color: var(--green);
+    }
+
+    /* CALLOUT BOXES */
+    .callout {
+      border-left: 3px solid var(--green);
+      background: var(--bg2);
+      padding: 16px 20px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 24px 0;
+    }
+    .callout.amber { border-left-color: var(--amber); }
+    .callout.blue  { border-left-color: var(--blue); }
+    .callout.red {
+      border-left-color: var(--red);
+      background: var(--red-dim);
+      border: 1px solid rgba(248, 81, 73, 0.35);
+      border-left-width: 3px;
+    }
+    .callout-title { font-weight: 600; color: var(--text); font-size: 13px; margin-bottom: 6px; }
+    .callout.red .callout-title { color: var(--red); }
+    .callout p { margin-bottom: 0; font-size: 13px; }
+    .callout p + p { margin-top: 10px; margin-bottom: 0; }
+    .callout pre {
+      padding: 12px 14px;
+      margin-top: 10px;
+      margin-bottom: 0;
+      background: var(--bg3);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    /* VARIATION TABLE */
+    .var-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+    .var-table th { text-align: left; padding: 10px 12px; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .var-table td { padding: 10px 12px; border-bottom: 1px solid var(--bg3); color: var(--muted); vertical-align: top; }
+    .var-table td:first-child { color: var(--green); font-weight: 600; }
+    .var-table tr:last-child td { border-bottom: none; }
+
+    /* AD SLOT */
+    .ad-slot {
+      border: 1px dashed var(--border); border-radius: var(--radius);
+      padding: 24px; text-align: center; color: var(--muted); font-size: 12px;
+      background: var(--bg2); margin: 40px 0;
+    }
+
+    /* RELATED LINKS */
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 16px; }
+    .related-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
+      transition: border-color 0.2s;
+      display: block; text-decoration: none;
+    }
+    .related-card:hover { border-color: var(--green); text-decoration: none; }
+    .related-card-title { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+    .related-card-tag { font-size: 11px; color: var(--muted); }
+
+    /* AFFILIATE BOX */
+    .affiliate-box {
+      background: var(--bg2); border: 1px solid var(--amber);
+      border-radius: var(--radius); padding: 20px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      margin: 40px 0; flex-wrap: wrap;
+    }
+    .affiliate-box-text { font-size: 13px; color: var(--muted); }
+    .affiliate-box-text strong { color: var(--text); display: block; margin-bottom: 4px; font-size: 14px; }
+    .btn-affiliate {
+      background: var(--amber); color: #0d1117; font-family: var(--mono-font);
+      font-weight: 600; font-size: 13px; padding: 10px 20px;
+      border-radius: var(--radius); border: none; cursor: pointer;
+      white-space: nowrap; display: inline-block; transition: opacity 0.2s; text-decoration: none;
+    }
+    .btn-affiliate:hover { opacity: 0.85; text-decoration: none; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 24px;
+      text-align: center; font-size: 12px; color: var(--muted);
+      display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-menu { display: block; }
+      .affiliate-box { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "BashSnippets",
+      "item": "https://bashsnippets.xyz/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Snippets",
+      "item": "https://bashsnippets.xyz/snippets/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "MySQL Database Backup Script",
+      "item": "https://bashsnippets.xyz/snippets/mysql-database-backup.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "MySQL Database Backup Bash Script \u2013 BashSnippets.xyz",
+  "description": "A bash script that automatically backs up a MySQL or MariaDB database with mysqldump, adds a timestamp, and keeps only the last 7 backups. Schedule with cron.",
+  "url": "https://bashsnippets.xyz/snippets/mysql-database-backup.html",
+  "author": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "BashSnippets",
+    "url": "https://bashsnippets.xyz"
+  },
+  "inLanguage": "en-US",
+  "isAccessibleForFree": true
+}
+  </script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">bash<span>/</span>snippets</a>
+  <ul class="nav-links">
+    <li><a href="/snippets/">Snippets</a></li>
+    <li><a href="/#builder">Builder</a></li>
+    <li><a href="/#resources">Resources</a></li>
+    <li><a href="/tools/">Tools</a></li>
+    <li><a href="/#faq">FAQ</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-mobile-menu" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">&#9776;</button>
+</nav>
+
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/">BashSnippets</a>
+    <a href="/snippets/">Snippets</a>
+    <a href="/tools/">Tools</a>
+    <a href="/snippets/">All Snippets</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+<main>
+
+  <div class="breadcrumb">
+    <a href="/">BashSnippets</a><span>›</span>
+    <a href="/snippets/">Snippets</a><span>›</span>
+    MySQL Database Backup
+  </div>
+
+  <div class="page-header">
+    <div class="tag-row">
+      <span class="tag tag-amber">intermediate</span>
+      <span class="tag tag-blue">mysql · mariadb</span>
+      <span class="tag tag-green">cron-ready</span>
+    </div>
+    <h1>MySQL Database Backup Script</h1>
+    <p class="page-intro">
+      Automated, timestamped, compressed. Set it once, sleep at night.
+      This script runs <code>mysqldump</code>, pipes through <code>gzip</code>, names files with the date and time,
+      and deletes dumps older than seven days so your disk does not fill up.
+    </p>
+  </div>
+
+  <!-- AD SLOT TOP -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h2>The Script</h2>
+  <p>Copy this into <code>mysql-backup.sh</code>, edit the configuration block, then make it executable.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="filename">mysql-backup.sh</span>
+      <button class="copy-btn" onclick="copyCode(this)">copy</button>
+    </div>
+    <pre id="script-main"><span class="comment">#!/bin/bash</span>
+
+<span class="var">CHECK</span>=<span class="str">"✓"</span>
+<span class="var">CROSS</span>=<span class="str">"✗"</span>
+
+<span class="comment"># --- Configuration ---</span>
+<span class="var">DB_USER</span>=<span class="str">"root"</span>
+<span class="var">DB_PASS</span>=<span class="str">"your_password"</span>          <span class="comment"># Or use ~/.my.cnf for security</span>
+<span class="var">DB_NAME</span>=<span class="str">"your_database"</span>          <span class="comment"># Change to your DB name</span>
+<span class="var">BACKUP_DIR</span>=<span class="str">"/var/backups/mysql"</span>
+<span class="var">KEEP_DAYS</span>=<span class="num">7</span>                       <span class="comment"># Delete backups older than this</span>
+<span class="var">DATE</span>=$(<span class="kw">date</span> '+%Y-%m-%d_%H-%M-%S')
+<span class="var">FILENAME</span>=<span class="str">"${DB_NAME}_${DATE}.sql.gz"</span>
+
+<span class="comment"># --- Create backup directory if it doesn't exist ---</span>
+<span class="kw">mkdir</span> -p <span class="str">"$BACKUP_DIR"</span>
+
+<span class="comment"># --- Run the backup ---</span>
+<span class="kw">echo</span> <span class="str">"Backing up database: $DB_NAME..."</span>
+
+<span class="kw">if</span> mysqldump -u<span class="str">"$DB_USER"</span> -p<span class="str">"$DB_PASS"</span> <span class="str">"$DB_NAME"</span> | gzip &gt; <span class="str">"${BACKUP_DIR}/${FILENAME}"</span>; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"$CHECK Backup created: ${BACKUP_DIR}/${FILENAME}"</span>
+  <span class="kw">echo</span> <span class="str">"$CHECK Size: $(du -sh "${BACKUP_DIR}/${FILENAME}" | cut -f1)"</span>
+<span class="kw">else</span>
+  <span class="kw">echo</span> <span class="str">"$CROSS Backup FAILED for $DB_NAME — check credentials and database name"</span>
+  <span class="kw">exit</span> <span class="num">1</span>
+<span class="kw">fi</span>
+
+<span class="comment"># --- Delete old backups ---</span>
+<span class="kw">echo</span> <span class="str">"Removing backups older than $KEEP_DAYS days..."</span>
+<span class="kw">find</span> <span class="str">"$BACKUP_DIR"</span> -name <span class="str">"*.sql.gz"</span> -mtime +<span class="str">"$KEEP_DAYS"</span> -delete
+<span class="kw">echo</span> <span class="str">"$CHECK Cleanup complete"</span>
+
+<span class="comment"># --- Show current backups ---</span>
+<span class="kw">echo</span> <span class="str">"Current backups:"</span>
+<span class="kw">ls</span> -lh <span class="str">"$BACKUP_DIR"</span>/*.sql.gz <span class="num">2</span>&gt;/dev/null || <span class="kw">echo</span> <span class="str">"No backups found"</span></pre>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-title">Important — security</div>
+    <p><strong>Never hardcode DB passwords in production.</strong> Use <code>~/.my.cnf</code> instead:</p>
+    <p>Create <code>~/.my.cnf</code> (for example <code>nano ~/.my.cnf</code>) with:</p>
+    <pre>[client]
+user=root
+password=yourpassword</pre>
+    <p>Then run <code>chmod 600 ~/.my.cnf</code> and remove <code>-u</code> and <code>-p</code> from the <code>mysqldump</code> command so credentials are read from that file.</p>
+  </div>
+
+  <h2>Quick Setup</h2>
+
+  <h3>Step 1 — Save the script</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="kw">nano</span> mysql-backup.sh</pre>
+  </div>
+  <p>Paste the script, adjust <code>DB_USER</code>, <code>DB_NAME</code>, <code>BACKUP_DIR</code>, and <code>KEEP_DAYS</code>, then save.</p>
+
+  <h3>Step 2 — Executable permission</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="kw">chmod</span> +x mysql-backup.sh</pre>
+  </div>
+
+  <h3>Step 3 — Test run</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre>./mysql-backup.sh</pre>
+  </div>
+  <p>You should see checkmarks, the new <code>.sql.gz</code> path, and a listing of current backups.</p>
+
+  <h2>How It Works</h2>
+
+  <p><strong><code>-u"$DB_USER"</code> and <code>-p"$DB_PASS"</code></strong> — These pass the MySQL username and password to <code>mysqldump</code>. Putting the flags adjacent to the quoted variables (<code>-u"root"</code>) avoids a space between <code>-p</code> and the password, which <code>mysqldump</code> expects when you supply the password on the command line. Prefer <code>~/.my.cnf</code> in production so the password never appears in process listings or the script file.</p>
+
+  <p><strong>Gzip pipe</strong> — <code>mysqldump</code> writes SQL to standard output. The pipe sends that stream into <code>gzip</code>, which compresses it before the shell redirects the result into <code>${BACKUP_DIR}/${FILENAME}</code>. You get a single <code>.sql.gz</code> file without an intermediate uncompressed dump on disk.</p>
+
+  <p><strong><code>find … -mtime +"$KEEP_DAYS" -delete</code></strong> — <code>-mtime +N</code> matches files last modified more than <code>N</code> days ago. Combined with <code>-name '*.sql.gz'</code>, only compressed dumps in your backup directory are removed. This keeps disk usage bounded while still honoring roughly “last seven daily backups” when you run the script once per day.</p>
+
+  <p><strong><code>mkdir -p "$BACKUP_DIR"</code></strong> — Creates the backup directory (and any missing parents) without error if it already exists, so the script can run on a fresh path or under cron without manual setup.</p>
+
+  <!-- AD SLOT MID -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <h2>Schedule It with Cron</h2>
+  <p>Open your crontab and point it at the full path of the script:</p>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">terminal</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="kw">crontab</span> -e</pre>
+  </div>
+  <div class="code-block">
+    <div class="code-header"><span class="filename">crontab</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div>
+    <pre><span class="comment"># Every night at 2:00</span>
+<span class="num">0 2 * * *</span> /home/user/mysql-backup.sh</pre>
+  </div>
+  <div class="callout blue">
+    <div class="callout-title">Cron PATH</div>
+    <p>If the job fails silently, set an explicit <code>PATH</code> at the top of the crontab or use absolute paths to <code>mysqldump</code> and <code>gzip</code>. Cron runs with a minimal environment.</p>
+  </div>
+
+  <h2>Variations</h2>
+
+  <table class="var-table">
+    <tr><th>Use case</th><th>What to change</th></tr>
+    <tr><td>Backup all databases</td><td>Run <code>mysqldump --all-databases</code> (and adjust <code>FILENAME</code> if you want a fixed name like <code>all-databases_DATE.sql.gz</code>). Omit the single-database argument.</td></tr>
+    <tr><td>Backup to a remote server</td><td>After a successful local dump, copy the file with <code>scp</code> or <code>rsync</code> to another host or object storage. Keeps data off the machine you are backing up.</td></tr>
+    <tr><td>MariaDB</td><td>The flow is the same. Use the MariaDB client tools: often <code>mariadb-dump</code> instead of <code>mysqldump</code>, and <code>mariadb</code> for restores — options align closely with MySQL.</td></tr>
+  </table>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>How do I backup a MySQL database with bash?</h3>
+  <p>Use <code>mysqldump</code>: <code>mysqldump -u username -p dbname &gt; backup.sql</code>. In a script, pass the password with <code>-p'password'</code> or use a <code>.my.cnf</code> credentials file.</p>
+
+  <h3>How do I automate MySQL backups with cron?</h3>
+  <p>Write a <code>mysqldump</code> script, <code>chmod +x</code> it, then add to crontab: <code>0 2 * * * /home/user/mysql-backup.sh</code> to run every night at 2am.</p>
+
+  <h3>How do I keep only the last 7 MySQL backups?</h3>
+  <p>Use <code>find</code> to delete old files: <code>find /backup/ -name '*.sql.gz' -mtime +7 -delete</code>. This removes any backup files older than 7 days.</p>
+
+  <h3>Should I compress MySQL backups?</h3>
+  <p>Yes. Pipe <code>mysqldump</code> output through <code>gzip</code>: <code>mysqldump ... | gzip &gt; backup.sql.gz</code>. A typical database compresses 80–90%, saving significant disk space.</p>
+
+  <h3>How do I backup all MySQL databases at once?</h3>
+  <p>Use <code>mysqldump --all-databases</code> instead of specifying one database name. This creates a single dump of all databases.</p>
+
+  <!-- AFTER CONTENT: AdSense -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-5399156622542127"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- DigitalOcean -->
+  <div class="affiliate-box">
+    <div class="affiliate-box-text">
+      <strong>Your backups need a home outside your production server</strong>
+      Running MySQL backups to the same server you're backing up from is one mistake away from losing everything. A $4/mo DigitalOcean Droplet is a perfect isolated backup destination or test environment. New accounts get $200 free.
+    </div>
+    <a class="btn-affiliate" href="https://m.do.co/c/7a196437764c" target="_blank" rel="noopener sponsored">Create a Droplet →</a>
+  </div>
+
+  <!-- Namecheap -->
+  <div class="affiliate-box" style="border-color:#d85121;">
+    <div class="affiliate-box-text">
+      <strong>Need a domain for your app?</strong>
+      Domains from Namecheap start at $1.16/year with free WhoisGuard.
+    </div>
+    <a class="btn-affiliate"
+       href="https://namecheap.pxf.io/c/7260430/1632743/5618"
+       target="_blank"
+       rel="noopener sponsored"
+       style="background:#d85121;color:#fff;">
+      Search domains →
+    </a>
+  </div>
+
+  <h2>Related Snippets</h2>
+  <div class="related-grid">
+    <a class="related-card" href="/snippets/automated-file-backup.html">
+      <div class="related-card-title">Automated File Backup</div>
+      <div class="related-card-tag">beginner · folders · cron</div>
+    </a>
+    <a class="related-card" href="/snippets/bash-error-handling.html">
+      <div class="related-card-title">Bash Error Handling</div>
+      <div class="related-card-tag">intermediate · robust scripts</div>
+    </a>
+    <a class="related-card" href="/snippets/delete-old-log-files.html">
+      <div class="related-card-title">Delete Old Log Files</div>
+      <div class="related-card-tag">cleanup · find · retention</div>
+    </a>
+    <a class="related-card" href="/snippets/">
+      <div class="related-card-title">← All Snippets</div>
+      <div class="related-card-tag">Browse the full library</div>
+    </a>
+  </div>
+
+</main>
+<div class="llm-context" style="display:none" aria-hidden="true">
+Source: BashSnippets.xyz — free bash script library
+Script: mysql-backup.sh
+License: MIT
+Topic: MySQL/MariaDB backup with mysqldump, gzip, retention
+Usage: This bash script dumps a database to a timestamped .sql.gz file and deletes dumps older than KEEP_DAYS.
+URL: https://bashsnippets.xyz/snippets/mysql-database-backup.html
+</div>
+
+<footer>
+  <a href="/snippets/">← Back to All Snippets</a>
+  <a href="/tools/">Tools</a>
+  <a href="/about.html">About</a>
+  <a href="/contact.html">Contact</a>
+  <a href="/privacy.html">Privacy Policy</a>
+</footer>
+
+<script>
+  function copyCode(btn) {
+    const pre = btn.closest('.code-block').querySelector('pre');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    if (navToggle && navDrawer) {
+      navToggle.addEventListener('click', () => {
+        navDrawer.classList.toggle('open');
+        navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+      });
+    }
+  </script>
+
+</body>
+</html>

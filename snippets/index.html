@@ -202,7 +202,7 @@
 </div>
 
 <div class="filter-bar">
-  <button class="filter-btn active" onclick="filterCards('all',this)">All (8)</button>
+  <button class="filter-btn active" onclick="filterCards('all',this)">All (14)</button>
   <button class="filter-btn" onclick="filterCards('beginner',this)">Beginner</button>
   <button class="filter-btn" onclick="filterCards('intermediate',this)">Intermediate</button>
   <button class="filter-btn" onclick="filterCards('monitor',this)">Monitor</button>
@@ -275,6 +275,18 @@
       </div>
     </a>
 
+    <a class="script-card" href="/snippets/mysql-database-backup.html" data-tags="intermediate automation">
+      <div class="script-card-header">
+        <div class="script-card-title">MySQL Database Backup</div>
+        <span class="script-card-tag tag-amber">intermediate</span>
+      </div>
+      <div class="script-card-desc">Dumps a MySQL/MariaDB database, compresses it, timestamps it, and deletes backups older than 7 days.</div>
+      <div class="script-card-footer">
+        <span class="script-card-cmd">mysqldump + gzip</span>
+        <span class="script-card-arrow">→</span>
+      </div>
+    </a>
+
   </div>
 
   <div class="category-label">Monitoring & Alerts</div>
@@ -312,6 +324,42 @@
       <div class="script-card-desc">Ping your site and get alerted when it goes down. Schedule every 5 minutes to catch outages before your users do.</div>
       <div class="script-card-footer">
         <span class="script-card-cmd">curl HTTP check</span>
+        <span class="script-card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="script-card" href="/snippets/monitor-cpu-ram-usage.html" data-tags="intermediate monitor">
+      <div class="script-card-header">
+        <div class="script-card-title">Monitor CPU &amp; RAM Usage</div>
+        <span class="script-card-tag tag-amber">intermediate</span>
+      </div>
+      <div class="script-card-desc">Checks CPU and RAM usage against a threshold and logs warnings. Schedule with cron for 24/7 server monitoring.</div>
+      <div class="script-card-footer">
+        <span class="script-card-cmd">free + threshold</span>
+        <span class="script-card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="script-card" href="/snippets/bash-send-email-alert.html" data-tags="intermediate monitor">
+      <div class="script-card-header">
+        <div class="script-card-title">Send Email Alert from Bash</div>
+        <span class="script-card-tag tag-amber">intermediate</span>
+      </div>
+      <div class="script-card-desc">Sends an email when disk space, CPU, or any condition exceeds your threshold. Requires mailutils.</div>
+      <div class="script-card-footer">
+        <span class="script-card-cmd">mail + threshold</span>
+        <span class="script-card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="script-card" href="/snippets/restart-service-if-stopped.html" data-tags="intermediate monitor">
+      <div class="script-card-header">
+        <div class="script-card-title">Restart Service If Stopped</div>
+        <span class="script-card-tag tag-amber">intermediate</span>
+      </div>
+      <div class="script-card-desc">Checks if a systemd service is running and restarts it automatically if it has stopped. Schedule every minute with cron.</div>
+      <div class="script-card-footer">
+        <span class="script-card-cmd">systemctl is-active</span>
         <span class="script-card-arrow">→</span>
       </div>
     </a>
@@ -358,6 +406,18 @@
       <div class="script-card-desc">chmod, chown, find -perm. Audit world-writable files, fix SSH key permissions, and secure your Linux server in one script.</div>
       <div class="script-card-footer">
         <span class="script-card-cmd">chmod · security · linux</span>
+        <span class="script-card-arrow">→</span>
+      </div>
+    </a>
+
+    <a class="script-card" href="/snippets/ssh-key-setup-script.html" data-tags="intermediate safety">
+      <div class="script-card-header">
+        <div class="script-card-title">SSH Key Setup Script</div>
+        <span class="script-card-tag tag-blue">security</span>
+      </div>
+      <div class="script-card-desc">Generates an Ed25519 SSH key pair, sets correct permissions, and optionally copies the public key to a remote server.</div>
+      <div class="script-card-footer">
+        <span class="script-card-cmd">ssh-keygen ed25519</span>
         <span class="script-card-arrow">→</span>
       </div>
     </a>
