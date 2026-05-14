@@ -1,206 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>About Bash Script Examples Library – BashSnippets.xyz</title>
-<meta name="description" content="Learn why BashSnippets publishes practical bash script examples for Linux automation, cron, grep, chmod, and backups. Explore the library today." />
-<meta name="author" content="BashSnippets" />
+  <title>About BashSnippets — Who Runs the Site &amp; How It’s Built</title>
+  <meta name="description" content="Meet Anguishe, the creator behind BashSnippets.xyz: self-taught Linux, real bash scripts, static GitHub Pages site, no CMS. Why the library exists and how to reach out." />
+  <meta name="author" content="Anguishe" />
   <meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://bashsnippets.xyz/about.html" />
 
-<!-- Favicon -->
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <meta http-equiv="x-dns-prefetch-control" content="on" />
-  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://bashsnippets.xyz/about.html" />
 
-<style>
-*,*::before,*::after{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+  <meta property="og:title" content="About BashSnippets — Creator, Story &amp; How the Site Is Built" />
+  <meta property="og:description" content="Who runs BashSnippets.xyz, why the bash script library exists, what gear and stack I use, and where to follow the project." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bashsnippets.xyz/about.html" />
+  <meta property="og:image" content="https://bashsnippets.xyz/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BashSnippets — about the site and author" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://bashsnippets.xyz/og-image.png" />
 
-:root{
-  --bg:#0d1117;
-  --bg2:#161b22;
-  --bg3:#1c2128;
-  --border:#30363d;
-  --green:#39d353;
-  --blue:#58a6ff;
-  --text:#e6edf3;
-  --muted:#8b949e;
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-  --heading-font:'Syne',sans-serif;
-  --mono-font:'IBM Plex Mono',monospace;
-}
-
-body{
-  font-family:var(--mono-font);
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.8;
-  font-size:15px;
-}
-
-a{
-  color:var(--blue);
-  text-decoration:none;
-}
-
-/* NAVBAR MATCHES INDEX.HTML */
-nav{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:rgba(13,17,23,0.93);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--border);
-  padding:14px 24px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-}
-
-.nav-logo{
-  font-family:var(--heading-font);
-  font-weight:800;
-  font-size:18px;
-  color:var(--green);
-  letter-spacing:-0.5px;
-}
-
-.nav-logo span{
-  color:var(--muted);
-}
-
-.nav-links{
-  display:flex;
-  gap:20px;
-  list-style:none;
-}
-
-.nav-links a{
-  font-size:13px;
-  color:var(--muted);
-  transition:color .2s;
-}
-
-.nav-links a:hover{
-  color:var(--text);
-}
-
-/* PAGE CONTENT */
-main{
-  max-width:760px;
-  margin:0 auto;
-  padding:60px 24px;
-}
-
-h1{
-  font-family:var(--heading-font);
-  font-size:2rem;
-  margin-bottom:12px;
-}
-
-h2{
-  font-family:var(--heading-font);
-  font-size:1.2rem;
-  color:var(--green);
-  margin:32px 0 12px;
-}
-
-p,li{
-  color:var(--muted);
-  margin-bottom:14px;
-}
-
-ul{
-  padding-left:24px;
-}
-
-footer{
-  border-top:1px solid var(--border);
-  padding:28px 24px;
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-}
-
-@media (max-width:640px){
-  .nav-links{
-    display:none;
-  }
-}
-</style>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127" crossorigin="anonymous"></script>
-</head>
-
-<body>
-
-<nav>
-  <div class="nav-logo">bash<span>/</span>snippets</div>
-
-  <ul class="nav-links">
-    <li><a href="index.html#snippets">Snippets</a></li>
-    <li><a href="index.html#builder">Builder</a></li>
-    <li><a href="index.html#resources">Resources</a></li>
-    <li><a href="index.html#faq">FAQ</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-</nav>
-
-<main>
-
-<h1>About Bash Snippets</h1>
-
-<p>BashSnippets.xyz is a growing library of practical command-line scripts, Linux tips, Git helpers, and automation snippets designed for real-world use.</p>
-
-<h2>Why This Site Exists</h2>
-
-<p>Too many tutorials waste time. Bash Snippets focuses on fast, usable examples developers can copy, learn from, and adapt immediately.</p>
-
-<h2>Who It's For</h2>
-
-<ul>
-<li>Linux users</li>
-<li>Developers</li>
-<li>System administrators</li>
-<li>Students learning shell scripting</li>
-<li>Anyone who values automation</li>
-</ul>
-
-<h2>What You'll Find Here</h2>
-
-<ul>
-<li>Bash script examples</li>
-<li>File management automation</li>
-<li>Git productivity commands</li>
-<li>Linux maintenance snippets</li>
-<li>Simple tools that save time</li>
-</ul>
-
-<h2>Future Plans</h2>
-
-<p>We are actively expanding the site with new searchable pages, better documentation, and more advanced automation examples.</p>
-
-</main>
-
-<footer>
-<a href="/">← Back to Bash Snippets</a>
-</footer>
-
-<!-- Google tag -->
+  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6B01TGE8XS"></script>
 <script>
 window.dataLayer = window.dataLayer || [];
@@ -208,6 +34,463 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-6B01TGE8XS');
 </script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5399156622542127"
+crossorigin="anonymous"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": "https://bashsnippets.xyz/about.html#aboutpage",
+    "url": "https://bashsnippets.xyz/about.html",
+    "name": "About BashSnippets",
+    "description": "About BashSnippets.xyz: the creator Anguishe, why the bash script library exists, tooling and hosting, and contact information.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "@id": "https://bashsnippets.xyz/#website",
+      "name": "BashSnippets",
+      "url": "https://bashsnippets.xyz/"
+    },
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Anguishe",
+      "jobTitle": "Creator",
+      "email": "Anguisheh1@gmail.com",
+      "knowsAbout": ["bash scripting", "Linux", "shell automation", "cron", "zsh"],
+      "sameAs": [
+        "https://www.youtube.com/@BashSnippets",
+        "https://www.tiktok.com/@BashSnippets",
+        "https://dev.to/bashsnippets",
+        "https://github.com/anguishe/anguishe.github.io"
+      ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "BashSnippets",
+      "url": "https://bashsnippets.xyz/"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://bashsnippets.xyz/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://bashsnippets.xyz/about.html"
+      }
+    ]
+  }
+  </script>
+
+  <meta http-equiv="x-dns-prefetch-control" content="on" />
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+  <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       BASE RESET & CSS VARIABLES
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #0d1117;
+      --bg2:         #161b22;
+      --bg3:         #1c2128;
+      --border:      #30363d;
+      --green:       #39d353;
+      --green-dim:   #1a4a2e;
+      --amber:       #e3b341;
+      --amber-dim:   #3d2f0d;
+      --blue:        #58a6ff;
+      --blue-dim:    #0d2a4a;
+      --purple:      #d2a8ff;
+      --purple-dim:  #2d1f4e;
+      --text:        #e6edf3;
+      --muted:       #8b949e;
+      --heading-font: 'Syne', sans-serif;
+      --mono-font:    'IBM Plex Mono', monospace;
+      --radius:       8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--mono-font);
+      background: #0d1117;
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+      padding-bottom: 48px;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ============================================================
+       NAVIGATION
+       ============================================================ */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 8;
+      background: rgba(13,17,23,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    nav.nav--hidden {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      nav { transition: none; }
+    }
+
+    .nav-logo {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--green);
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links { display: flex; gap: 20px; list-style: none; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-links a.active { color: var(--green); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 2;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================================
+       RESPONSIVE BREAKPOINTS (nav mobile)
+       ============================================================ */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+        .nav-mobile-menu {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 18px;
+      padding: 4px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    @media (max-width: 640px) {
+      .nav-mobile-menu { display: block; }
+    }
+    .nav-mobile-drawer {
+      display: none;
+      flex-direction: column;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      gap: 4px;
+    }
+    .nav-mobile-drawer.open { display: flex; }
+    .nav-mobile-drawer a {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+    }
+    .nav-mobile-drawer a:last-child { border-bottom: none; }
+    .nav-mobile-drawer a:hover { color: var(--text); }
+
+    /* ============================================================
+       ABOUT PAGE CONTENT
+       ============================================================ */
+    .about-main {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 56px;
+    }
+    .about-main h1 {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+    .about-lead {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 36px;
+      max-width: 640px;
+    }
+    .about-section {
+      margin-bottom: 40px;
+    }
+    .about-section h2 {
+      font-family: var(--heading-font);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--green);
+      margin-bottom: 14px;
+      letter-spacing: -0.3px;
+    }
+    .about-section p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.85;
+      margin-bottom: 14px;
+    }
+    .about-section p:last-child { margin-bottom: 0; }
+    .about-section a:hover { text-decoration: underline; }
+
+    .author-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-top: 20px;
+      padding: 18px 20px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+    .author-card img {
+      width: 88px;
+      height: 88px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .author-card-body { flex: 1; min-width: 200px; }
+    .author-card-body .name {
+      font-family: var(--heading-font);
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .author-card-body .meta {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .author-card-body .meta span { display: block; }
+
+    .find-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0;
+    }
+    .find-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .find-list li:last-child { border-bottom: none; }
+    .find-list strong {
+      color: var(--text);
+      font-weight: 600;
+      display: inline-block;
+      min-width: 88px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav">
+    <a href="/" class="nav-logo">bash<span>/</span>snippets</a>
+    <ul class="nav-links">
+      <li><a href="/snippets/">Snippets</a></li>
+      <li><a href="/#builder">Builder</a></li>
+      <li><a href="/#resources">Resources</a></li>
+      <li><a href="/#faq">FAQ</a></li>
+      <li><a href="/tools/">Tools</a></li>
+      <li><a href="/about.html" class="active">About</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-mobile-menu" id="nav-toggle" aria-label="Open menu">☰</button>
+  </nav>
+  <div class="nav-mobile-drawer" id="nav-drawer">
+    <a href="/snippets/">Snippets</a>
+    <a href="/#builder">Builder</a>
+    <a href="/#resources">Resources</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/tools/">Tools</a>
+    <a href="/snippets/">All Snippets</a>
+    <a href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+  </div>
+
+  <main class="about-main">
+    <h1>About BashSnippets</h1>
+    <p class="about-lead">This page is the straight answer to who runs BashSnippets.xyz, why I bothered to publish it, and how the pages actually get online. No agency spin—just what I do and how I work.</p>
+
+    <section class="about-section" id="whos-behind-this">
+      <h2>Who's Behind This</h2>
+      <p>I’m Anguishe. I live in the Florida Panhandle and I’m self-taught on Linux—the kind of self-taught where nobody handed me a curriculum and I still stub my toe on edge cases weekly.</p>
+      <p>Before any of this, I worked beach hospitality. Then I had spinal fusion surgery and ended up stuck at home for a long recovery window. With too much time and a machine in front of me, I wiped the Windows installs off everything I owned and put Kali Linux on instead—mostly as a sink-or-swim move. If I was going to sit still, I wasn’t going to spend it in the shallow end.</p>
+      <p>I learned how I learn best: YouTube when someone explains a concept cleanly, AI tools when I’m stuck on syntax, and a lot of breaking stuff until it behaves. I’m about two years deep now. Some days I feel sharp; other days I’m rereading man pages for things I thought I already knew. That’s normal, and I leave it in because nobody improves by pretending they shipped fully formed.</p>
+
+      <div class="author-card">
+        <img src="/minimalist-glowing-green-terminal-waterm_bWmYwH47Rq-4PJo7Na3B8g_uUQwLAfzQ4Oyy4scmgkTLg.jpeg" width="88" height="88" alt="BashSnippets brand graphic — green terminal-style glow" loading="lazy" />
+        <div class="author-card-body">
+          <div class="name">Anguishe</div>
+          <div class="meta">
+            <span><strong>Role:</strong> Creator, BashSnippets.xyz</span>
+            <span><strong>Location:</strong> Florida Panhandle</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" id="why-this-site-exists">
+      <h2>Why This Site Exists</h2>
+      <p>I started BashSnippets because I needed to get serious about cron automation and because I came from zsh and kept tripping over small differences when I jumped into bash. The internet has answers, but I was hitting the same searches over and over—half-remembered flags, syntax that looks identical until it isn’t, and one-liners I knew I’d solved before.</p>
+      <p>So I turned my notes into something public: a reference I’d actually trust because I wrote it while debugging real tasks. Over time it stopped being “just for me” and turned into a library I’m fine sharing. Every script here is either in my rotation now or was written for something I actually needed at least once. If it’s fluff, it doesn’t stay.</p>
+    </section>
+
+    <section class="about-section" id="what-i-work-with">
+      <h2>What I Actually Work With</h2>
+      <p>At home I run a server stack on Proxmox with Tailscale layered on top. That whole setup is on pause right now while I sort hardware upgrades—same lab rat habits, just waiting on parts instead of configs.</p>
+      <p>I’m juggling a few web projects. One you might bump into is kaisrun.xyz. BashSnippets itself is hand-coded static HTML on GitHub Pages: no CMS, no frameworks, no build pipeline to babysit. On the side I’m also tinkering with a small music app for my daughter—mostly vibe-coded, mostly for fun, and a good excuse to practice shipping UI without overthinking it.</p>
+    </section>
+
+    <section class="about-section" id="how-built">
+      <h2>How This Site Is Built</h2>
+      <p>The stack is boring on purpose: HTML, CSS, and vanilla JavaScript. The site lives on GitHub Pages. Each page is typed out by hand instead of poured out of a template engine, which is slower but keeps me honest about what’s actually on the wire.</p>
+      <p>I don’t run WordPress or a headless CMS here—the repo is the site. Scripts in the library get exercised on Ubuntu 22.04 LTS before I call them done. The interactive tools run real logic in the browser; they’re not hollow “generator” shells that paste canned text. If something claims to build a snippet, it’s doing the work.</p>
+    </section>
+
+    <section class="about-section" id="find-bashsnippets">
+      <h2>Find BashSnippets</h2>
+      <p>If you want updates or shorter demos elsewhere, I’m on the usual platforms under the BashSnippets handle where it’s available:</p>
+      <ul class="find-list">
+        <li><strong>YouTube</strong> <a href="https://www.youtube.com/@BashSnippets" target="_blank" rel="noopener noreferrer">@BashSnippets</a></li>
+        <li><strong>TikTok</strong> <a href="https://www.tiktok.com/@BashSnippets" target="_blank" rel="noopener noreferrer">@BashSnippets</a></li>
+        <li><strong>dev.to</strong> <a href="https://dev.to/bashsnippets" target="_blank" rel="noopener noreferrer">dev.to/bashsnippets</a></li>
+        <li><strong>GitHub</strong> <a href="https://github.com/anguishe/anguishe.github.io" target="_blank" rel="noopener noreferrer">Site source on GitHub</a></li>
+        <li><strong>Email</strong> <a href="mailto:Anguisheh1@gmail.com">Anguisheh1@gmail.com</a></li>
+      </ul>
+    </section>
+
+    <section class="about-section" id="contact">
+      <h2>Contact</h2>
+      <p>If you spot a broken script, want to suggest a topic, or just prefer a form instead of email, use the <a href="/contact.html">contact page</a>. I read what comes through; fixes and clarifications go straight into the library when they’re warranted.</p>
+    </section>
+  </main>
+
+  <footer>
+        <div class="footer-links">
+      <a href="/snippets/">Snippets</a>
+      <a href="/#builder">Builder</a>
+      <a href="/#resources">Resources</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/snippets/">All Scripts</a>
+      <a href="/snippets/">Script Library on GitHub →</a>
+      <a href="/snippets/automated-file-backup.html">File Backup</a>
+      <a href="/snippets/disk-space-warning.html">Disk Warning</a>
+      <a href="/snippets/delete-old-log-files.html">Log Cleanup</a>
+      <a href="/snippets/check-if-website-is-up.html">Uptime Check</a>
+      <a href="/snippets/bash-error-handling.html">Error Handling</a>
+      <a href="/tools/">Tools</a>
+      <a href="/tools/bash-boilerplate-generator.html">Boilerplate Generator</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/privacy.html">Privacy Policy</a>
+
+      <!-- Add cluster page links here as they go live:
+      <a href="/tools/cron-job-builder.html">Cron Jobs</a>
+      <a href="/snippets/">One-Liners</a>
+      <a href="/snippets/">Cheat Sheet</a>
+      -->
+    </div>
+    <p>Built by a Linux user, for Linux users. All scripts tested on Ubuntu 22.04 LTS and macOS Ventura.</p>
+    <p>No tracking. No paywalls. No newsletter popups.</p>
+    <p style="margin-top:8px;">
+      © <span id="year"></span> BashSnippets
+      &nbsp;·&nbsp; <a href="mailto:Anguisheh1@gmail.com">Anguisheh1@gmail.com</a>
+      &nbsp;·&nbsp; <a href="/privacy.html">Privacy</a>
+    </p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    (function () {
+      var nav = document.getElementById('site-nav');
+      if (!nav) return;
+      var threshold = 12;
+      function updateNavScrollState() {
+        if (window.scrollY > threshold) nav.classList.add('nav--hidden');
+        else nav.classList.remove('nav--hidden');
+      }
+      window.addEventListener('scroll', updateNavScrollState, { passive: true });
+      updateNavScrollState();
+    })();
+  </script>
+
+  <script>
+    const navToggle = document.getElementById('nav-toggle');
+    const navDrawer = document.getElementById('nav-drawer');
+    navToggle.addEventListener('click', () => {
+      navDrawer.classList.toggle('open');
+      navToggle.textContent = navDrawer.classList.contains('open') ? '✕' : '☰';
+    });
+  </script>
 
 </body>
 </html>

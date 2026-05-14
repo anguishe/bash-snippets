@@ -3,98 +3,98 @@
 
 <url>
 <loc>https://bashsnippets.xyz/</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>weekly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/about.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.6</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/contact.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/privacy.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>yearly</changefreq>
 <priority>0.3</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/automated-file-backup.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/disk-space-warning.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/delete-old-log-files.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/quick-system-info-report.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/search-files-for-text-grep.html</loc>
-<lastmod>2026-05-02</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/</loc>
-<lastmod>2026-05-03</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.9</priority>
 </url>
  
 <url>
 <loc>https://bashsnippets.xyz/snippets/check-if-website-is-up.html</loc>
-<lastmod>2026-05-03</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
  
 <url>
 <loc>https://bashsnippets.xyz/snippets/bash-error-handling.html</loc>
-<lastmod>2026-05-03</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
  
 <url>
 <loc>https://bashsnippets.xyz/snippets/create-dated-folder.html</loc>
-<lastmod>2026-05-03</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
 
 <url>
 <loc>https://bashsnippets.xyz/snippets/kill-a-process.html</loc>
-<lastmod>2026-05-04</lastmod>
+<lastmod>2026-05-13</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.8</priority>
 </url>
@@ -121,7 +121,7 @@
 </url>
 
 <url>
-  <loc>https://bashsnippets.xyz/tools/exit-code-lookup.html</loc>
+  <loc>https://bashsnippets.xyz/tools/bash-exit-code-lookup.html</loc>
   <lastmod>2026-05-07</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
@@ -143,38 +143,38 @@
 
 <url>
   <loc>https://bashsnippets.xyz/snippets/file-permissions-security.html</loc>
-  <lastmod>2026-05-07</lastmod>
+  <lastmod>2026-05-13</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 
 <url>
   <loc>https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html</loc>
-  <lastmod>2026-05-08</lastmod>
+  <lastmod>2026-05-13</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://bashsnippets.xyz/snippets/bash-send-email-alert.html</loc>
-  <lastmod>2026-05-08</lastmod>
+  <lastmod>2026-05-13</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://bashsnippets.xyz/snippets/mysql-database-backup.html</loc>
-  <lastmod>2026-05-08</lastmod>
+  <lastmod>2026-05-13</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://bashsnippets.xyz/snippets/ssh-key-setup-script.html</loc>
-  <lastmod>2026-05-08</lastmod>
+  <lastmod>2026-05-13</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
 <url>
   <loc>https://bashsnippets.xyz/snippets/restart-service-if-stopped.html</loc>
-  <lastmod>2026-05-09</lastmod>
+  <lastmod>2026-05-13</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>

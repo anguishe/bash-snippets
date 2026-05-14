@@ -7,7 +7,7 @@
 
   <title>Quick System Info Report Script – BashSnippets.xyz</title>
   <meta name="description" content="Copy a quick system info bash script for hostname, uptime, RAM, disk, IP address, aliases, and macOS variants. Run a server snapshot instantly." />
-  <meta name="author" content="BashSnippets" />
+  <meta name="author" content="Anguishe, BashSnippets" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/quick-system-info-report.html" />
 
@@ -322,6 +322,14 @@
       This script prints them all in one clean shot. Alias it to <code>syscheck</code> in your
       <code>.bashrc</code> and you'll have it available in every terminal session, on every machine.
     </p>
+
+<div class="author-box" style="display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:24px 0 32px 0;max-width:520px;">
+  <div style="min-width:48px;width:48px;height:48px;background:var(--bg);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono-font);color:var(--green);font-size:14px;font-weight:600;">&gt;_</div>
+  <div>
+    <div style="font-family:var(--mono-font);font-size:14px;color:var(--text);font-weight:600;">Anguishe</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5;">Creator, BashSnippets.xyz · Self-taught Linux · Florida<br>Last updated: May 2026</div>
+  </div>
+</div>
   </div>
 
   <div class="ad-slot">
@@ -464,6 +472,23 @@
 <span class="kw">echo</span> <span class="str">"Disk /  : $(df -h / | awk 'NR==2{print $3"/"$2}')"</span>
 <span class="kw">echo</span> <span class="str">"IP      : $(ipconfig getifaddr en0)"</span>
 <span class="kw">echo</span> <span class="str">"========================="</span></pre>
+  </div>
+
+  <h2>Common Mistakes</h2>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ uptime -p doesn't exist on macOS or older Linux</div>
+    <p>The <code>-p</code> flag was added in coreutils 8.24 (2015). On macOS and some minimal containers, it fails silently or errors. Use the macOS variation shown above, or fall back to: <code>uptime | awk '{print $3,$4}' | tr -d ','</code></p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ hostname -I returns nothing inside Docker containers</div>
+    <p>Minimal containers often don't have a proper network config for <code>hostname -I</code>. Use: <code>ip route get 1.1.1.1 | awk '{print $7}'</code> as a more reliable fallback for containers and VMs.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ Aliasing to .bashrc but using zsh</div>
+    <p>If your default shell is zsh (common on macOS), aliases in <code>~/.bashrc</code> won't load. Add the alias to <code>~/.zshrc</code> instead and run <code>source ~/.zshrc</code>.</p>
   </div>
 
   <affiliate-box class="affiliate-box">

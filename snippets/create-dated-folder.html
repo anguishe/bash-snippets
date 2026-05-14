@@ -7,7 +7,7 @@
 
   <title>Create Dated Folder Bash Script – BashSnippets.xyz</title>
   <meta name="description" content="Copy a create dated folder bash script using date formats, timestamps, and reusable names. Organize backups, project folders, and daily work faster." />
-  <meta name="author" content="BashSnippets" />
+  <meta name="author" content="Anguishe, BashSnippets" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/create-dated-folder.html" />
 
@@ -329,6 +329,14 @@
     your backups stay organized, and you always know exactly when you made it.
   </p>
 
+<div class="author-box" style="display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:24px 0 32px 0;max-width:520px;">
+  <div style="min-width:48px;width:48px;height:48px;background:var(--bg);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono-font);color:var(--green);font-size:14px;font-weight:600;">&gt;_</div>
+  <div>
+    <div style="font-family:var(--mono-font);font-size:14px;color:var(--text);font-weight:600;">Anguishe</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5;">Creator, BashSnippets.xyz · Self-taught Linux · Florida<br>Last updated: May 2026</div>
+  </div>
+</div>
+
   <div class="ad-slot">
     <ins class="adsbygoogle"
       style="display:block"
@@ -463,6 +471,23 @@
   <div class="callout amber">
     <div class="callout-title">⚠ Always quote your folder names</div>
     <p>Always wrap dated folder names in quotes: <code>mkdir "$(date +%Y-%m-%d)_my project"</code>. Without quotes, spaces in the name break the command into multiple arguments. The <code>"$()"</code> pattern handles this correctly.</p>
+  </div>
+
+  <h2>Common Mistakes</h2>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ Spaces in folder names break without quotes</div>
+    <p><code>mkdir $(date +%Y-%m-%d)_my project</code> creates TWO items: a folder and a broken argument. Always wrap in double quotes: <code>mkdir "$(date +%Y-%m-%d)_my project"</code></p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ Date format that doesn't sort correctly</div>
+    <p>Using MM-DD-YYYY (like 05-13-2026) means folders sort by month, not chronologically. Always use YYYY-MM-DD (ISO 8601) — it sorts correctly in every file manager and <code>ls</code> output.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ The alias doesn't persist after reboot</div>
+    <p>Adding an alias in the terminal only lasts for that session. You must add it to <code>~/.bashrc</code> (or <code>~/.zshrc</code>) AND run <code>source ~/.bashrc</code> for it to survive a reboot.</p>
   </div>
 
   <div class="affiliate-box">

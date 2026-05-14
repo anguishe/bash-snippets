@@ -7,7 +7,7 @@
 
   <title>Monitor CPU and RAM Usage with Bash – BashSnippets.xyz</title>
   <meta name="description" content="A bash script that checks CPU and memory usage and alerts you when usage passes a threshold. Copy-paste ready. Schedule with cron on any Linux server." />
-  <meta name="author" content="BashSnippets" />
+  <meta name="author" content="Anguishe, BashSnippets" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bashsnippets.xyz/snippets/monitor-cpu-ram-usage.html" />
 
@@ -391,6 +391,14 @@
     <p class="page-intro" style="font-style:italic;margin-bottom:16px;">Get notified when your server is struggling — before users notice.</p>
     <p class="page-intro">You deployed your app, set up cron, and walked away. Three hours later your server is at 97% CPU and you find out from a user. This script runs silently on a schedule and logs a warning the moment resources spike past your threshold.</p>
     <p class="page-intro">Works on any Linux system — Ubuntu, Debian, CentOS. Uses <code>top</code> and <code>free</code>, which are available on every distro by default. No dependencies to install.</p>
+
+<div class="author-box" style="display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:24px 0 32px 0;max-width:520px;">
+  <div style="min-width:48px;width:48px;height:48px;background:var(--bg);border:1px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono-font);color:var(--green);font-size:14px;font-weight:600;">&gt;_</div>
+  <div>
+    <div style="font-family:var(--mono-font);font-size:14px;color:var(--text);font-weight:600;">Anguishe</div>
+    <div style="font-size:12px;color:var(--muted);line-height:1.5;">Creator, BashSnippets.xyz · Self-taught Linux · Florida<br>Last updated: May 2026</div>
+  </div>
+</div>
   </div>
 
   <!-- AD SLOT TOP -->
@@ -471,14 +479,112 @@
 
   <h2>Variations</h2>
 
-  <h3>Email when a threshold trips</h3>
-  <p>Pipe the warning line to mail: <code>... | mail -s "CPU Alert" you@example.com</code> (install <code>mailutils</code> on Debian/Ubuntu if needed).</p>
+  <h3>Send an email when CPU or RAM spikes</h3>
+  <p>Same CPU/RAM probes as above, plus a single email whenever either crosses your threshold — useful instead of silently appending log lines. Requires the <code>mail</code> command (typically <code>mailutils</code> on Debian/Ubuntu); see our <a href="/snippets/bash-send-email-alert.html">bash email alert snippet</a> for install tips, SMTP, and Gmail.</p>
 
-  <h3>Check a specific process</h3>
-  <p>Use per-process CPU with something like: <code>ps aux | grep processname | awk '{sum+=$3} END {print sum}'</code> (filter <code>grep</code> so you don’t count the <code>grep</code> line itself).</p>
+  <div class="code-block">
+    <div class="code-header">
+      <span class="filename">monitor-email.sh</span>
+      <button class="copy-btn" onclick="copyCode(this)" type="button">copy</button>
+    </div>
+    <pre><span class="comment">#!/bin/bash</span>
 
-  <h3>Feed a dashboard</h3>
-  <p>Append JSON lines (timestamp, CPU, RAM) to a file and graph them with a small script or external tool.</p>
+<span class="comment"># --- Configuration ---</span>
+<span class="var">THRESHOLD</span>=<span class="num">80</span>
+<span class="var">EMAIL</span>=<span class="str">"you@example.com"</span>   <span class="comment"># ← recipient</span>
+
+<span class="var">CPU</span>=$(<span class="kw">top</span> -bn1 | <span class="kw">grep</span> <span class="str">"Cpu(s)"</span> | <span class="kw">awk</span> <span class="str">'{print $2}'</span> | <span class="kw">cut</span> -d<span class="str">'%'</span> -f1 | <span class="kw">cut</span> -d<span class="str">','</span> -f1 | <span class="kw">xargs</span> <span class="kw">printf</span> <span class="str">"%.0f"</span>)
+<span class="var">RAM</span>=$(<span class="kw">free</span> | <span class="kw">awk</span> <span class="str">'/Mem:/ {printf "%.0f", $3/$2*100}'</span>)
+<span class="var">HOST</span>=$(<span class="kw">hostname</span>)
+
+<span class="kw">if</span> [ <span class="str">"$CPU"</span> -gt <span class="str">"$THRESHOLD"</span> ] || [ <span class="str">"$RAM"</span> -gt <span class="str">"$THRESHOLD"</span> ]; <span class="kw">then</span>
+  <span class="var">TOP5</span>=$(<span class="kw">ps</span> aux --sort=-<span class="str">"%cpu"</span> | <span class="kw">head</span> -n <span class="num">6</span>)
+<span class="kw">{</span>
+  <span class="kw">echo</span> <span class="str">"Hostname: $HOST"</span>
+  <span class="kw">echo</span> <span class="str">""</span>
+  <span class="kw">echo</span> <span class="str">"CPU usage (approx.): ${CPU}%"</span>
+  <span class="kw">echo</span> <span class="str">"RAM usage (approx.): ${RAM}%"</span>
+  <span class="kw">echo</span> <span class="str">""</span>
+  <span class="kw">echo</span> <span class="str">"Threshold: ${THRESHOLD}% — at least one metric exceeded."</span>
+  <span class="kw">echo</span> <span class="str">""</span>
+  <span class="kw">echo</span> <span class="str">"Top 5 processes by CPU (includes ps header row):"</span>
+  <span class="kw">echo</span> <span class="str">"${TOP5}"</span>
+<span class="kw">}</span> | <span class="kw">mail</span> -s <span class="str">"⚠ Resource alert on $HOST — CPU ${CPU}% | RAM ${RAM}%"</span> <span class="str">"$EMAIL"</span>
+<span class="kw">fi</span></pre>
+  </div>
+
+  <h3>Monitor a specific process by name</h3>
+  <p>Pass a substring that appears in <code>ps aux</code> COMMAND column (same idea as grepping logs). Matches every PID whose line contains that substring, sums aggregate <code>%CPU</code> and <code>%MEM</code>, and warns when either crosses a per-watch threshold.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="filename">monitor-process.sh</span>
+      <button class="copy-btn" onclick="copyCode(this)" type="button">copy</button>
+    </div>
+    <pre><span class="comment">#!/bin/bash</span>
+<span class="comment"># Usage: ./monitor-process.sh nginx 50</span>
+<span class="comment"># Sums ps %CPU/%MEM for rows whose COMMAND matches $NAME; excludes grep.</span>
+
+<span class="var">NAME</span>=<span class="str">"$1"</span>
+<span class="var">PROC_THRESHOLD</span>=<span class="str">"${2:-50}"</span>
+
+<span class="kw">if</span> [ -z <span class="str">"$NAME"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"Usage: $0 &lt;process-name-pattern&gt; [threshold-percent]"</span>
+  <span class="kw">exit</span> <span class="num">1</span>
+<span class="kw">fi</span>
+
+<span class="var">MATCHES</span>=$(<span class="kw">ps</span> aux | <span class="kw">grep</span> <span class="str">"$NAME"</span> | <span class="kw">grep</span> -v grep)
+<span class="kw">if</span> [ -z <span class="str">"$MATCHES"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"No process matched '$NAME'."</span>
+  <span class="kw">exit</span> <span class="num">0</span>
+<span class="kw">fi</span>
+
+<span class="var">CPU_SUM</span>=$(<span class="kw">echo</span> <span class="str">"$MATCHES"</span> | <span class="kw">awk</span> <span class="str">'{s += $3} END { printf "%.0f", s+0 }'</span>)
+<span class="var">RAM_SUM</span>=$(<span class="kw">echo</span> <span class="str">"$MATCHES"</span> | <span class="kw">awk</span> <span class="str">'{s += $4} END { printf "%.0f", s+0 }'</span>)
+
+<span class="kw">echo</span> <span class="str">"[$(date '+%Y-%m-%d %H:%M:%S')] $NAME: CPU agg ${CPU_SUM}% | MEM agg ${RAM_SUM}% (threshold ${PROC_THRESHOLD}%)"</span>
+
+<span class="kw">if</span> [ <span class="str">"${CPU_SUM:-0}"</span> -gt <span class="str">"$PROC_THRESHOLD"</span> ] || [ <span class="str">"${RAM_SUM:-0}"</span> -gt <span class="str">"$PROC_THRESHOLD"</span> ]; <span class="kw">then</span>
+  <span class="kw">echo</span> <span class="str">"⚠ WARNING: aggregate CPU or MEM above threshold for '$NAME'"</span>
+<span class="kw">fi</span></pre>
+  </div>
+
+  <h3>Append JSON log lines for graphing</h3>
+  <p>Every run prints one newline-delimited JSON object and appends it to <code>.jsonl</code> — one record per cron tick — so ingestion tools, log aggregators, or a tiny Python/awk script can build charts.</p>
+
+  <div class="code-block">
+    <div class="code-header">
+      <span class="filename">monitor-jsonl.sh</span>
+      <button class="copy-btn" onclick="copyCode(this)" type="button">copy</button>
+    </div>
+    <pre><span class="comment">#!/bin/bash</span>
+
+<span class="var">LOG_FILE</span>=<span class="str">"/var/log/resource-metrics.jsonl"</span>
+
+<span class="var">CPU</span>=$(<span class="kw">top</span> -bn1 | <span class="kw">grep</span> <span class="str">"Cpu(s)"</span> | <span class="kw">awk</span> <span class="str">'{print $2}'</span> | <span class="kw">cut</span> -d<span class="str">'%'</span> -f1 | <span class="kw">cut</span> -d<span class="str">','</span> -f1 | <span class="kw">xargs</span> <span class="kw">printf</span> <span class="str">"%.0f"</span>)
+<span class="var">RAM</span>=$(<span class="kw">free</span> | <span class="kw">awk</span> <span class="str">'/Mem:/ {printf "%.0f", $3/$2*100}'</span>)
+<span class="var">TS</span>=$(<span class="kw">date</span> -u +<span class="str">'%Y-%m-%dT%H:%M:%SZ'</span>)
+
+<span class="var">LINE</span>=$(<span class="kw">printf</span> <span class="str">'{"timestamp":"%s","cpu":%s,"ram":%s}\n'</span> <span class="str">"$TS"</span> <span class="str">"$CPU"</span> <span class="str">"$RAM"</span>)
+<span class="kw">echo</span> <span class="str">"$LINE"</span> &gt;&gt; <span class="str">"$LOG_FILE"</span></pre>
+  </div>
+
+  <h2>Common Mistakes</h2>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ top output format differs between distros</div>
+    <p>The awk column for CPU usage is $2 on Ubuntu but may be different on CentOS/RHEL or Alpine. Always test your parsing command on the actual target system before scheduling with cron. Run: <code>top -bn1 | grep "Cpu(s)"</code> and count the columns manually.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ The script logs warnings but nobody reads the log</div>
+    <p>Writing to a log file is pointless if nobody checks it. Combine this with the email alert snippet (<a href="/snippets/bash-send-email-alert.html">bash-send-email-alert.html</a>) to get notified when thresholds trip. Or pipe cron output to your inbox.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-title">⚠ RAM percentage includes cache/buffers on older systems</div>
+    <p>On older kernels, <code>free</code> may not show "available" memory correctly. The $3/$2 calculation can overstate usage because Linux aggressively caches disk reads in RAM. On modern Ubuntu (18.04+), this is handled correctly.</p>
+  </div>
 
   <!-- AD SLOT BOTTOM -->
   <div class="ad-slot">

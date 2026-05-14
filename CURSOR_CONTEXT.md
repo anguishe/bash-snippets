@@ -10,6 +10,10 @@
 - Fonts: IBM Plex Mono (body/code), Syne (headings) — Google Fonts CDN only
 - CSS vars already defined in every file: --bg, --green, --amber, --blue, --muted
 
+## Author contact email (authoritative)
+- **Correct:** `Anguisheh1@gmail.com` — use this in `mailto:` links, visible text, and JSON-LD `email` fields site-wide.
+- **Wrong (do not use):** `Anguishe1@gmail.com` (historic typo).
+
 ## Scripts That Must Survive Every Edit
 - GA4: G-6B01TGE8XS
 - AdSense: ca-pub-5399156622542127
